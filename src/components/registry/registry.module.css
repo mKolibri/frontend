@@ -1,11 +1,3 @@
-* {
-    margin: 5px;
-}
-
-.App {
-    text-align: center;
-}
-
 .form {
     margin-top: 20px;
     background-color: rgb(216, 211, 211); 
@@ -24,11 +16,61 @@ input {
     margin: 10px;
 }
 
-button {
+.Button {
     border: none;
     padding: 10px;
     height: 45px;
     width: 21%;
     background-color: darkslategray;
     color: whitesmoke;
+    font-size: 14px;
+}
+
+.Button:hover {
+    border: none;
+    padding: 10px;
+    background-color: rgb(32, 54, 54);
+    color: rgb(225, 226, 228);
+    font-size: 15px;
+}
+
+.Button:disabled {
+    border: none;
+    padding: 10px;
+    background-color: rgb(68, 71, 85);
+    color: white;
+    font-size: 15px;
+}
+
+p {
+    font-size: 13px;
+}
+
+.label {
+    font-size: 15px;
+    width: 5px;
+    color: darkslategray;
+}
+
+.warning {
+    color: red;
+    background-color: rgb(216, 211, 211); 
+}
+
+.alert {
+    text-align: center;
+    margin-top: 12%;
+    background-color: rgb(216, 211, 211); 
+    color: rgb(24, 51, 78);
+    width: 100%;
+    height: 100%;
+}
+
+.div {
+    background-color: rgb(216, 211, 211);
+    width: auto;
+}
+
+.red {
+    color: red;
 }

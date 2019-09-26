@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import SideNav, { NavItem} from '@trendmicro/react-sidenav';
+import SideNav from '@trendmicro/react-sidenav';
 import { Button } from 'reactstrap';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import { BrowserRouter, Link, NavLink } from 'react-router-dom'
+import { BrowserRouter, Link } from 'react-router-dom'
 import style from './home.module.css';
+import { url } from '../../configs/config';
+import { Alert } from '../../warnings/alert';
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             userID: localStorage.getItem('userID'),
-            token : localStorage.getItem('token')
+            token : localStorage.getItem('token'),
+            isAlert: false,
+            alertMess: ''
         };
     }
 
@@ -19,7 +23,7 @@ class Home extends Component {
         const token = this.state.token;
 
         try {
-            const result = await fetch(`http://localhost:10000/user?userID=${userID}&token=${token}`, {
+            const result = await fetch(`${url}user?userID=${userID}&token=${token}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -34,10 +38,16 @@ class Home extends Component {
                 this.setState({age : content.age});
                 this.setState({mail: content.mail});
             } else {
-                alert(content.message);
+                this.setState({
+                    isAlert: true,
+                    alertMess: content.message + '. Please, try again.'
+                });
             }
         } catch (error) {
-            alert(`Error: ${error.message}`);
+            this.setState({
+                isAlert: true,
+                alertMess: `Error: ${error.message}`
+            });
         }   
     }
 
@@ -52,38 +62,38 @@ class Home extends Component {
     render() {
         return (
             <BrowserRouter>
-                <SideNav className={style.sidenav} >
-                    <SideNav.Toggle />
-                    <SideNav.Nav defaultSelected="home" >
-                        <NavItem eventKey="home">
-                            <NavLink to="/home" onClick={this.toHome} className={style.bar}>
-                                Home
-                            </NavLink>
-                            <NavLink to="/tables" onClick={this.toTables} className={style.bar}>
-                                Tables
-                            </NavLink>
-                        </NavItem>
-                        <Link to="/" onClick={() => {
-                            if (window.confirm("Do you really want to Sign Out?")) {        
-                                localStorage.setItem('token', '');
-                                localStorage.setItem('userID', '');
-                                this.props.history.push('/');  }}
-                        }>
-                                <Button className={style.logOutButton}> Log out </Button>
+                { this.state.isAlert ? 
+                    <div className={style.div}><Alert className={style.alert} value={this.state.alertMess}/>
+                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
+                    </div>
+                :
+                <div>
+                    <SideNav className={style.sidenav}>
+                        <Link to="/home" onClick={this.toHome}>
+                            <Button className={style.Button}> Home </Button>
                         </Link>
-                    </SideNav.Nav>
-                </SideNav>
+                        <Link to="/tables" onClick={this.toTables}>
+                            <Button className={style.Button}> Tables </Button>
+                        </Link>
+                        <Link to="/addTable" onClick={this.addTable}>
+                            <Button className={style.Button}> Add table </Button>
+                        </Link>
+                        <Link to="/" onClick={this.logout}>
+                            <Button className={style.logOutButton}> Log out </Button>
+                        </Link>
+                    </SideNav>
                 <div className={style.container}>
                     <div className={style.rightConteiner}>
-                        <h3 className={style.text}> Name : {this.state.name} </h3>
-                        <h3 className={style.text}> Surname : {this.state.surname} </h3>
-                        <h3 className={style.text}> Age : {this.state.age} </h3>
-                        <h3 className={style.text}> Mail : {this.state.mail} </h3>
+                        <h3 className={style.text}><span className={style.span}>Name :</span>{this.state.name}</h3>
+                        <h3 className={style.text}><span className={style.span}>Surname :</span>{this.state.surname}</h3>
+                        <h3 className={style.text}><span className={style.span}>Age :</span>{this.state.age}</h3>
+                        <h3 className={style.text}><span className={style.span}> Mail :</span>{this.state.mail}</h3>
                     </div>
                 </div>
+                </div>}
             </BrowserRouter>
         );
     }
 }
 
-export default Home;
+export { Home };

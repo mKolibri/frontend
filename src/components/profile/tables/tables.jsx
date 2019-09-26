@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import SideNav, { NavItem} from '@trendmicro/react-sidenav';
-import {  Input, Button } from 'reactstrap';
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import { BrowserRouter, NavLink, Link} from 'react-router-dom'
-import style from '../home/home.module.css';
+import { BrowserRouter, Link} from 'react-router-dom';
+import { Button } from 'reactstrap';
+import style from './table.module.css';
+import { url } from '../../configs/config';
+import { Alert } from '../../warnings/alert';
+import SideNav from '@trendmicro/react-sidenav';
 
 class Tab extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isAlert: false,
+            alertMess: '',
             userID: localStorage.getItem('userID'),
             token : localStorage.getItem('token')
         };
@@ -16,11 +19,17 @@ class Tab extends Component {
     }
 
     handleChange(e) {
-        if (e.target.id === 'taleName') {
+        if (e.target.id === 'tableName') {
             this.setState({ tableName: e.target.value });
         } else if (e.target.id === 'description') {
             this.setState({ desc : e.target.value });
         }
+    }
+
+    logout = () => {
+        localStorage.setItem('token', '');
+        localStorage.setItem('userID', '');
+        this.props.history.push('/');
     }
 
     async componentDidMount() {
@@ -28,7 +37,7 @@ class Tab extends Component {
         const token = this.state.token;
 
         try {
-            const result = await fetch(`http://localhost:10000/tables?userID=${userID}&token=${token}`, {
+            const result = await fetch(`${url}tables?userID=${userID}&token=${token}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -40,10 +49,16 @@ class Tab extends Component {
             if (200 === result.status) {
                 this.setState({results : content});
             } else {
-                alert(content.message);
+                this.setState({
+                    isAlert: true,
+                    alertMess: content.message + '. Please, try again.'
+                });
             }
         } catch (error) {
-            alert(`Error: ${error.message}`);
+            this.setState({
+                isAlert: true,
+                alertMess: `Error: ${error.message}`
+            });
         }
     }
 
@@ -55,68 +70,62 @@ class Tab extends Component {
         this.props.history.push('/tables');
     }
 
+    addTables = () => {
+        this.props.history.push('/addTable');
+    }
+
     render() {
         const results = this.state.results;
-
         return (
             <BrowserRouter>
-                <SideNav className={style.sidenav} >
-                    <SideNav.Toggle />
-                    <SideNav.Nav defaultSelected="tables" >
-                        <NavItem eventKey="tables">
-                            <NavLink to="/home" onClick={this.toHome} className={style.bar}>
-                                Home
-                            </NavLink>
-                            <NavLink to="/tables" onClick={this.toTables} className={style.bar}>
-                                Tables
-                            </NavLink>
-                        </NavItem>
-                        <Link to="/" onClick={() => {
-                            if (window.confirm("Do you really want to Sign Out?")) {        
-                                localStorage.setItem('token', '');
-                                localStorage.setItem('userID', '');
-                                this.props.history.push('/');  }}
-                        }>
+                { this.state.isAlert ? 
+                    <div className={style.div}><Alert className={style.alert} value={this.state.alertMess}/>
+                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
+                    </div>
+                :
+                <div>
+                    <SideNav className={style.sidenav}>
+                        <Link to="/home" onClick={this.toHome}>
+                            <Button className={style.Button}> Home </Button>
+                        </Link>
+                        <Link to="/tables" onClick={this.toTables}>
+                            <Button className={style.Button}> Tables </Button>
+                        </Link>
+                        <Link to="/addTable" onClick={this.addTable}>
+                            <Button className={style.Button}> Add table </Button>
+                        </Link>
+                        <Link to="/" onClick={this.logout}>
                             <Button className={style.logOutButton}> Log out </Button>
                         </Link>
-                    </SideNav.Nav>
-                </SideNav>
-                <div className={style.container}>
-                    <div className={style.rightConteiner}>
-                        <table className="striped responsive-table dark hover">
+                    </SideNav>
+                    <div className={style.container}>
+                        <table className="striped responsive-table">
                             <thead>
                                 <tr>
-                                    <th>Table Name</th>
-                                    <th>Creation Date</th>
+                                    <th className={style.head}>Table Name</th>
+                                    <th className={style.head}>Creation Date</th>
+                                    <th className={style.head}>Description (About table)</th>
+                                    <th className={style.head}>Delete</th>
+                                    <th className={style.head}>Update</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {Array.isArray(results) && results.length > 0 && results.map(r => (
                                     <tr key={r.id} >
-                                        <td><Button className={style.button}>{r.name}</Button></td>
-                                        <td>{r.date}</td>
+                                        <td><Button className={style.name}>{r.name}</Button></td>
+                                        <td>{r.date.substring(0, 10)}</td>
+                                        <td>{r.desc}</td>
+                                        <td><Button className={style.name}>X</Button></td>
+                                        <td><Button className={style.name}>...</Button></td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                </div>
-
-                <div className={style.container}>
-                    <div className={style.rightConteiner}>
-                    <Input type="text" name="tableName" id="tableName"
-                        placeholder="New table name*"
-                        onChange={this.handleChange} required />
-                    <Input type="text" name="description" id="description"
-                        placeholder="Description(tell about table)..." className={style.input}
-                        onChange={this.handleChange}/>
-                        
-                        <Button className={style.addButton}>Add Table</Button>
-                    </div>
-                </div>
+                </div>}
             </BrowserRouter>
         );
     }
 }
 
-export default Tab;
+export { Tab };
