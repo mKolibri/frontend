@@ -1,17 +1,22 @@
-import { Container, Col, Form, Row, Input, Button } from 'reactstrap';
+import { Container, Col, Form, Row, Input, Button, Label, FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Alert } from '../warnings/alert';
 import style from './login.module.css';
+import { url } from '../configs/config';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             mail: '',
-            password: ''
+            password: '',
+            isAlert: false,
+            alertMess: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleExit = this.handleExit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -23,17 +28,28 @@ class Login extends Component {
         }
     }
 
+    handleExit(e) {
+        this.setState({
+            isAlert: false,
+            alertMess: ''
+        });
+    }
+
     handleSubmit = async(e) => {
         e.preventDefault();
-        const user  = this.state;
+        const user = {
+            mail: this.state.mail,
+            password: this.state.password
+        }
+        
         try {
-            const result = await fetch('http://localhost:10000/login', {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify( user)
+            const result = await fetch(url + 'login', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
             });
             
             const content = await result.json();
@@ -42,46 +58,65 @@ class Login extends Component {
                 localStorage.setItem('userID', content.userID);
                 this.props.history.push('/home');
             } else {
-                alert(content.message);
+                this.setState({
+                    isAlert: true,
+                    alertMess: content.message + '. Please, try again.'
+                });
             }
         } catch (error) {
-            alert(`Error with server`);
-        }   
+            this.setState({
+                isAlert: true,
+                alertMess: `Problem with server! Please, try again.`
+            });
+        }
     }
 
     render() {
         return (
-            <div className={style.App} >
-                <Form className={style.form} onSubmit={this.handleSubmit}>
+            <div className={style.App}>
+                { this.state.isAlert ? 
+                    <div className={style.div}><Alert className={style.alert} value={this.state.alertMess}/>
+                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
+                    </div>
+                :
+                    <Form className={style.form} onSubmit={this.handleSubmit}>
                     <Container>
-                        <Row>
-                            <Col >
-                                <h2 className={style.header}>LOG IN</h2>
-                            </Col>
-                            <Col >
-                                <Input type="mail" name="mail" id="mail"
-                                    placeholder="mail-address"
-                                    onChange={this.handleChange} required />
+                        <Row  className={style.cont}>
+                            <Col>
+                                <h2 className={style.header}> LOG IN </h2>
                             </Col>
                             <Col>
-                                <Input type="password" name="password" id="password"
-                                    placeholder="Password"
-                                    onChange={this.handleChange} required />
+                                <FormGroup>
+                                    <Label for="mail" className={style.label}>E-Mail</Label><br/>
+                                    <Input type="mail" id="mail"
+                                        placeholder="Example@index.com"
+                                        className={style.Input}
+                                        onChange={this.handleChange} required/>
+                                </FormGroup>
                             </Col>
-                                <Button className="loginButton" 
-                                    onSubmit={this.onSubmit}> Log in </Button>
+                            <Col>
+                                <FormGroup>
+                                    <Label for="password" className={style.label}>Password</Label><br/>
+                                    <Input type="password" id="password"
+                                        className={style.Input}
+                                        placeholder="Secret-Password"
+                                        onChange={this.handleChange} required/>
+                                </FormGroup>
+                            </Col>
+                                <Button className={style.Button} disabled={!this.state.email && !this.state.password}
+                                    onSubmit={this.handleSubmit}> Log in </Button>
                         </Row>
                         <Row>
                             <Col><p>--- OR ---</p></Col>
                                 <Link to="/registry" className="comp-class">
-                                    <Button className="registryButton"> Regisration </Button>
-                                </Link>                         
+                                    <Button className={style.Button}> Regisration </Button>
+                                </Link>
                         </Row>
                     </Container>
-                </Form>
+                </Form>}
             </div>
         );
     }
 }
 
-export default Login;
+export { Login };
