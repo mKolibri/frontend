@@ -38,10 +38,16 @@ class Registry extends Component {
     }
 
     handleExit(e) {
-        this.setState({isAlert: false});
+        this.setState({
+            isAlert: false,
+            allertMessage: ''
+        });
+        this.props.history.push('/');
+        localStorage.setItem('token', '');
+        localStorage.setItem('userID', '');
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = async(e) => {
         e.preventDefault();
         const curentUser ={
             "name": this.state.name,
@@ -50,15 +56,16 @@ class Registry extends Component {
             "mail": this.state.mail,
             "age": this.state.age,
         };
-        
-        fetch( url + 'registration', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(curentUser)
-        }).then(async (result) => {
+        try {
+            const result = await fetch( url + 'registration', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(curentUser)
+            });
+
             const content = await result.json();
             if (200 === result.status) {
                 localStorage.setItem('token', content.token);
@@ -77,7 +84,12 @@ class Registry extends Component {
                     });
                 }
             }
-        });
+        } catch (err) {
+            this.setState({
+                isAlert: true,
+                allertMessage: err.message
+            });
+        }    
     }
 
     render() {

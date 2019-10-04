@@ -15,17 +15,8 @@ class Tab extends Component {
             userID: localStorage.getItem('userID'),
             token : localStorage.getItem('token')
         };
-        this.handleChange = this.handleChange.bind(this);
     }
-
-    handleChange(e) {
-        if (e.target.id === 'tableName') {
-            this.setState({ tableName: e.target.value });
-        } else if (e.target.id === 'description') {
-            this.setState({ desc : e.target.value });
-        }
-    }
-
+    
     logout = () => {
         localStorage.setItem('token', '');
         localStorage.setItem('userID', '');
@@ -35,7 +26,6 @@ class Tab extends Component {
     async componentDidMount() {
         const userID = this.state.userID;
         const token = this.state.token;
-
         try {
             const result = await fetch(`${url}tables?userID=${userID}&token=${token}`, {
                 method: 'GET',
@@ -44,7 +34,7 @@ class Tab extends Component {
                     'Content-Type': 'application/json',
                 }
             });
-            
+
             const content = await result.json();
             if (200 === result.status) {
                 this.setState({results : content});
@@ -70,7 +60,7 @@ class Tab extends Component {
         this.props.history.push('/tables');
     }
 
-    addTables = () => {
+    addTable = () => {
         this.props.history.push('/addTable');
     }
 
@@ -99,7 +89,7 @@ class Tab extends Component {
                         </Link>
                     </SideNav>
                     <div className={style.container}>
-                        <table className="striped responsive-table">
+                        <table>
                             <thead>
                                 <tr>
                                     <th className={style.head}>Table Name</th>
@@ -113,7 +103,7 @@ class Tab extends Component {
                                 {Array.isArray(results) && results.length > 0 && results.map(r => (
                                     <tr key={r.id} >
                                         <td><Button className={style.name}>{r.name}</Button></td>
-                                        <td>{r.date.substring(0, 10)}</td>
+                                        <td>{r.date}</td>
                                         <td>{r.desc}</td>
                                         <td><Button className={style.name}>X</Button></td>
                                         <td><Button className={style.name}>...</Button></td>

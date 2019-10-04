@@ -29,6 +29,10 @@ class Login extends Component {
     }
 
     handleExit(e) {
+        this.props.history.push('/');
+        localStorage.setItem('token', '');
+        localStorage.setItem('userID', '');
+    
         this.setState({
             isAlert: false,
             alertMess: ''
@@ -41,17 +45,17 @@ class Login extends Component {
             mail: this.state.mail,
             password: this.state.password
         }
-        
+
         try {
             const result = await fetch(url + 'login', {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
             });
-            
+
             const content = await result.json();
             if (200 === result.status) {
                 localStorage.setItem('token', content.token);
@@ -63,12 +67,13 @@ class Login extends Component {
                     alertMess: content.message + '. Please, try again.'
                 });
             }
-        } catch (error) {
+  
+        } catch(error) {
             this.setState({
                 isAlert: true,
-                alertMess: `Problem with server! Please, try again.`
+                alertMess: `${error.message}. Problem with server! Please, try again.`
             });
-        }
+        };
     }
 
     render() {

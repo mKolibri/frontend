@@ -60,6 +60,10 @@ class Home extends Component {
         this.props.history.push('/tables');
     }
 
+    addTable = () => {
+        this.props.history.push('/addTable');
+    }
+
     handleExit = (e) => {
         this.setState({
             isAlert: false,
