@@ -23,8 +23,8 @@ class Home extends Component {
         const token = this.state.token;
 
         try {
-            const request = url + 'user?userID=' + userID + '&token=' + token;
-            const result = await fetch(request, {
+
+            const result = await fetch(`${url}user?userID=${userID}&token=${token}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

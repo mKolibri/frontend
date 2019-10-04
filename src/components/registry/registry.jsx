@@ -56,6 +56,7 @@ class Registry extends Component {
             "mail": this.state.mail,
             "age": this.state.age,
         };
+
         try {
             const result = await fetch( url + 'registration', {
                 method: 'POST',
@@ -65,6 +66,7 @@ class Registry extends Component {
                 },
                 body: JSON.stringify(curentUser)
             });
+
 
             const content = await result.json();
             if (200 === result.status) {
@@ -79,8 +81,8 @@ class Registry extends Component {
                     });
                 } else {
                     this.setState({
-                        isAlert: true,
-                        allertMessage: content.message
+                        showResults: true,
+                        results: content.message
                     });
                 }
             }
@@ -155,7 +157,7 @@ class Registry extends Component {
                             </Col>
                             <Col >
                                 <Button to="/" onSubmit={this.handleSubmit} className={style.Button}
-                                disabled={!this.state.name || !this.state.mail || !this.state.password}
+                                disabled={!this.state.email && !this.state.password && !this.state.name}
                                 > Sign up </Button>
                             </Col>
                             <Col><p>--- OR ---</p></Col>

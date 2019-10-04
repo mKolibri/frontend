@@ -16,7 +16,15 @@ class Tab extends Component {
             token : localStorage.getItem('token')
         };
     }
-    
+
+    handleChange(e) {
+        if (e.target.id === 'tableName') {
+            this.setState({ tableName: e.target.value });
+        } else if (e.target.id === 'description') {
+            this.setState({ desc : e.target.value });
+        }
+    }
+
     logout = () => {
         localStorage.setItem('token', '');
         localStorage.setItem('userID', '');
