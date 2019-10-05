@@ -33,10 +33,31 @@ class addTable extends Component {
         }
     }
 
-    logout = () => {
-        localStorage.setItem('token', '');
-        localStorage.setItem('userID', '');
-        this.props.history.push('/');
+    logout = async() => {
+        const info = {
+            userID: this.state.userID,
+            token: this.state.token
+        };
+
+        try {
+            const result = await fetch(url + 'logout', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(info)
+            });
+            
+            await result.json();
+            if (200 === result.status) {
+                this.props.history.push('/');
+            }
+            localStorage.clear();
+
+        } catch (error) {
+            localStorage.clear();
+        }  
     }
 
     async componentDidMount() {
@@ -142,6 +163,7 @@ class addTable extends Component {
 
             const content = await result.json();
             if (200 === result.status) {
+                localStorage.setItem('tableName', content.name);
                 this.props.history.push('/showTable');
             } else {
                 this.setState({

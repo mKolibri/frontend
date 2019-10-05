@@ -1,27 +1,33 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Link} from 'react-router-dom';
-import { Button } from 'reactstrap';
-import style from './table.module.css';
+import style from './showTable.module.css';
 import { url } from '../../configs/config';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
+import { Col, Button } from 'reactstrap';
 
-class Tab extends Component {
+class showTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isAlert: false,
             alertMess: '',
             userID: localStorage.getItem('userID'),
-            token : localStorage.getItem('token')
+            token : localStorage.getItem('token'),
+            name : localStorage.getItem('tableName')
         };
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(e) {
         if (e.target.id === 'tableName') {
             this.setState({ tableName: e.target.value });
         } else if (e.target.id === 'description') {
-            this.setState({ desc : e.target.value });
+            this.setState({ description : e.target.value });
+        } else if (e.target.id === 'column') {
+            this.setState({ column : e.target.value });
+        } else if (e.target.id === 'type') {
+            this.setState({ type : e.target.value });
         }
     }
 
@@ -55,18 +61,20 @@ class Tab extends Component {
     async componentDidMount() {
         const userID = this.state.userID;
         const token = this.state.token;
+        const tableName = this.state.name;
+
         try {
-            const result = await fetch(`${url}tables?userID=${userID}&token=${token}`, {
+            const result = await fetch(`${url}showTable?userID=${userID}&token=${token}&table=${tableName}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 }
             });
-
+            
             const content = await result.json();
             if (200 === result.status) {
-                this.setState({results : content});
+                this.setState({result : content});
             } else {
                 this.setState({
                     isAlert: true,
@@ -81,6 +89,13 @@ class Tab extends Component {
         }
     }
 
+    handleExit = () => {
+        this.setState({
+            isAlert: false,
+            alertMess: ''
+        });
+    }
+
     toHome = () => {
         this.props.history.push('/home');
     }
@@ -92,9 +107,9 @@ class Tab extends Component {
     addTable = () => {
         this.props.history.push('/addTable');
     }
-
     render() {
-        const results = this.state.results;
+        const results = this.state.result;
+
         return (
             <BrowserRouter>
                 { this.state.isAlert ? 
@@ -117,28 +132,29 @@ class Tab extends Component {
                             <Button className={style.logOutButton}> Log out </Button>
                         </Link>
                     </SideNav>
+                    <Col className={style.head}>           
+                        <h1 className={style.header}> {this.state.tableName} </h1>
+                    </Col>
                     <div className={style.container}>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th className={style.head}>Table Name</th>
-                                    <th className={style.head}>Creation Date</th>
-                                    <th className={style.head}>Description (About table)</th>
-                                    <th className={style.head}>Delete</th>
-                                    <th className={style.head}>Update</th>
+                        <table className={style.table}>
+                        <thead>
+                            {Array.isArray(results) && results.length > 0 && results.map(r => (
+                                <tr key={r.id}>
+                                    <th>{r.column} ({r.type})</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {Array.isArray(results) && results.length > 0 && results.map(r => (
-                                    <tr key={r.id} >
-                                        <td><Button className={style.name}>{r.name}</Button></td>
-                                        <td>{r.date}</td>
-                                        <td>{r.desc}</td>
-                                        <td><Button className={style.name}>X</Button></td>
-                                        <td><Button className={style.name}>...</Button></td>
-                                    </tr>
-                                ))}
-                            </tbody>
+                            ))}
+                        </thead>
+                        <tbody>
+                            {/* {Array.isArray(results) && results.length > 0 && results.map(r => (
+                                <tr key={r.id}>
+                                    <td>{r.column}</td>
+                                    <td>{r.type}</td>
+                                    <td><Button className={style.name}
+                                        onClick={this.remove} id={r.num}
+                                    >X</Button></td>
+                                </tr>
+                            ))} */}
+                        </tbody>
                         </table>
                     </div>
                 </div>}
@@ -147,4 +163,4 @@ class Tab extends Component {
     }
 }
 
-export { Tab };
+export { showTable };

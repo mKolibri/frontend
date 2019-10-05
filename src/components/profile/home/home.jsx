@@ -87,23 +87,16 @@ class Home extends Component {
                 body: JSON.stringify(info)
             });
             
-            const content = await result.json();
+            await result.json();
             if (200 === result.status) {
-                localStorage.setItem('token', '');
-                localStorage.setItem('userID', '');
                 this.props.history.push('/');
-            } else {
-                this.setState({
-                    isAlert: true,
-                    alertMess: content.message + '. Please, try again.'
-                });
             }
+            localStorage.clear();
+
         } catch (error) {
-            this.setState({
-                isAlert: true,
-                alertMess: `Error: ${error.message}`
-            });
-    }}
+            localStorage.clear();
+        }
+    }
     
     render() {
         return (

@@ -29,7 +29,6 @@ class Login extends Component {
     }
 
     handleExit(e) {
-<<<<<<< HEAD
         this.props.history.push('/');
         localStorage.setItem('token', '');
         localStorage.setItem('userID', '');
@@ -38,10 +37,8 @@ class Login extends Component {
             isAlert: false,
             alertMess: ''
         });
-=======
-        this.setState({isAlert: false});
->>>>>>> 6cc4fdbcbe66457ba899012366e356c17508326f
     }
+
 
     handleSubmit = async(e) => {
         e.preventDefault();
@@ -51,7 +48,6 @@ class Login extends Component {
         }
 
         try {
-<<<<<<< HEAD
             const result = await fetch(url + 'login', {
                 method: 'POST',
                     headers: {
@@ -59,15 +55,6 @@ class Login extends Component {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(user)
-=======
-            const result = await fetch( url + 'login', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
->>>>>>> 6cc4fdbcbe66457ba899012366e356c17508326f
             });
 
             const content = await result.json();
@@ -81,22 +68,12 @@ class Login extends Component {
                     alertMess: content.message + '. Please, try again.'
                 });
             }
-<<<<<<< HEAD
-  
         } catch(error) {
             this.setState({
                 isAlert: true,
                 alertMess: `${error.message}. Problem with server! Please, try again.`
             });
-        };
-=======
-        } catch (error) {
-            this.setState({
-                isAlert: true,
-                alertMess: `Problem with server! Please, try again.`
-            });
         }
->>>>>>> 6cc4fdbcbe66457ba899012366e356c17508326f
     }
 
     render() {
@@ -132,11 +109,7 @@ class Login extends Component {
                                 </FormGroup>
                             </Col>
                                 <Button className={style.Button} disabled={!this.state.email && !this.state.password}
-<<<<<<< HEAD
                                     onSubmit={this.handleSubmit}> Log in </Button>
-=======
-                                    onSubmit={this.onSubmit}> Log in </Button>
->>>>>>> 6cc4fdbcbe66457ba899012366e356c17508326f
                         </Row>
                         <Row>
                             <Col><p>--- OR ---</p></Col>
