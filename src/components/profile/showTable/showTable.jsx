@@ -16,19 +16,6 @@ class showTable extends Component {
             token : localStorage.getItem('token'),
             name : localStorage.getItem('tableName')
         };
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e) {
-        if (e.target.id === 'tableName') {
-            this.setState({ tableName: e.target.value });
-        } else if (e.target.id === 'description') {
-            this.setState({ description : e.target.value });
-        } else if (e.target.id === 'column') {
-            this.setState({ column : e.target.value });
-        } else if (e.target.id === 'type') {
-            this.setState({ type : e.target.value });
-        }
     }
 
     logout = async() => {
@@ -50,11 +37,14 @@ class showTable extends Component {
             await result.json();
             if (200 === result.status) {
                 this.props.history.push('/');
+                localStorage.setItem('token', '');
+                localStorage.setItem('userID', '');
+                localStorage.setItem('tableName', '');
             }
-            localStorage.clear();
-
         } catch (error) {
-            localStorage.clear();
+            localStorage.setItem('token', '');
+            localStorage.setItem('userID', '');
+            localStorage.setItem('tableName', '');
         }  
     }
 
@@ -74,7 +64,11 @@ class showTable extends Component {
             
             const content = await result.json();
             if (200 === result.status) {
-                this.setState({result : content});
+                this.setState({
+                    table: content.table,
+                    description: content.description,
+                    columns: content.columns
+                });
             } else {
                 this.setState({
                     isAlert: true,
@@ -107,9 +101,9 @@ class showTable extends Component {
     addTable = () => {
         this.props.history.push('/addTable');
     }
-    render() {
-        const results = this.state.result;
 
+    render() {
+        const results = this.state.columns;
         return (
             <BrowserRouter>
                 { this.state.isAlert ? 
@@ -133,16 +127,19 @@ class showTable extends Component {
                         </Link>
                     </SideNav>
                     <Col className={style.head}>           
-                        <h1 className={style.header}> {this.state.tableName} </h1>
+                        <h1 className={style.header}> Table name: {this.state.table} </h1>
+                    </Col>
+                    <Col className={style.headDesc}>      
+                        <h1 className={style.desc}> Description: {this.state.description} </h1>
                     </Col>
                     <div className={style.container}>
                         <table className={style.table}>
                         <thead>
-                            {Array.isArray(results) && results.length > 0 && results.map(r => (
-                                <tr key={r.id}>
-                                    <th>{r.column} ({r.type})</th>
-                                </tr>
-                            ))}
+                            <tr>
+                                {Array.isArray(results) && results.length > 0 && results.map(r => (
+                                    <th key={r.id}>{r.column} ({r.type})</th>
+                                ))}
+                            </tr>
                         </thead>
                         <tbody>
                             {/* {Array.isArray(results) && results.length > 0 && results.map(r => (

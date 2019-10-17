@@ -45,10 +45,14 @@ class Tab extends Component {
             if (200 === result.status) {
                 this.props.history.push('/');
             }
-            localStorage.clear();
+            localStorage.setItem('token', '');
+            localStorage.setItem('userID', '');
+            localStorage.setItem('tableName', '');
 
         } catch (error) {
-            localStorage.clear();
+            localStorage.setItem('token', '');
+            localStorage.setItem('userID', '');
+            localStorage.setItem('tableName', '');
         }  
     }
 
