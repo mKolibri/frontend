@@ -1,7 +1,6 @@
-import './App.css';
 import React, { Component } from 'react';
-import { Login } from './components/login/login';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { Login } from './components/login/login';
 import { Registry } from './components/registry/registry';
 import { Home } from './components/profile/home/home';
 import { Tab } from './components/profile/tables/tables';
