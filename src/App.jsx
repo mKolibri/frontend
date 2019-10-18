@@ -11,16 +11,16 @@ class App extends Component {
   render() {
     return (
       <div>
-        <BrowserRouter>
-          <div>
-            <Route path='/' exact component={Login}/>
-            <Route path='/registry' exact component={Registry}/>
-            <Route path='/home' exact component={Home}/>
-            <Route path='/tables' exact component={Tab}/>
-            <Route path='/addTable' exact component={addTable}/>
-            <Route path='/showTable' exact component={showTable}/>
-          </div>
-        </BrowserRouter>
+          <BrowserRouter>
+            <div>
+              <Route path='/' exact component={Login}/>
+              <Route path='/registry' exact component={Registry}/>
+              <Route path='/home' exact component={Home}/>
+              <Route path='/tables' exact component={Tab}/>
+              <Route path='/addTable' exact component={addTable}/>
+              <Route path='/showTable' exact component={showTable}/>
+            </div>
+          </BrowserRouter>
       </div>
     );
   }

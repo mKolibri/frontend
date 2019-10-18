@@ -1,33 +1,22 @@
-.App {
+.block {
     text-align: center;
 }
 
-* {
-    margin: 5px;
+.block-cont {
+    background-color: rgb(216, 211, 211);
+    width: auto;
 }
 
-.form {
+.block-cont-alert {
+    text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
     color: rgb(24, 51, 78);
+    width: 100%;
+    height: 100%;
 }
 
-input {
-    border: none;
-    padding: 10px;
-    height: 30px;
-    width: 20%;
-    text-align: left;
-    font-size: 15px;
-}
-
-.header {
-    color: darkslategray;
-    font-size: 250%;
-    margin: 10px;
-}
-
-.Button {
+.block-cont-button {
     border: none;
     padding: 10px;
     height: 45px;
@@ -37,7 +26,7 @@ input {
     font-size: 14px;
 }
 
-.Button:hover {
+.block-cont-button:hover {
     border: none;
     padding: 10px;
     background-color: rgb(32, 54, 54);
@@ -45,7 +34,7 @@ input {
     font-size: 15px;
 }
 
-.Button:disabled {
+.block-cont-button:disabled {
     border: none;
     padding: 10px;
     background-color: rgb(68, 71, 85);
@@ -53,26 +42,38 @@ input {
     font-size: 15px;
 }
 
-p {
-    font-size: 13px;
+.form {
+    margin-top: 12%;
+    background-color: rgb(216, 211, 211); 
+    color: rgb(24, 51, 78);
 }
 
-.label {
+.form-header {
+    color: darkslategray;
+    font-size: 250%;
+    margin: 10px;
+}
+
+.form-label {
     font-size: 15px;
     width: 5px;
     color: darkslategray;
 }
 
-.alert {
-    text-align: center;
-    margin-top: 12%;
-    background-color: rgb(216, 211, 211); 
-    color: rgb(24, 51, 78);
-    width: 100%;
-    height: 100%;
+.form-input {
+    border: none;
+    padding: 10px;
+    height: 30px;
+    width: 20%;
+    text-align: left;
+    font-size: 15px;
 }
 
-.div {
-    background-color: rgb(216, 211, 211);
-    width: auto;
+.form-text {
+    font-size: 13px;
 }
+
+/* 
+* {
+    margin: 5px;
+} */

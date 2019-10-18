@@ -1,19 +1,9 @@
-* {
+.block {
     margin: 5px;
     text-align: center;
 }
 
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    margin-left: 15%;
-    width: 80%;
-    color: darkslategray;
-    background-color: rgb(216, 211, 211); 
-}
-
-.alert {
+.block-alert {
     text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
@@ -22,7 +12,7 @@
     height: 100%;
 }
 
-.Button {
+.block-button {
     color: white;
     background-color: grey;
     padding: 7px;
@@ -34,26 +24,9 @@
     height: 8%;
 }
   
-.Button:hover {
+.block-button:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(61, 63, 83);
-}
-
-.logOutButton {
-    color: white;
-    background-color: rgb(138, 58, 58);
-    padding: 7px;
-    margin-bottom: 5px;
-    border: none;
-    color: white;
-    text-align: center;
-    width: 90%;
-    height: 8%;
-}
-  
-.logOutButton:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(114, 50, 50);
 }
 
 .sidenav {
@@ -66,7 +39,54 @@
     background-color:  rgb(25, 36, 47);
 }
 
-.container {
+.sidenav-button-logout {
+    color: white;
+    background-color: rgb(138, 58, 58);
+    padding: 7px;
+    margin-bottom: 5px;
+    border: none;
+    color: white;
+    text-align: center;
+    width: 90%;
+    height: 8%;
+}
+  
+.sidenav-button-logout:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(114, 50, 50);
+}
+
+.col {
+    background-color: rgb(29, 59, 90);
+    color: white;
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.col-header {
+    color: rgb(36, 53, 53);
+    font-size: 200%;
+    text-align: center;
+    color: #fff;
+}
+
+.col-desc {
+    background-color: rgb(175, 175, 175);
+    color: rgb(65, 63, 63);
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.col-desc-text {
+    color: rgb(36, 53, 53);
+    font-size: 100%;
+    text-align: center;
+    color: #fff;
+}
+
+.cont {
     background-color: #e7f3ec;
     box-shadow: 5px 5px 5px rgb(182, 180, 180);
     display: inline-flex;
@@ -74,77 +94,13 @@
     width: 80%;
 }
 
-.addButton {
-    color: white;
-    background-color: grey;
-    padding: 10px;
-    border: none;
-    color: white;
+.cont-table {
+    margin: auto;
     text-align: center;
-    width: auto;
 }
 
-.addButton:hover {
-    background-color:#fff; 
-    color: rgb(29, 59, 90);
-}
-
-.header {
-    color: rgb(36, 53, 53);
-    font-size: 200%;
-    text-align: center;
-    color: #fff;
-}
-
-.desc {
-    color: rgb(36, 53, 53);
-    font-size: 100%;
-    text-align: center;
-    color: #fff;
-}
-
-.select {
-    border: none;
-    padding: 10px;
-    width: 20%;
-    height: auto;
-    text-align: left;
-    font-size: 15px;
-    background-color: white;
-}
-
-.input {
-    border: none;
-    padding: 10px;
-    text-align: left;
-    font-size: 15px;
-    display: inline-block;
-    width: 20%;
-    height: auto;
-    margin-right: 15px;
-}
-
-.red {
-    color: red;
-}
-
-.addButton {
-    color: white;
-    background-color: rgb(153, 60, 60);
-    padding: 7px;
-    margin-bottom: 5px;
-    border: none;
-    color: white;
-    width: 20%;
-    height: 100%;
-}
-  
-.addButton:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(80, 41, 41);
-}
-
-.name {
+/* 
+.cont-table-name {
     margin-bottom: 5px;
     border: none;
     text-align: center;
@@ -155,81 +111,7 @@
     color: white;
 }
 
-.name:hover {
+.cont-table-name:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(70, 14, 14);
-}
-
-.addButton {
-    color: white;
-    background-color: rgb(167, 71, 71);
-    padding: 10px;
-    border: none;
-    color: white;
-    text-align: center;
-    width: auto;
-}
-
-.addButton:hover {
-    background-color:rgb(107, 42, 42); 
-}
-
-.addButton:disabled {
-    background-color: rgb(68, 71, 85);
-    color: white;
-}
-
-.head {
-    background-color: rgb(29, 59, 90);
-    color: white;
-    padding: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
-.headDesc {
-    background-color: rgb(175, 175, 175);
-    color: rgb(65, 63, 63);
-    padding: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
-.create {
-    margin-right: 15px;
-    font-size: 15px;
-    color: white;
-    background-color: rgb(167, 71, 71);
-    padding: 10px;
-    border: none;
-    color: white;
-    text-align: center;
-    width: 90%;
-    margin-top: 11px;
-    height: 45px;
-}
-
-.create:hover {
-    background-color:rgb(107, 42, 42); 
-}
-
-.create:disabled {
-    background-color: rgb(68, 71, 85);
-    color: white;
-}
-
-.fix {
-    border: none;
-    padding: 10px;
-    text-align: left;
-    font-size: 15px;
-    display: inline-block;
-    width: 70%;
-    height: 30px;
-    margin-right: 15px;
-}
-
-.table {
-    margin: auto;
-    text-align: center;
-}
+} */

@@ -1,4 +1,4 @@
-.App {
+.block {
     text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
@@ -6,16 +6,16 @@
     font-size: 10px;
 }
 
-.Cont {
+.block-cont {
     font-size: 13px;
 }
 
-.text {
-    font-size: 20px;
-}
-
-.header {
+.block-cont-header {
     color: darkslategray;
     font-size: 300%;
     margin: 10px;
+}
+
+.block-cont-text {
+    font-size: 20px;
 }

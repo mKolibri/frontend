@@ -1,28 +1,9 @@
-* {
+.block {
     margin: 5px;
     text-align: center;
 }
 
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    margin-left: 15%;
-    width: 80%;
-    color: darkslategray;
-    background-color: rgb(216, 211, 211); 
-}
-
-.alert {
-    text-align: center;
-    margin-top: 12%;
-    background-color: rgb(216, 211, 211); 
-    color: rgb(24, 51, 78);
-    width: 100%;
-    height: 100%;
-}
-
-.Button {
+.block-button {
     color: white;
     background-color: grey;
     padding: 7px;
@@ -34,26 +15,18 @@
     height: 8%;
 }
   
-.Button:hover {
+.block-button:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(61, 63, 83);
 }
 
-.logOutButton {
-    color: white;
-    background-color: rgb(138, 58, 58);
-    padding: 7px;
-    margin-bottom: 5px;
-    border: none;
-    color: white;
+.block-alert {
     text-align: center;
-    width: 90%;
-    height: 8%;
-}
-  
-.logOutButton:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(114, 50, 50);
+    margin-top: 12%;
+    background-color: rgb(216, 211, 211); 
+    color: rgb(24, 51, 78);
+    width: 100%;
+    height: 100%;
 }
 
 .sidenav {
@@ -66,7 +39,39 @@
     background-color:  rgb(25, 36, 47);
 }
 
-.container {
+.sidenav-button-logout {
+    color: white;
+    background-color: rgb(138, 58, 58);
+    padding: 7px;
+    margin-bottom: 5px;
+    border: none;
+    color: white;
+    text-align: center;
+    width: 90%;
+    height: 8%;
+}
+  
+.sidenav-button-logout:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(114, 50, 50);
+}
+
+.col-head {
+    background-color: rgb(29, 59, 90);
+    color: white;
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.col-head-header {
+    color: rgb(36, 53, 53);
+    font-size: 200%;
+    text-align: center;
+    color: #fff;
+}
+
+.cont {
     background-color: #e7f3ec;
     box-shadow: 5px 5px 5px rgb(182, 180, 180);
     display: inline-flex;
@@ -74,38 +79,22 @@
     width: 80%;
 }
 
-.addButton {
-    color: white;
-    background-color: grey;
-    padding: 10px;
-    border: none;
-    color: white;
-    text-align: center;
-    width: auto;
+.cont-label-red {
+    color: red;
 }
 
-.addButton:hover {
-    background-color:#fff; 
-    color: rgb(29, 59, 90);
-}
-
-.header {
-    color: rgb(36, 53, 53);
-    font-size: 200%;
-    text-align: center;
-    color: #fff;
-}
-
-.select {
+.cont-input {
     border: none;
     padding: 10px;
-    width: 20%;
-    height: auto;
     text-align: left;
     font-size: 15px;
-    background-color: white;
+    display: inline-block;
+    width: 70%;
+    height: 30px;
+    margin-right: 15px;
 }
 
+/* 
 .input {
     border: none;
     padding: 10px;
@@ -115,72 +104,9 @@
     width: 20%;
     height: auto;
     margin-right: 15px;
-}
+} */
 
-.red {
-    color: red;
-}
-
-.addButton {
-    color: white;
-    background-color: rgb(153, 60, 60);
-    padding: 7px;
-    margin-bottom: 5px;
-    border: none;
-    color: white;
-    width: 20%;
-    height: 100%;
-}
-  
-.addButton:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(80, 41, 41);
-}
-
-.name {
-    margin-bottom: 5px;
-    border: none;
-    text-align: center;
-    height: 45px;
-    margin-left: 0;
-    width: 100%;
-    background-color: rgb(124, 7, 7);
-    color: white;
-}
-
-.name:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(70, 14, 14);
-}
-
-.addButton {
-    color: white;
-    background-color: rgb(167, 71, 71);
-    padding: 10px;
-    border: none;
-    color: white;
-    text-align: center;
-    width: auto;
-}
-
-.addButton:hover {
-    background-color:rgb(107, 42, 42); 
-}
-
-.addButton:disabled {
-    background-color: rgb(68, 71, 85);
-    color: white;
-}
-
-.head {
-    background-color: rgb(29, 59, 90);
-    color: white;
-    padding: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
-.create {
+.cont-link-button {
     margin-right: 15px;
     font-size: 15px;
     color: white;
@@ -194,27 +120,72 @@
     height: 45px;
 }
 
-.create:hover {
+.cont-link-button:hover {
     background-color:rgb(107, 42, 42); 
 }
 
-.create:disabled {
+.cont-link-button:disabled {
     background-color: rgb(68, 71, 85);
     color: white;
 }
 
-.fix {
-    border: none;
-    padding: 10px;
-    text-align: left;
-    font-size: 15px;
-    display: inline-block;
-    width: 70%;
-    height: 30px;
-    margin-right: 15px;
-}
-
-.table {
+.cont-table {
     margin: auto;
     text-align: center;
+}
+
+.cont-table-name {
+    margin-bottom: 5px;
+    border: none;
+    text-align: center;
+    height: 45px;
+    margin-left: 0;
+    width: 100%;
+    background-color: rgb(124, 7, 7);
+    color: white;
+}
+
+.cont-table-name:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(70, 14, 14);
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-left: 15%;
+    width: 80%;
+    color: darkslategray;
+    background-color: rgb(216, 211, 211); 
+}
+
+.footer-button {
+    color: white;
+    background-color: rgb(167, 71, 71);
+    padding: 10px;
+    border: none;
+    color: white;
+    text-align: center;
+    width: auto;
+}
+
+.footer-button:hover {
+    color: rgb(255, 255, 255);
+    background-color:rgb(107, 42, 42); 
+}
+
+.footer-button:disabled {
+    background-color: rgb(68, 71, 85);
+    color: white;
+}
+
+.footer-select {
+    border: none;
+    padding: 10px;
+    width: 20%;
+    height: auto;
+    text-align: left;
+    font-size: 15px;
+    background-color: white;
 }

@@ -5,17 +5,15 @@ import style from './warning.module.css';
 class Warning extends Component {
     render() {
         return (
-            <div className={style.App}>
-                    <Container>
-                        <Row>
-                            <Col>
-                                <p className={style.p}>
-                                    {this.props.value}
-                                </p>
-                            </Col>
-                        </Row>
-                    </Container>
-            </div>
+            <Container>
+                <Row>
+                    <Col>
+                        <p className={style.text}>
+                            {this.props.value}
+                        </p>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }

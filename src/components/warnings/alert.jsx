@@ -5,20 +5,20 @@ import style from './alert.module.css';
 class Alert extends Component {
     render() {
         return (
-            <div className={style.App}>
-                    <Container className={style.Cont}>
-                        <Row>
-                            <Col>
-                              <h1 className={style.header}> Hello) </h1>
-                            </Col>
-                            <Col>
-                                <p className={style.text}>
-                                    {this.props.value}
-                                </p>
-                            </Col>
-                        </Row>
-                    </Container>
-            </div>
+            <Container className={style.block}>
+                <Container className={style.block-cont}>
+                    <Row>
+                        <Col>
+                          <h1 className={style.block-cont-header}> Hello) </h1>
+                        </Col>
+                        <Col>
+                            <p className={style.block-cont-text}>
+                                {this.props.value}
+                            </p>
+                        </Col>
+                    </Row>
+                </Container>
+            </Container>
         );
     }
 }

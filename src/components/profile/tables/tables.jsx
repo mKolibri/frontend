@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Link} from 'react-router-dom';
-import { Button } from 'reactstrap';
+import { Button, Container, Table } from 'reactstrap';
 import style from './table.module.css';
-import { url } from '../../configs/config';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
+import { userLogout, getTables } from '../../configs/config';
+import cookie from 'react-cookies';
 
 class Tab extends Component {
     constructor(props) {
@@ -12,75 +13,36 @@ class Tab extends Component {
         this.state = {
             isAlert: false,
             alertMess: '',
-            userID: localStorage.getItem('userID'),
-            token : localStorage.getItem('token')
+            userID: cookie.load('userID'),
+            token: cookie.load('token')
         };
     }
 
     handleChange(e) {
-        if (e.target.id === 'tableName') {
-            this.setState({ tableName: e.target.value });
-        } else if (e.target.id === 'description') {
-            this.setState({ desc : e.target.value });
-        }
+            this.setState({ [e.target.id]: e.target.value });
     }
-
+    
     logout = async() => {
-        const info = {
-            userID: this.state.userID,
-            token: this.state.token
-        };
-
-        try {
-            const result = await fetch(url + 'logout', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(info)
-            });
-            
-            await result.json();
-            if (200 === result.status) {
-                this.props.history.push('/');
-            }
-            localStorage.setItem('token', '');
-            localStorage.setItem('userID', '');
-            localStorage.setItem('tableName', '');
-
-        } catch (error) {
-            localStorage.setItem('token', '');
-            localStorage.setItem('userID', '');
-            localStorage.setItem('tableName', '');
-        }  
+        await userLogout();
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('token', { path: '/' });
+        cookie.remove('tableName', { path: '/' });
+        this.props.history.push('/');
     }
 
     async componentDidMount() {
-        const userID = this.state.userID;
-        const token = this.state.token;
-        try {
-            const result = await fetch(`${url}tables?userID=${userID}&token=${token}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            const content = await result.json();
-            if (200 === result.status) {
-                this.setState({results : content});
-            } else {
-                this.setState({
-                    isAlert: true,
-                    alertMess: content.message + '. Please, try again.'
-                });
-            }
-        } catch (error) {
+        const content = await getTables();
+        if (200 === content.status) {
+            this.setState({results : content});
+        } else if (content.message === 'Failed to fetch'){
             this.setState({
                 isAlert: true,
-                alertMess: `Error: ${error.message}`
+                alertMess: 'Server 404 not found. Please, try again.'
+            });
+        } else {
+            this.setState({
+                isAlert: true,
+                alertMess: content.message + '. Please, try again.'
             });
         }
     }
@@ -101,51 +63,52 @@ class Tab extends Component {
         const results = this.state.results;
         return (
             <BrowserRouter>
-                { this.state.isAlert ? 
-                    <div className={style.div}><Alert className={style.alert} value={this.state.alertMess}/>
-                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
-                    </div>
+                {this.state.isAlert ? 
+                    < Container className={style.block}>
+                        <Alert className={style.block-alert} value={this.state.alertMess}/>
+                        <Button className={style.block-button} onClick={this.handleExit}> OK </Button>
+                    </ Container>
                 :
-                <div>
+                <Container>
                     <SideNav className={style.sidenav}>
                         <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.Button}> Home </Button>
+                            <Button className={style.block-button}> Home </Button>
                         </Link>
                         <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.Button}> Tables </Button>
+                            <Button className={style.block-button}> Tables </Button>
                         </Link>
                         <Link to="/addTable" onClick={this.addTable}>
-                            <Button className={style.Button}> Add table </Button>
+                            <Button className={style.block-button}> Add table </Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.logOutButton}> Log out </Button>
+                            <Button className={style.sidenav-button-logout}> Log out </Button>
                         </Link>
                     </SideNav>
-                    <div className={style.container}>
-                        <table>
+                    <Container className={style.cont}>
+                        <Table>
                             <thead>
                                 <tr>
-                                    <th className={style.head}>Table Name</th>
-                                    <th className={style.head}>Creation Date</th>
-                                    <th className={style.head}>Description (About table)</th>
-                                    <th className={style.head}>Delete</th>
-                                    <th className={style.head}>Update</th>
+                                    <th className={style.cont-head}>Table Name</th>
+                                    <th className={style.cont-head}>Creation Date</th>
+                                    <th className={style.cont-head}>Description (About table)</th>
+                                    <th className={style.cont-head}>Delete</th>
+                                    <th className={style.cont-head}>Update</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {Array.isArray(results) && results.length > 0 && results.map(r => (
                                     <tr key={r.id} >
-                                        <td><Button className={style.name}>{r.name}</Button></td>
+                                        <td><Button className={style.cont-table-name}>{r.name}</Button></td>
                                         <td>{r.date}</td>
                                         <td>{r.desc}</td>
-                                        <td><Button className={style.name}>X</Button></td>
-                                        <td><Button className={style.name}>...</Button></td>
+                                        <td><Button className={style.cont-table-name}>X</Button></td>
+                                        <td><Button className={style.cont-table-name}>...</Button></td>
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>
-                    </div>
-                </div>}
+                        </Table>
+                    </Container>
+                </Container>}
             </BrowserRouter>
         );
     }

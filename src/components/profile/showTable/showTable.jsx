@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Link} from 'react-router-dom';
 import style from './showTable.module.css';
-import { url } from '../../configs/config';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
-import { Col, Button } from 'reactstrap';
+import { Col, Button, Container, Table } from 'reactstrap';
+import { userLogout, getTable } from '../../configs/config';
+import cookie from 'react-cookies';
 
 class showTable extends Component {
     constructor(props) {
@@ -12,73 +13,33 @@ class showTable extends Component {
         this.state = {
             isAlert: false,
             alertMess: '',
-            userID: localStorage.getItem('userID'),
-            token : localStorage.getItem('token'),
-            name : localStorage.getItem('tableName')
+            userID: cookie.load('userID'),
+            token: cookie.load('token'),
+            name : cookie.load('tableName')
         };
     }
 
     logout = async() => {
-        const info = {
-            userID: this.state.userID,
-            token: this.state.token
-        };
-
-        try {
-            const result = await fetch(url + 'logout', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(info)
-            });
-            
-            await result.json();
-            if (200 === result.status) {
-                this.props.history.push('/');
-                localStorage.setItem('token', '');
-                localStorage.setItem('userID', '');
-                localStorage.setItem('tableName', '');
-            }
-        } catch (error) {
-            localStorage.setItem('token', '');
-            localStorage.setItem('userID', '');
-            localStorage.setItem('tableName', '');
-        }  
+        await userLogout();
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('token', { path: '/' });
+        cookie.remove('tableName', { path: '/' });
+        this.props.history.push('/');
     }
 
     async componentDidMount() {
-        const userID = this.state.userID;
-        const token = this.state.token;
         const tableName = this.state.name;
-
-        try {
-            const result = await fetch(`${url}showTable?userID=${userID}&token=${token}&table=${tableName}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                }
+        const content = await getTable(tableName);
+        if (200 === content.status) {
+            this.setState({
+                table: content.table,
+                description: content.description,
+                columns: content.columns
             });
-            
-            const content = await result.json();
-            if (200 === result.status) {
-                this.setState({
-                    table: content.table,
-                    description: content.description,
-                    columns: content.columns
-                });
-            } else {
-                this.setState({
-                    isAlert: true,
-                    alertMess: content.message + '. Please, try again.'
-                });
-            }
-        } catch (error) {
+        } else {
             this.setState({
                 isAlert: true,
-                alertMess: `Error: ${error.message}`
+                alertMess: content.message + '. Please, try again.'
             });
         }
     }
@@ -106,34 +67,35 @@ class showTable extends Component {
         const results = this.state.columns;
         return (
             <BrowserRouter>
-                { this.state.isAlert ? 
-                    <div className={style.div}><Alert className={style.alert} value={this.state.alertMess}/>
-                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
-                    </div>
+                {this.state.isAlert ? 
+                    <Container className={style.block}>
+                        <Alert className={style.block-alert} value={this.state.alertMess}/>
+                        <Button className={style.block-button} onClick={this.handleExit}> OK </Button>
+                    </Container>
                 :
-                <div>
+                <Container>
                     <SideNav className={style.sidenav}>
                         <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.Button}> Home </Button>
+                            <Button className={style.block-button}> Home </Button>
                         </Link>
                         <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.Button}> Tables </Button>
+                            <Button className={style.block-button}> Tables </Button>
                         </Link>
                         <Link to="/addTable" onClick={this.addTable}>
-                            <Button className={style.Button}> Add table </Button>
+                            <Button className={style.block-button}> Add table </Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.logOutButton}> Log out </Button>
+                            <Button className={style.sidenav-button-logout}> Log out </Button>
                         </Link>
                     </SideNav>
-                    <Col className={style.head}>           
-                        <h1 className={style.header}> Table name: {this.state.table} </h1>
+                    <Col className={style.col}>           
+                        <h1 className={style.col-header}> Table name: {this.state.table} </h1>
                     </Col>
-                    <Col className={style.headDesc}>      
-                        <h1 className={style.desc}> Description: {this.state.description} </h1>
+                    <Col className={style.col-desc}>      
+                        <h1 className={style.col-desc-text}> Description: {this.state.description} </h1>
                     </Col>
-                    <div className={style.container}>
-                        <table className={style.table}>
+                    <Container className={style.cont}>
+                        <Table className={style.cont-table}>
                         <thead>
                             <tr>
                                 {Array.isArray(results) && results.length > 0 && results.map(r => (
@@ -146,15 +108,15 @@ class showTable extends Component {
                                 <tr key={r.id}>
                                     <td>{r.column}</td>
                                     <td>{r.type}</td>
-                                    <td><Button className={style.name}
+                                    <td><Button className={style.cont-table-name}
                                         onClick={this.remove} id={r.num}
                                     >X</Button></td>
                                 </tr>
                             ))} */}
                         </tbody>
-                        </table>
-                    </div>
-                </div>}
+                        </Table>
+                    </Container>
+                </Container>}
             </BrowserRouter>
         );
     }

@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import style from './registry.module.css';
 import { Warning } from '../warnings/warning';
 import { Alert } from '../warnings/alert';
-import { url } from '../configs/config';
+import cookie from 'react-cookies';
+import { registry } from '../configs/config';
 
 class Registry extends Component {
     constructor(props) {
@@ -26,95 +27,70 @@ class Registry extends Component {
     }
 
     handleChange(e) {
-        const elementId = e.target.id;
-        switch (elementId) {
-            case 'name': this.setState({ name: e.target.value }); break;
-            case 'surname': this.setState({ surname: e.target.value }); break;
-            case 'mail': this.setState({ mail: e.target.value }); break;
-            case 'password': this.setState({ password: e.target.value }); break;
-            case 'age': this.setState({ age: e.target.value }); break;
-            default: break;
-        }
+        this.setState({ [e.target.id]: e.target.value });
     }
 
-    handleExit(e) {
+    handleExit = () => {
         this.setState({
             isAlert: false,
             allertMessage: ''
         });
+
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('token', { path: '/' });
         this.props.history.push('/');
-        localStorage.setItem('token', '');
-        localStorage.setItem('userID', '');
     }
 
     handleSubmit = async(e) => {
         e.preventDefault();
-        const curentUser ={
-            "name": this.state.name,
-            "surname": this.state.surname,
-            "password": this.state.password,
-            "mail": this.state.mail,
-            "age": this.state.age,
+        const curentUser = {
+            'name': this.state.name,
+            'surname': this.state.surname,
+            'password': this.state.password,
+            'mail': this.state.mail,
+            'age': this.state.age
         };
 
-        try {
-            const result = await fetch( url + 'registration', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(curentUser)
-            });
-
-
-            const content = await result.json();
-            if (200 === result.status) {
-                localStorage.setItem('token', content.token);
-                localStorage.setItem('userID', content.userID);
-                this.props.history.push('/home');
-            } else {
-                if (content[0]) {
-                    this.setState({
-                        showResults: true,
-                        results: content[0].msg
-                    });
-                } else {
-                    this.setState({
-                        showResults: true,
-                        results: content.message
-                    });
-                }
-            }
-        } catch (err) {
+        const content = await registry(curentUser);
+        if (200 === content.status) {
+            cookie.save('userID', content.userID, { path: '/' });
+            cookie.save('token', content.token, { path: '/' });
+            this.props.history.push('/home');
+        } else if (content[0]) {
+                this.setState({
+                    showResults: true,
+                    results: content[0].msg
+                });
+        } else {
             this.setState({
-                isAlert: true,
-                allertMessage: err.message
+                showResults: true,
+                results: content.message
             });
-        }    
+        } 
     }
 
     render() {
         return (
-            <div className={style.App} >
+            <Container className={style.block} >
                 { this.state.isAlert ?
-                    <div className={style.div}><Alert className={style.alert} value={this.state.allertMessage}/>
-                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
-                    </div>
+                    <Container className={style.block-cont}>
+                        <Alert className={style.block-cont-alert} value={this.state.allertMessage}/>
+                        <Button className={style.block-cont-button} onClick={this.handleExit}> OK </Button>
+                    </Container>
                 :
                 <Form className={style.form} onSubmit={this.handleSubmit}>
                     <Container>
                         <Row>
                             <Col>
-                                <h1 className={style.header}> REGISTRATION </h1>
+                                <h1 className={style.form-header}> REGISTRATION </h1>
                             </Col>
-                            { this.state.showResults ? 
-                                    <Warning value={this.state.results} className={style.warning}></Warning> : null }
+                            {this.state.showResults ? 
+                                <Warning value={this.state.results} className={style.form-warning}></Warning> : null }
                             <Col md="12">
                             <FormGroup>
-                                    <Label for="name" className={style.label}>
+                                    <Label for="name" className={style.form-label}>
                                         Name
-                                        <span className={style.red}>*</span>
+                                        <span className={style.form-label-red}>*</span>
                                     </Label><br/>
                                     <Input type="text" id="name" placeholder="Firstst symbol- uppercase"
                                         onChange={this.handleChange} required/>
@@ -122,22 +98,22 @@ class Registry extends Component {
                              </Col>
                             <Col md="12">
                                 <FormGroup>
-                                    <Label for="surname" className={style.label}>Surname</Label><br/>
+                                    <Label for="surname" className={style.form-label}>Surname</Label><br/>
                                     <Input type="text" id="surname" placeholder="Not required" 
                                         onChange={this.handleChange}/>
                                 </FormGroup>
                             </Col>
                             <Col md="12">
                                 <FormGroup>
-                                    <Label for="age" className={style.label}>Age</Label><br/>
+                                    <Label for="age" className={style.form-label}>Age</Label><br/>
                                     <Input type="number" id="age" placeholder="Only number"
                                     onChange={this.handleChange}/>
                                 </FormGroup>
                             </Col>
                             <Col md="12">
-                                <Label for="mail" className={style.label}>
+                                <Label for="mail" className={style.form-label}>
                                     E-mail
-                                    <span className={style.red}>*</span>
+                                    <span className={style.form-label-red}>*</span>
                                 </Label><br/>
                                 <Input type="mail" id="mail" placeholder="Example@index.com"
                                     onChange={this.handleChange} required/>
@@ -145,29 +121,29 @@ class Registry extends Component {
 
                             <Col md="12">
                                 <FormGroup>
-                                    <Label for="password" className={style.label}>
+                                    <Label for="password" className={style.form-label}>
                                         Password
-                                        <span className={style.red}>*</span>
+                                        <span className={style.form-label-red}>*</span>
                                     </Label><br/>
                                     <Input type="password" id="password"
-                                        className={style.Input}
+                                        className={style.form-input}
                                         placeholder="Secret-Password"
                                         onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
                             <Col >
-                                <Button to="/" onSubmit={this.handleSubmit} className={style.Button}
+                                <Button to="/" onSubmit={this.handleSubmit} className={style.block-cont-button}
                                 disabled={!this.state.email && !this.state.password && !this.state.name}
                                 > Sign up </Button>
                             </Col>
-                            <Col><p>--- OR ---</p></Col>
-                            <Link to="/" className="comp-class">
-                                <Button className={style.Button}>Log in</Button>
+                            <Col><p className={style.form-text}>--- OR ---</p></Col>
+                            <Link to="/">
+                                <Button className={style.block-cont-button}>Log in</Button>
                             </Link>
                         </Row>
                     </Container>
                 </Form>}
-            </div>
+            </Container>
         );
     }
 }

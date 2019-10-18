@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from '../warnings/alert';
 import style from './login.module.css';
-import { url } from '../configs/config';
+import { login } from '../configs/config';
+import cookie from 'react-cookies';
 
 class Login extends Component {
     constructor(props) {
@@ -12,7 +13,9 @@ class Login extends Component {
             mail: '',
             password: '',
             isAlert: false,
-            alertMess: ''
+            alertMess: '',
+            userID: cookie.load('userID'),
+            token: cookie.load('token')
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -21,24 +24,24 @@ class Login extends Component {
     }
 
     handleChange(e) {
-        if (e.target.id === 'mail') {
-            this.setState({ mail: e.target.value });
-        } else if (e.target.id === 'password') {
-            this.setState({ password: e.target.value });
+        this.setState({ [e.target.id]: e.target.value });
+    }
+
+    componentDidMount() {
+        if (this.state.userID && this.state.token) {
+            this.props.history.push('/home');
         }
     }
 
     handleExit(e) {
-        this.props.history.push('/');
-        localStorage.setItem('token', '');
-        localStorage.setItem('userID', '');
-    
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('token', { path: '/' });
         this.setState({
             isAlert: false,
             alertMess: ''
         });
+        this.props.history.push('/');
     }
-
 
     handleSubmit = async(e) => {
         e.preventDefault();
@@ -47,79 +50,64 @@ class Login extends Component {
             password: this.state.password
         }
 
-        try {
-            const result = await fetch(url + 'login', {
-                method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(user)
-            });
-
-            const content = await result.json();
-            if (200 === result.status) {
-                localStorage.setItem('token', content.token);
-                localStorage.setItem('userID', content.userID);
-                this.props.history.push('/home');
-            } else {
-                this.setState({
-                    isAlert: true,
-                    alertMess: content.message + '. Please, try again.'
-                });
-            }
-        } catch(error) {
+        const content = await login(user);
+        if (200 === content.status) {
+            cookie.save('userID', content.userID, { path: '/' });
+            cookie.save('token', content.token, { path: '/' });
+            this.props.history.push('/home');
+        } else {
             this.setState({
                 isAlert: true,
-                alertMess: `${error.message}. Problem with server! Please, try again.`
+                alertMess: content.message + '. Please, try again.'
             });
         }
     }
 
     render() {
         return (
-            <div className={style.App}>
-                { this.state.isAlert ? 
-                    <div className={style.div}><Alert className={style.alert} value={this.state.alertMess}/>
-                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
-                    </div>
+            <Container className={style.block}>
+                { this.state.isAlert ?
+                    <Container className={style.block-cont}>
+                        <Alert className={style.block-cont-alert} value={this.state.alertMess}/>
+                        <Button className={style.block-cont-button} onClick={this.handleExit}> OK </Button>
+                    </Container>
                 :
                     <Form className={style.form} onSubmit={this.handleSubmit}>
-                    <Container>
-                        <Row  className={style.cont}>
+                        <Container>
+                            <Row>
                             <Col>
-                                <h2 className={style.header}> LOG IN </h2>
+                                <h2 className={style.form-header}> LOG IN </h2>
                             </Col>
                             <Col>
                                 <FormGroup>
-                                    <Label for="mail" className={style.label}>E-Mail</Label><br/>
+                                    <Label for="mail" className={style.form-label}>E-Mail</Label><br/>
                                     <Input type="mail" id="mail"
                                         placeholder="Example@index.com"
-                                        className={style.Input}
+                                        className={style.form-input}
                                         onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
                             <Col>
                                 <FormGroup>
-                                    <Label for="password" className={style.label}>Password</Label><br/>
+                                    <Label for="password" className={style.form-label}>Password</Label><br/>
                                     <Input type="password" id="password"
-                                        className={style.Input}
+                                        className={style.form-input}
                                         placeholder="Secret-Password"
                                         onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
-                                <Button className={style.Button} disabled={!this.state.email && !this.state.password}
+                                <Button className={style.block-cont-button} disabled={!this.state.email && !this.state.password}
                                     onSubmit={this.handleSubmit}> Log in </Button>
                         </Row>
                         <Row>
-                            <Col><p>--- OR ---</p></Col>
-                                <Link to="/registry" className="comp-class">
+                            <Col><p className={style.form-text}>--- OR ---</p></Col>
+                                <Link to="/registry" /*className="comp-class"*/>
                                     <Button className={style.Button}> Regisration </Button>
                                 </Link>
                         </Row>
                     </Container>
                 </Form>}
-            </div>
+            </Container>
         );
     }
 }

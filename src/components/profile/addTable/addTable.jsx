@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Link} from 'react-router-dom';
 import style from './addTable.module.css';
-import { url } from '../../configs/config';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
-import { Col, Input, Button, Label, FormGroup } from 'reactstrap';
+import { Col, Input, Button, Label, FormGroup, Table, Container } from 'reactstrap';
+import cookie from 'react-cookies';
+import { userLogout, newTable } from '../../configs/config';
 
 class addTable extends Component {
     constructor(props) {
@@ -14,84 +15,23 @@ class addTable extends Component {
             alertMess: '',
             type: 'Number',
             num : 1,
-            userID: localStorage.getItem('userID'),
-            token : localStorage.getItem('token'),
+            userID: cookie.load('userID'),
+            token: cookie.load('token'),
             results: []
         };
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(e) {
-        if (e.target.id === 'tableName') {
-            this.setState({ tableName: e.target.value });
-        } else if (e.target.id === 'description') {
-            this.setState({ description : e.target.value });
-        } else if (e.target.id === 'column') {
-            this.setState({ column : e.target.value });
-        } else if (e.target.id === 'type') {
-            this.setState({ type : e.target.value });
-        }
+        this.setState({ [e.target.id]: e.target.id });
     }
 
     logout = async() => {
-        const info = {
-            userID: this.state.userID,
-            token: this.state.token
-        };
-
-        try {
-            const result = await fetch(url + 'logout', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(info)
-            });
-            
-            await result.json();
-            if (200 === result.status) {
-                this.props.history.push('/');
-            }
-            localStorage.setItem('token', '');
-            localStorage.setItem('userID', '');
-            localStorage.setItem('tableName', '');
-
-        } catch (error) {
-            localStorage.setItem('token', '');
-            localStorage.setItem('userID', '');
-            localStorage.setItem('tableName', '');
-        }  
-    }
-
-    async componentDidMount() {
-        const userID = this.state.userID;
-        const token = this.state.token;
-
-        try {
-            const result = await fetch(`${url}tables?userID=${userID}&token=${token}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                }
-            });
-            
-            const content = await result.json();
-            if (200 === result.status) {
-                this.setState({result : content});
-            } else {
-                this.setState({
-                    isAlert: true,
-                    alertMess: content.message + '. Please, try again.'
-                });
-            }
-        } catch (error) {
-            this.setState({
-                isAlert: true,
-                alertMess: `Error: ${error.message}`
-            });
-        }
+        await userLogout();
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('token', { path: '/' });
+        cookie.remove('tableName', { path: '/' });
+        this.props.history.push('/');
     }
 
     handleExit = () => {
@@ -109,7 +49,7 @@ class addTable extends Component {
         this.props.history.push('/tables');
     }
 
-    addTable = () => {
+    toAddTable = () => {
         this.props.history.push('/addTable');
     }
 
@@ -143,107 +83,94 @@ class addTable extends Component {
         this.setState({results: array});
     }
 
+    handleSelect = (e) => {
+        e.preventDefault();
+        this.setState({
+            type: e.target.value
+        })
+    }
+
     handleSubmit = async(e) => {
         e.preventDefault();
-        const userID = this.state.userID;
-        const token = this.state.token;
         const table = {
-            "userID": userID,
-            "token": token,
             "name": this.state.tableName,
             "description": this.state.description,
             "columns" : this.state.results
         };
-
-        try {
-            const result = await fetch( url + 'addTable', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(table)
-            });
-
-            const content = await result.json();
-            if (200 === result.status) {
-                localStorage.setItem('tableName', content.name);
-                this.props.history.push('/showTable');
-            } else {
-                this.setState({
-                    isAlert: true,
-                    allertMess: content.message
-                });
-            }
-        } catch (err) {
+            
+        const content = newTable(table);
+        if (200 === content.status) {
+            cookie.save('tableName', content.name, { path: '/' });
+            this.props.history.push('/showTable');
+        } else {
             this.setState({
                 isAlert: true,
-                allertMess: err.message
+                allertMess: content.message
             });
-        }    
+        }
     }
 
     render() {
         const results = this.state.results;
-
         return (
             <BrowserRouter>
-                { this.state.isAlert ? 
-                    <div className={style.div}><Alert className={style.alert} value={this.state.alertMess}/>
-                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
-                    </div>
+                {this.state.isAlert ? 
+                    <Container className={style.block}>
+                        <Alert className={style.block-alert} value={this.state.alertMess}/>
+                        <Button className={style.block-button} onClick={this.handleExit}> OK </Button>
+                    </Container>
                 :
-                <div>
+                <Container>
                     <SideNav className={style.sidenav}>
                         <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.Button}> Home </Button>
+                            <Button className={style.block-button}> Home </Button>
                         </Link>
                         <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.Button}> Tables </Button>
+                            <Button className={style.block-button}> Tables </Button>
                         </Link>
-                        <Link to="/addTable" onClick={this.addTable}>
-                            <Button className={style.Button}> Add table </Button>
+                        <Link to="/addTable" onClick={this.toAddTable}>
+                            <Button className={style.block-button}> Add table </Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.logOutButton}> Log out </Button>
+                            <Button className={style.sidenav-button-logout}> Log out </Button>
                         </Link>
                     </SideNav>
-                    <Col className={style.head}>           
-                        <h1 className={style.header}> Create Table </h1>
+                    <Col className={style.col-head}>           
+                        <h1 className={style.col-head-header}> Create Table </h1>
                     </Col>
-                    <div className={style.container}>
+                    <Container className={style.cont}>
                         <Col>
                             <FormGroup>
                                 <Label for="name">
                                     Name
-                                    <span className={style.red}>*</span>
+                                    <span className={style.cont-label-red}>*</span>
                                 </Label>
                                 <Input type="text" id="tableName" placeholder="Table name"
-                                    onChange={this.handleChange} className={style.fix} required/>
+                                    onChange={this.handleChange} className={style.cont-input} required/>
                             </FormGroup>
                         </Col>
                         <Col>
                             <FormGroup>
                                 <Label for="description">Description</Label>
                                     <Input type="text" id="description" placeholder="Not required" 
-                                        className={style.fix} onChange={this.handleChange}/>
+                                        className={style.cont-input} onChange={this.handleChange}/>
                             </FormGroup>
                         </Col>
                         <Col>
                             <Label for="createTable">If your table ready, then press...</Label>
                             <Link to="/showTable" onClick={this.handleSubmit}>
-                                <Button className={style.create}
+                                <Button className={style.cont-link-button}
                                     disabled={!this.state.tableName}> Create Table </Button>
                             </Link>
                         </Col>
-                    </div>
-                    <div className={style.container}>
-                        <table className={style.table}>
+                    </Container>
+                    <Container className={style.cont}>
+                        <Table bordered lassName={style.cont-table}>
                         <thead>
                             <tr>
-                                <th className={style.head}>Column Name</th>
-                                <th className={style.head}>Column Type</th>
-                                <th className={style.head}>Delete</th>
+                                <th className={style.col-head}>Column Name</th>
+                                <th className={style.col-head}>Column Type</th>
+                                <th className={style.col-head}>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -251,41 +178,41 @@ class addTable extends Component {
                                 <tr key={r.id}>
                                     <td>{r.column}</td>
                                     <td>{r.type}</td>
-                                    <td><Button className={style.name}
+                                    <td><Button className={style.cont-table-name}
                                         onClick={this.remove} id={r.num}
                                     >X</Button></td>
                                 </tr>
                             ))}
                         </tbody>
-                        </table>
-                    </div>
-                    <div className={style.footer}>
+                        </Table>
+                    </Container>
+                    <Container className={style.footer}>
                         <Col>
                             <FormGroup>
                                 <Label for="column">
                                     Name
-                                    <span className={style.red}>*</span>
+                                    <span className={style.cont-label-red}>*</span>
                                 </Label>
                                 <Input type="text" id="column" placeholder="Column name"
                                     onChange={this.handleChange} value={this.state.column}
-                                    className={style.input} required/>
+                                    className={style.cont-input} required/>
                                 <Label for="type">
                                     Type
-                                    <span className={style.red}>*</span>
+                                    <span className={style.cont-label-red}>*</span>
                                 </Label>
                                 <Input type="select" name="type" id="type" value={this.state.type}
-                                    onChange={this.handleChange} className={style.select}>
-                                        <option>Number</option>
-                                        <option>String</option>
-                                        <option>Date</option>
+                                    onChange={this.handleChange} className={style.footer-select}>
+                                        <option onSelect={this.handleSelect} value="INTEGER">Number</option>
+                                        <option onSelect={this.handleSelect} value="VARCHAR(255)">String</option>
+                                        <option onSelect={this.handleSelect} value="DATE">Date</option>
                                 </Input>
-                                <Button className={style.addButton} 
+                                <Button className={style.footer-button} 
                                     disabled={!this.state.column}
                                     onClick={this.addColumn}> Add Column </Button>
                             </FormGroup>
                         </Col>
-                    </div>
-                </div>}
+                    </Container>
+                </Container>}
             </BrowserRouter>
         );
     }

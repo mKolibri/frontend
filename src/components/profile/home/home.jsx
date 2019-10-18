@@ -1,55 +1,39 @@
 import React, { Component } from 'react';
 import SideNav from '@trendmicro/react-sidenav';
-import { Button } from 'reactstrap';
+import { Container, Button } from 'reactstrap';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { BrowserRouter, Link } from 'react-router-dom'
 import style from './home.module.css';
-import { url } from '../../configs/config';
 import { Alert } from '../../warnings/alert';
+import { userLogout, getUser } from '../../configs/config';
+import cookie from 'react-cookies';
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: localStorage.getItem('userID'),
-            token : localStorage.getItem('token'),
+            userID: cookie.load('userID'),
+            token: cookie.load('token'),
             isAlert: false,
             alertMess: ''
         };
     }
 
     async componentDidMount() {
-        const userID = this.state.userID;
-        const token = this.state.token;
-
-        try {
-
-            const result = await fetch(`${url}user?userID=${userID}&token=${token}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                }
+        const content = await getUser();
+        if (200 === content.status) {
+            this.setState({
+                name : content.name,
+                surname : content.surname,
+                age : content.age,
+                mail: content.mail
             });
-            
-            const content = await result.json();
-            if (200 === result.status) {
-                this.setState({name : content.name});
-                this.setState({surname : content.surname});
-                this.setState({age : content.age});
-                this.setState({mail: content.mail});
-            } else {
-                this.setState({
-                    isAlert: true,
-                    alertMess: content.message + '. Please, try again.'
-                });
-            }
-        } catch (error) {
+        } else {
             this.setState({
                 isAlert: true,
-                alertMess: `Error: ${error.message}`
+                alertMess: content.message + '. Please, try again.'
             });
-        }   
+        }
     }
 
     toHome = () => {
@@ -72,68 +56,46 @@ class Home extends Component {
     }
 
     logout = async() => {
-        const info = {
-            userID: this.state.userID,
-            token: this.state.token
-        };
-
-        try {
-            const result = await fetch(url + 'logout', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(info)
-            });
-            
-            await result.json();
-            if (200 === result.status) {
-                this.props.history.push('/');
-            }
-            localStorage.setItem('token', '');
-            localStorage.setItem('userID', '');
-            localStorage.setItem('tableName', '');
-
-        } catch (error) {
-            localStorage.setItem('token', '');
-            localStorage.setItem('userID', '');
-            localStorage.setItem('tableName', '');
-        }
+        await userLogout();
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('token', { path: '/' });
+        cookie.remove('tableName', { path: '/' });
+        this.props.history.push('/');
     }
     
     render() {
         return (
             <BrowserRouter>
                 { this.state.isAlert ? 
-                    <div className={style.div}><Alert className={style.alert} value={this.state.alertMess}/>
-                        <Button className={style.Button} onClick={this.handleExit}> OK </Button>
-                    </div>
+                    <Container className={style.block}>
+                        <Alert className={style.block-alert} value={this.state.alertMess}/>
+                        <Button className={style.block-button} onClick={this.handleExit}> OK </Button>
+                    </Container>
                 :
-                <div>
+                <Container>
                     <SideNav className={style.sidenav}>
                         <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.Button}> Home </Button>
+                            <Button className={style.block-button}> Home </Button>
                         </Link>
                         <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.Button}> Tables </Button>
+                            <Button className={style.block-button}> Tables </Button>
                         </Link>
                         <Link to="/addTable" onClick={this.addTable}>
-                            <Button className={style.Button}> Add table </Button>
+                            <Button className={style.block-button}> Add table </Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.logOutButton}> Log out </Button>
+                            <Button className={style.sidenav-button-logout}> Log out </Button>
                         </Link>
                     </SideNav>
-                <div className={style.container}>
-                    <div className={style.rightConteiner}>
-                        <h3 className={style.text}><span className={style.span}>Name :</span>{this.state.name}</h3>
-                        <h3 className={style.text}><span className={style.span}>Surname :</span>{this.state.surname}</h3>
-                        <h3 className={style.text}><span className={style.span}>Age :</span>{this.state.age}</h3>
-                        <h3 className={style.text}><span className={style.span}> Mail :</span>{this.state.mail}</h3>
-                    </div>
-                </div>
-                </div>}
+                <Container className={style.cont}>
+                    <Container className={style.rightConteiner}>
+                        <h3><span className={style.cont-text}>Name :</span>{this.state.name}</h3>
+                        <h3><span className={style.cont-text}>Surname :</span>{this.state.surname}</h3>
+                        <h3><span className={style.cont-text}>Age :</span>{this.state.age}</h3>
+                        <h3><span className={style.cont-text}>Mail :</span>{this.state.mail}</h3>
+                    </Container>
+                </Container>
+                </Container>}
             </BrowserRouter>
         );
     }
