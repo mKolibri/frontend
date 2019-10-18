@@ -69,33 +69,33 @@ class showTable extends Component {
             <BrowserRouter>
                 {this.state.isAlert ? 
                     <Container className={style.block}>
-                        <Alert className={style.block-alert} value={this.state.alertMess}/>
-                        <Button className={style.block-button} onClick={this.handleExit}> OK </Button>
+                        <Alert className={style.block_alert} value={this.state.alertMess}/>
+                        <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
                     </Container>
                 :
                 <Container>
                     <SideNav className={style.sidenav}>
                         <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.block-button}> Home </Button>
+                            <Button className={style.block_button}> Home </Button>
                         </Link>
                         <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.block-button}> Tables </Button>
+                            <Button className={style.block_button}> Tables </Button>
                         </Link>
                         <Link to="/addTable" onClick={this.addTable}>
-                            <Button className={style.block-button}> Add table </Button>
+                            <Button className={style.block_button}> Add table </Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.sidenav-button-logout}> Log out </Button>
+                            <Button className={style.sidenav_button_logout}> Log out </Button>
                         </Link>
                     </SideNav>
                     <Col className={style.col}>           
-                        <h1 className={style.col-header}> Table name: {this.state.table} </h1>
+                        <h1 className={style.col_header}> Table name: {this.state.table} </h1>
                     </Col>
-                    <Col className={style.col-desc}>      
-                        <h1 className={style.col-desc-text}> Description: {this.state.description} </h1>
+                    <Col className={style.col_desc}>
+                        <h1 className={style.col_desc_text}> Description: {this.state.description} </h1>
                     </Col>
                     <Container className={style.cont}>
-                        <Table className={style.cont-table}>
+                        <Table className={style.cont_table}>
                         <thead>
                             <tr>
                                 {Array.isArray(results) && results.length > 0 && results.map(r => (
@@ -108,7 +108,7 @@ class showTable extends Component {
                                 <tr key={r.id}>
                                     <td>{r.column}</td>
                                     <td>{r.type}</td>
-                                    <td><Button className={style.cont-table-name}
+                                    <td><Button className={style.cont_table_name}
                                         onClick={this.remove} id={r.num}
                                     >X</Button></td>
                                 </tr>

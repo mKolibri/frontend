@@ -65,44 +65,44 @@ class Tab extends Component {
             <BrowserRouter>
                 {this.state.isAlert ? 
                     < Container className={style.block}>
-                        <Alert className={style.block-alert} value={this.state.alertMess}/>
-                        <Button className={style.block-button} onClick={this.handleExit}> OK </Button>
+                        <Alert className={style.block_alert} value={this.state.alertMess}/>
+                        <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
                     </ Container>
                 :
                 <Container>
                     <SideNav className={style.sidenav}>
                         <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.block-button}> Home </Button>
+                            <Button className={style.block_button}> Home </Button>
                         </Link>
                         <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.block-button}> Tables </Button>
+                            <Button className={style.block_button}> Tables </Button>
                         </Link>
                         <Link to="/addTable" onClick={this.addTable}>
-                            <Button className={style.block-button}> Add table </Button>
+                            <Button className={style.block_button}> Add table </Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.sidenav-button-logout}> Log out </Button>
+                            <Button className={style.sidenav_button_logout}> Log out </Button>
                         </Link>
                     </SideNav>
                     <Container className={style.cont}>
                         <Table>
                             <thead>
                                 <tr>
-                                    <th className={style.cont-head}>Table Name</th>
-                                    <th className={style.cont-head}>Creation Date</th>
-                                    <th className={style.cont-head}>Description (About table)</th>
-                                    <th className={style.cont-head}>Delete</th>
-                                    <th className={style.cont-head}>Update</th>
+                                    <th className={style.cont_head}>Table Name</th>
+                                    <th className={style.cont_head}>Creation Date</th>
+                                    <th className={style.cont_head}>Description (About table)</th>
+                                    <th className={style.cont_head}>Delete</th>
+                                    <th className={style.cont_head}>Update</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {Array.isArray(results) && results.length > 0 && results.map(r => (
                                     <tr key={r.id} >
-                                        <td><Button className={style.cont-table-name}>{r.name}</Button></td>
+                                        <td><Button className={style.cont_table_name}>{r.name}</Button></td>
                                         <td>{r.date}</td>
                                         <td>{r.desc}</td>
-                                        <td><Button className={style.cont-table-name}>X</Button></td>
-                                        <td><Button className={style.cont-table-name}>...</Button></td>
+                                        <td><Button className={style.cont_table_name}>X</Button></td>
+                                        <td><Button className={style.cont_table_name}>...</Button></td>
                                     </tr>
                                 ))}
                             </tbody>

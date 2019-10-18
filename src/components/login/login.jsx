@@ -67,42 +67,42 @@ class Login extends Component {
         return (
             <Container className={style.block}>
                 { this.state.isAlert ?
-                    <Container className={style.block-cont}>
-                        <Alert className={style.block-cont-alert} value={this.state.alertMess}/>
-                        <Button className={style.block-cont-button} onClick={this.handleExit}> OK </Button>
+                    <Container className={style.block_cont}>
+                        <Alert className={style.block_cont_alert} value={this.state.alertMess}/>
+                        <Button className={style.block_cont_button} onClick={this.handleExit}> OK </Button>
                     </Container>
                 :
                     <Form className={style.form} onSubmit={this.handleSubmit}>
                         <Container>
                             <Row>
                             <Col>
-                                <h2 className={style.form-header}> LOG IN </h2>
+                                <h2 className={style.form_header}> LOG IN </h2>
                             </Col>
                             <Col>
                                 <FormGroup>
-                                    <Label for="mail" className={style.form-label}>E-Mail</Label><br/>
+                                    <Label for="mail" className={style.form_label}>E-Mail</Label><br/>
                                     <Input type="mail" id="mail"
                                         placeholder="Example@index.com"
-                                        className={style.form-input}
+                                        className={style.form_input}
                                         onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
                             <Col>
                                 <FormGroup>
-                                    <Label for="password" className={style.form-label}>Password</Label><br/>
+                                    <Label for="password" className={style.form_label}>Password</Label><br/>
                                     <Input type="password" id="password"
-                                        className={style.form-input}
+                                        className={style.form_input}
                                         placeholder="Secret-Password"
                                         onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
-                                <Button className={style.block-cont-button} disabled={!this.state.email && !this.state.password}
+                                <Button className={style.block_cont_button} disabled={!this.state.email && !this.state.password}
                                     onSubmit={this.handleSubmit}> Log in </Button>
                         </Row>
                         <Row>
-                            <Col><p className={style.form-text}>--- OR ---</p></Col>
+                            <Col><p className={style.form_text}>--- OR ---</p></Col>
                                 <Link to="/registry" /*className="comp-class"*/>
-                                    <Button className={style.Button}> Regisration </Button>
+                                    <Button className={style.block_cont_button}> Regisration </Button>
                                 </Link>
                         </Row>
                     </Container>

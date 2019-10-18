@@ -3,7 +3,7 @@
     font-size: 17px;
 }
 
-.block-button {
+.block_button {
     color: white;
     background-color: grey;
     padding: 7px;
@@ -15,12 +15,12 @@
     height: 8%;
 }
   
-.block-button:hover {
+.block_button:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(61, 63, 83);
 }
 
-.block-alert {
+.block_alert {
     text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
@@ -39,7 +39,7 @@
     background-color:  rgb(25, 36, 47);
 }
 
-.sidenav-button-logout {
+.sidenav_button-logout {
     color: white;
     background-color: rgb(138, 58, 58);
     padding: 7px;
@@ -51,7 +51,7 @@
     height: 8%;
 }
 
-.sidenav-button-logout:hover {
+.sidenav_button_logout:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(114, 50, 50);
 }
@@ -67,7 +67,7 @@
     font-size: 18px;
 }
 
-.cont-text {
+.cont_text {
     font-size: 20px;
     color: rgb(66, 14, 44);
 }

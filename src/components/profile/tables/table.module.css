@@ -1,10 +1,10 @@
 .block {
     color: rgb(29, 59, 90);
-    font-size: 17px;
+    font-_size: 17px;
     text-align: center;
 }
 
-.block-alert {
+.block_alert {
     text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
@@ -13,7 +13,7 @@
     height: 100%;
 }
 
-.block-button {
+.block_button {
     color: white;
     background-color: grey;
     padding: 7px;
@@ -25,7 +25,7 @@
     height: 8%;
 }
   
-.block-button:hover {
+.block_button:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(61, 63, 83);
 }
@@ -40,7 +40,7 @@
     background-color:  rgb(25, 36, 47);
 }
 
-.sidenav-button-logout {
+.sidenav_button_logout {
     color: white;
     background-color: rgb(138, 58, 58);
     padding: 7px;
@@ -52,7 +52,7 @@
     height: 8%;
 }
   
-.sidenav-button-logout:hover {
+.sidenav_button_logout:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(114, 50, 50);
 }
@@ -65,7 +65,7 @@
     width: auto;
 }
 
-.cont-head {
+.cont_head {
     background-color: rgb(29, 59, 90);
     color: white;
     padding: 10px;
@@ -74,8 +74,7 @@
     height: 45px;
 }
 
-
-.cont-table-name {
+.cont_table_name {
     margin-bottom: 5px;
     border: none;
     text-align: center;
@@ -85,7 +84,7 @@
     background-color: grey;
 }
 
-.cont-table-name:hover {
+.cont_table_name:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(61, 63, 83);
 }

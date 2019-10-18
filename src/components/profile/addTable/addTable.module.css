@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-.block-button {
+.block_button {
     color: white;
     background-color: grey;
     padding: 7px;
@@ -15,12 +15,12 @@
     height: 8%;
 }
   
-.block-button:hover {
+.block_button:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(61, 63, 83);
 }
 
-.block-alert {
+.block_alert {
     text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
@@ -39,7 +39,7 @@
     background-color:  rgb(25, 36, 47);
 }
 
-.sidenav-button-logout {
+.sidenav_button_logout {
     color: white;
     background-color: rgb(138, 58, 58);
     padding: 7px;
@@ -51,12 +51,12 @@
     height: 8%;
 }
   
-.sidenav-button-logout:hover {
+.sidenav_button_logout:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(114, 50, 50);
 }
 
-.col-head {
+.col_head {
     background-color: rgb(29, 59, 90);
     color: white;
     padding: 10px;
@@ -64,7 +64,7 @@
     padding-right: 30px;
 }
 
-.col-head-header {
+.col_head_header {
     color: rgb(36, 53, 53);
     font-size: 200%;
     text-align: center;
@@ -79,11 +79,11 @@
     width: 80%;
 }
 
-.cont-label-red {
+.cont_label_red {
     color: red;
 }
 
-.cont-input {
+.cont_input {
     border: none;
     padding: 10px;
     text-align: left;
@@ -106,7 +106,7 @@
     margin-right: 15px;
 } */
 
-.cont-link-button {
+.cont_link_button {
     margin-right: 15px;
     font-size: 15px;
     color: white;
@@ -120,21 +120,21 @@
     height: 45px;
 }
 
-.cont-link-button:hover {
+.cont_link_button:hover {
     background-color:rgb(107, 42, 42); 
 }
 
-.cont-link-button:disabled {
+.cont_link_button:disabled {
     background-color: rgb(68, 71, 85);
     color: white;
 }
 
-.cont-table {
+.cont_table {
     margin: auto;
     text-align: center;
 }
 
-.cont-table-name {
+.cont_table_name {
     margin-bottom: 5px;
     border: none;
     text-align: center;
@@ -145,7 +145,7 @@
     color: white;
 }
 
-.cont-table-name:hover {
+.cont_table_name:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(70, 14, 14);
 }
@@ -160,7 +160,7 @@
     background-color: rgb(216, 211, 211); 
 }
 
-.footer-button {
+.footer_button {
     color: white;
     background-color: rgb(167, 71, 71);
     padding: 10px;
@@ -170,17 +170,17 @@
     width: auto;
 }
 
-.footer-button:hover {
+.footer_button:hover {
     color: rgb(255, 255, 255);
     background-color:rgb(107, 42, 42); 
 }
 
-.footer-button:disabled {
+.footer_button:disabled {
     background-color: rgb(68, 71, 85);
     color: white;
 }
 
-.footer-select {
+.footer_select {
     border: none;
     padding: 10px;
     width: 20%;

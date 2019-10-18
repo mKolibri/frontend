@@ -68,31 +68,31 @@ class Home extends Component {
             <BrowserRouter>
                 { this.state.isAlert ? 
                     <Container className={style.block}>
-                        <Alert className={style.block-alert} value={this.state.alertMess}/>
-                        <Button className={style.block-button} onClick={this.handleExit}> OK </Button>
+                        <Alert className={style.block_alert} value={this.state.alertMess}/>
+                        <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
                     </Container>
                 :
                 <Container>
                     <SideNav className={style.sidenav}>
                         <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.block-button}> Home </Button>
+                            <Button className={style.block_button}> Home </Button>
                         </Link>
                         <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.block-button}> Tables </Button>
+                            <Button className={style.block_button}> Tables </Button>
                         </Link>
                         <Link to="/addTable" onClick={this.addTable}>
-                            <Button className={style.block-button}> Add table </Button>
+                            <Button className={style.block_button}> Add table </Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.sidenav-button-logout}> Log out </Button>
+                            <Button className={style.sidenav_button_logout}> Log out </Button>
                         </Link>
                     </SideNav>
                 <Container className={style.cont}>
                     <Container className={style.rightConteiner}>
-                        <h3><span className={style.cont-text}>Name :</span>{this.state.name}</h3>
-                        <h3><span className={style.cont-text}>Surname :</span>{this.state.surname}</h3>
-                        <h3><span className={style.cont-text}>Age :</span>{this.state.age}</h3>
-                        <h3><span className={style.cont-text}>Mail :</span>{this.state.mail}</h3>
+                        <h3><span className={style.cont_text}>Name :</span>{this.state.name}</h3>
+                        <h3><span className={style.cont_text}>Surname :</span>{this.state.surname}</h3>
+                        <h3><span className={style.cont_text}>Age :</span>{this.state.age}</h3>
+                        <h3><span className={style.cont_text}>Mail :</span>{this.state.mail}</h3>
                     </Container>
                 </Container>
                 </Container>}

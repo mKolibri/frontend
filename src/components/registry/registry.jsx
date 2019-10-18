@@ -73,72 +73,71 @@ class Registry extends Component {
         return (
             <Container className={style.block} >
                 { this.state.isAlert ?
-                    <Container className={style.block-cont}>
-                        <Alert className={style.block-cont-alert} value={this.state.allertMessage}/>
-                        <Button className={style.block-cont-button} onClick={this.handleExit}> OK </Button>
+                    <Container className={style.block_cont}>
+                        <Alert className={style.block_cont_alert} value={this.state.allertMessage}/>
+                        <Button className={style.block_cont_button} onClick={this.handleExit}> OK </Button>
                     </Container>
                 :
                 <Form className={style.form} onSubmit={this.handleSubmit}>
                     <Container>
                         <Row>
                             <Col>
-                                <h1 className={style.form-header}> REGISTRATION </h1>
+                                <h1 className={style.form_header}> REGISTRATION </h1>
                             </Col>
                             {this.state.showResults ? 
-                                <Warning value={this.state.results} className={style.form-warning}></Warning> : null }
+                                <Warning value={this.state.results} className={style.form_warning}></Warning> : null }
                             <Col md="12">
                             <FormGroup>
-                                    <Label for="name" className={style.form-label}>
+                                    <Label for="name" className={style.form_label}>
                                         Name
-                                        <span className={style.form-label-red}>*</span>
+                                        <span className={style.form_label_red}>*</span>
                                     </Label><br/>
                                     <Input type="text" id="name" placeholder="Firstst symbol- uppercase"
-                                        onChange={this.handleChange} required/>
+                                        onChange={this.handleChange} className={style.form_input} required/>
                             </FormGroup>
                              </Col>
                             <Col md="12">
                                 <FormGroup>
-                                    <Label for="surname" className={style.form-label}>Surname</Label><br/>
+                                    <Label for="surname" className={style.form_label}>Surname</Label><br/>
                                     <Input type="text" id="surname" placeholder="Not required" 
-                                        onChange={this.handleChange}/>
+                                        onChange={this.handleChange} className={style.form_input}/>
                                 </FormGroup>
                             </Col>
                             <Col md="12">
                                 <FormGroup>
-                                    <Label for="age" className={style.form-label}>Age</Label><br/>
+                                    <Label for="age" className={style.form_label}>Age</Label><br/>
                                     <Input type="number" id="age" placeholder="Only number"
-                                    onChange={this.handleChange}/>
+                                    onChange={this.handleChange} className={style.form_input}/>
                                 </FormGroup>
                             </Col>
                             <Col md="12">
-                                <Label for="mail" className={style.form-label}>
+                                <Label for="mail" className={style.form_label}>
                                     E-mail
-                                    <span className={style.form-label-red}>*</span>
+                                    <span className={style.form_label_red}>*</span>
                                 </Label><br/>
                                 <Input type="mail" id="mail" placeholder="Example@index.com"
-                                    onChange={this.handleChange} required/>
+                                    onChange={this.handleChange} className={style.form_input} required/>
                             </Col>
-
                             <Col md="12">
                                 <FormGroup>
-                                    <Label for="password" className={style.form-label}>
+                                    <Label for="password" className={style.form_label}>
                                         Password
-                                        <span className={style.form-label-red}>*</span>
+                                        <span className={style.form_label_red}>*</span>
                                     </Label><br/>
                                     <Input type="password" id="password"
-                                        className={style.form-input}
+                                        className={style.form_input}
                                         placeholder="Secret-Password"
                                         onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
                             <Col >
-                                <Button to="/" onSubmit={this.handleSubmit} className={style.block-cont-button}
+                                <Button to="/" onSubmit={this.handleSubmit} className={style.block_cont_button}
                                 disabled={!this.state.email && !this.state.password && !this.state.name}
                                 > Sign up </Button>
                             </Col>
-                            <Col><p className={style.form-text}>--- OR ---</p></Col>
+                            <Col><p className={style.form_text}>--- OR ---</p></Col>
                             <Link to="/">
-                                <Button className={style.block-cont-button}>Log in</Button>
+                                <Button className={style.block_cont_button}>Log in</Button>
                             </Link>
                         </Row>
                     </Container>

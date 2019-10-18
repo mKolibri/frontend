@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Link} from 'react-router-dom';
-import style from './addTable.module.css';
+import { style } from './addTable.module.css';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
 import { Col, Input, Button, Label, FormGroup, Table, Container } from 'reactstrap';
@@ -116,61 +116,61 @@ class addTable extends Component {
             <BrowserRouter>
                 {this.state.isAlert ? 
                     <Container className={style.block}>
-                        <Alert className={style.block-alert} value={this.state.alertMess}/>
-                        <Button className={style.block-button} onClick={this.handleExit}> OK </Button>
+                        <Alert className={style.block_alert} value={this.state.alertMess}/>
+                        <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
                     </Container>
                 :
                 <Container>
                     <SideNav className={style.sidenav}>
                         <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.block-button}> Home </Button>
+                            <Button className={style.block_button}> Home </Button>
                         </Link>
                         <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.block-button}> Tables </Button>
+                            <Button className={style.block_button}> Tables </Button>
                         </Link>
                         <Link to="/addTable" onClick={this.toAddTable}>
-                            <Button className={style.block-button}> Add table </Button>
+                            <Button className={style.block_button}> Add table </Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.sidenav-button-logout}> Log out </Button>
+                            <Button className={style.sidenav_button_logout}> Log out </Button>
                         </Link>
                     </SideNav>
-                    <Col className={style.col-head}>           
-                        <h1 className={style.col-head-header}> Create Table </h1>
+                    <Col className={style.col_head}>
+                        <h1 className={style.col_head_header}> Create Table </h1>
                     </Col>
                     <Container className={style.cont}>
                         <Col>
                             <FormGroup>
                                 <Label for="name">
                                     Name
-                                    <span className={style.cont-label-red}>*</span>
+                                    <span className={style.cont_label_red}>*</span>
                                 </Label>
                                 <Input type="text" id="tableName" placeholder="Table name"
-                                    onChange={this.handleChange} className={style.cont-input} required/>
+                                    onChange={this.handleChange} className={style.cont_input} required/>
                             </FormGroup>
                         </Col>
                         <Col>
                             <FormGroup>
                                 <Label for="description">Description</Label>
                                     <Input type="text" id="description" placeholder="Not required" 
-                                        className={style.cont-input} onChange={this.handleChange}/>
+                                        className={style.cont_input} onChange={this.handleChange}/>
                             </FormGroup>
                         </Col>
                         <Col>
                             <Label for="createTable">If your table ready, then press...</Label>
                             <Link to="/showTable" onClick={this.handleSubmit}>
-                                <Button className={style.cont-link-button}
+                                <Button className={style.cont_link_button}
                                     disabled={!this.state.tableName}> Create Table </Button>
                             </Link>
                         </Col>
                     </Container>
                     <Container className={style.cont}>
-                        <Table bordered lassName={style.cont-table}>
+                        <Table bordered lassName={style.cont_table}>
                         <thead>
                             <tr>
-                                <th className={style.col-head}>Column Name</th>
-                                <th className={style.col-head}>Column Type</th>
-                                <th className={style.col-head}>Delete</th>
+                                <th className={style.col_head}>Column Name</th>
+                                <th className={style.col_head}>Column Type</th>
+                                <th className={style.col_head}>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -178,7 +178,7 @@ class addTable extends Component {
                                 <tr key={r.id}>
                                     <td>{r.column}</td>
                                     <td>{r.type}</td>
-                                    <td><Button className={style.cont-table-name}
+                                    <td><Button className={style.cont_table_name}
                                         onClick={this.remove} id={r.num}
                                     >X</Button></td>
                                 </tr>
@@ -191,22 +191,22 @@ class addTable extends Component {
                             <FormGroup>
                                 <Label for="column">
                                     Name
-                                    <span className={style.cont-label-red}>*</span>
+                                    <span className={style.cont_label_red}>*</span>
                                 </Label>
                                 <Input type="text" id="column" placeholder="Column name"
                                     onChange={this.handleChange} value={this.state.column}
-                                    className={style.cont-input} required/>
+                                    className={style.cont_input} required/>
                                 <Label for="type">
                                     Type
-                                    <span className={style.cont-label-red}>*</span>
+                                    <span className={style.cont_label_red}>*</span>
                                 </Label>
                                 <Input type="select" name="type" id="type" value={this.state.type}
-                                    onChange={this.handleChange} className={style.footer-select}>
+                                    onChange={this.handleChange} className={style.footer_select}>
                                         <option onSelect={this.handleSelect} value="INTEGER">Number</option>
                                         <option onSelect={this.handleSelect} value="VARCHAR(255)">String</option>
                                         <option onSelect={this.handleSelect} value="DATE">Date</option>
                                 </Input>
-                                <Button className={style.footer-button} 
+                                <Button className={style.footer_button}
                                     disabled={!this.state.column}
                                     onClick={this.addColumn}> Add Column </Button>
                             </FormGroup>

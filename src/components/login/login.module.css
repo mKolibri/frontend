@@ -2,12 +2,12 @@
     text-align: center;
 }
 
-.block-cont {
+.block_cont {
     background-color: rgb(216, 211, 211);
     width: auto;
 }
 
-.block-cont-alert {
+.block_cont_alert {
     text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
@@ -16,7 +16,7 @@
     height: 100%;
 }
 
-.block-cont-button {
+.block_cont_button {
     border: none;
     padding: 10px;
     height: 45px;
@@ -26,7 +26,7 @@
     font-size: 14px;
 }
 
-.block-cont-button:hover {
+.block_cont_button:hover {
     border: none;
     padding: 10px;
     background-color: rgb(32, 54, 54);
@@ -34,7 +34,7 @@
     font-size: 15px;
 }
 
-.block-cont-button:disabled {
+.block_cont_button:disabled {
     border: none;
     padding: 10px;
     background-color: rgb(68, 71, 85);
@@ -43,33 +43,35 @@
 }
 
 .form {
+    margin: 5px;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
     color: rgb(24, 51, 78);
 }
 
-.form-header {
+.form_header {
     color: darkslategray;
     font-size: 250%;
     margin: 10px;
 }
 
-.form-label {
+.form_label {
     font-size: 15px;
     width: 5px;
     color: darkslategray;
 }
 
-.form-input {
+.form_input {
     border: none;
     padding: 10px;
     height: 30px;
     width: 20%;
     text-align: left;
     font-size: 15px;
+    margin-bottom: 15px;
 }
 
-.form-text {
+.form_text {
     font-size: 13px;
 }
 

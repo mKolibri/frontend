@@ -6,16 +6,16 @@
     font-size: 10px;
 }
 
-.block-cont {
+.block_cont {
     font-size: 13px;
 }
 
-.block-cont-header {
+.block_cont_header {
     color: darkslategray;
     font-size: 300%;
     margin: 10px;
 }
 
-.block-cont-text {
+.block_cont_text {
     font-size: 20px;
 }

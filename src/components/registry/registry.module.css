@@ -1,8 +1,9 @@
 .block {
     text-align: center;
+    margin-top: 25px;
 }
 
-.block-cont-alert {
+.block_cont_alert {
     text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
@@ -11,7 +12,7 @@
     height: 100%;
 }
 
-.block-cont-button {
+.block_cont_button {
     border: none;
     padding: 10px;
     height: 45px;
@@ -21,7 +22,7 @@
     font-size: 14px;
 }
 
-.block-cont-button:hover {
+.block_cont_button:hover {
     border: none;
     padding: 10px;
     background-color: rgb(32, 54, 54);
@@ -29,7 +30,7 @@
     font-size: 15px;
 }
 
-.block-cont-button:disabled {
+.block_cont_button:disabled {
     border: none;
     padding: 10px;
     background-color: rgb(68, 71, 85);
@@ -43,33 +44,34 @@
     color: rgb(24, 51, 78);
 }
 
-.form-header {
+.form_header {
     font-size: 300%;
     margin: 10px;
 }
 
-.form-warning {
+.form_warning {
     color: red;
     background-color: rgb(216, 211, 211); 
 }
 
-.form-input {
+.form_input {
     border: none;
     padding: 10px;
     height: 25px;
     width: 20%;
+    margin-bottom: 15px;
 }
 
-.form-label {
+.form_label {
     font-size: 15px;
     width: 5px;
     color: darkslategray;
 }
 
-.form-label-red {
+.form_label_red {
     color: red;
 }
 
-.form-text {
+.form_text {
     font-size: 13px;
 }

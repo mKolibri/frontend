@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-.block-alert {
+.block_alert {
     text-align: center;
     margin-top: 12%;
     background-color: rgb(216, 211, 211); 
@@ -12,7 +12,7 @@
     height: 100%;
 }
 
-.block-button {
+.block_button {
     color: white;
     background-color: grey;
     padding: 7px;
@@ -24,7 +24,7 @@
     height: 8%;
 }
   
-.block-button:hover {
+.block_button:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(61, 63, 83);
 }
@@ -39,7 +39,7 @@
     background-color:  rgb(25, 36, 47);
 }
 
-.sidenav-button-logout {
+.sidenav_button_logout {
     color: white;
     background-color: rgb(138, 58, 58);
     padding: 7px;
@@ -51,7 +51,7 @@
     height: 8%;
 }
   
-.sidenav-button-logout:hover {
+.sidenav_button_logout:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(114, 50, 50);
 }
@@ -64,14 +64,14 @@
     padding-right: 30px;
 }
 
-.col-header {
+.col_header {
     color: rgb(36, 53, 53);
     font-size: 200%;
     text-align: center;
     color: #fff;
 }
 
-.col-desc {
+.col_desc {
     background-color: rgb(175, 175, 175);
     color: rgb(65, 63, 63);
     padding: 10px;
@@ -79,7 +79,7 @@
     padding-right: 30px;
 }
 
-.col-desc-text {
+.col_desc_text {
     color: rgb(36, 53, 53);
     font-size: 100%;
     text-align: center;
@@ -94,13 +94,13 @@
     width: 80%;
 }
 
-.cont-table {
+.cont_table {
     margin: auto;
     text-align: center;
 }
 
 /* 
-.cont-table-name {
+.cont_table_name {
     margin-bottom: 5px;
     border: none;
     text-align: center;
@@ -111,7 +111,7 @@
     color: white;
 }
 
-.cont-table-name:hover {
+.cont_table_name:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(70, 14, 14);
 } */
