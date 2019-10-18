@@ -1,5 +1,5 @@
 {
-  "name": "login",
+  "name": "login-registration",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,10 +7,11 @@
     "@trendmicro/react-sidenav": "^0.4.5",
     "classnames": "^2.2.6",
     "install-peers": "^1.0.3",
+    "material-ui": "^0.20.2",
     "react": "^16.9.0",
-    "react-cookie": "^4.0.1",
-    "react-cookies": "^0.1.1",
-    "react-css-modules": "^4.7.11",
+    "react-alert": "^5.5.0",
+    "react-alert-template-basic": "^1.0.0",
+    "react-bootstrap": "^1.0.0-beta.12",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.1.2",
@@ -29,6 +30,7 @@
       "not dead",
       "not op_mini all"
     ],
-    "development": []
+    "development": [
+    ]
   }
 }
