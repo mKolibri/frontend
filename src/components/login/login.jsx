@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from '../warnings/alert';
 import style from './login.module.css';
-import { login } from '../configs/config';
+import { post } from '../configs/dao';
 import cookie from 'react-cookies';
 
 class Login extends Component {
@@ -17,7 +17,6 @@ class Login extends Component {
             userID: cookie.load('userID'),
             token: cookie.load('token')
         };
-
         this.handleChange = this.handleChange.bind(this);
         this.handleExit = this.handleExit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,11 +49,16 @@ class Login extends Component {
             password: this.state.password
         }
 
-        const content = await login(user);
+        const content = await post(user, 'login');
         if (200 === content.status) {
             cookie.save('userID', content.userID, { path: '/' });
             cookie.save('token', content.token, { path: '/' });
             this.props.history.push('/home');
+        } else if (content.message === 'Failed to fetch') {
+                this.setState({
+                    isAlert: true,
+                    alertMess: 'Error 404, server not found. Please, try again.'
+                });
         } else {
             this.setState({
                 isAlert: true,
@@ -96,12 +100,13 @@ class Login extends Component {
                                         onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
-                                <Button className={style.block_cont_button} disabled={!this.state.email && !this.state.password}
+                                <Button className={style.block_cont_button}
+                                    disabled={!(this.state.email && this.state.password)}
                                     onSubmit={this.handleSubmit}> Log in </Button>
                         </Row>
                         <Row>
                             <Col><p className={style.form_text}>--- OR ---</p></Col>
-                                <Link to="/registry" /*className="comp-class"*/>
+                                <Link to="/registry">
                                     <Button className={style.block_cont_button}> Regisration </Button>
                                 </Link>
                         </Row>

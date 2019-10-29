@@ -5,7 +5,7 @@ import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
 import { Col, Input, Button, Label, FormGroup, Table, Container } from 'reactstrap';
 import cookie from 'react-cookies';
-import { userLogout, newTable } from '../../configs/config';
+import { post, get } from '../../configs/dao';
 
 class addTable extends Component {
     constructor(props) {
@@ -15,8 +15,6 @@ class addTable extends Component {
             alertMess: '',
             type: 'Number',
             num : 1,
-            userID: cookie.load('userID'),
-            token: cookie.load('token'),
             results: []
         };
         this.handleChange = this.handleChange.bind(this);
@@ -27,10 +25,10 @@ class addTable extends Component {
     }
 
     logout = async() => {
-        await userLogout();
+        await get('logout');
         cookie.remove('userID', { path: '/' });
         cookie.remove('token', { path: '/' });
-        cookie.remove('tableName', { path: '/' });
+        localStorage.removeItem('tableName');
         this.props.history.push('/');
     }
 
@@ -60,9 +58,8 @@ class addTable extends Component {
                 type: this.state.type,
                 num: this.state.num
             };
-
             const results = state.results.concat(value);
-            return {results};
+            return { results };
         });
 
         this.setState({
@@ -93,14 +90,14 @@ class addTable extends Component {
     handleSubmit = async(e) => {
         e.preventDefault();
         const table = {
-            "name": this.state.tableName,
-            "description": this.state.description,
-            "columns" : this.state.results
+            'name': this.state.tableName,
+            'description': this.state.description,
+            'columns' : this.state.results
         };
-            
-        const content = newTable(table);
+
+        const content = post(table, 'addTable');
         if (200 === content.status) {
-            cookie.save('tableName', content.name, { path: '/' });
+            localStorage.setItem('tableName', content.name);
             this.props.history.push('/showTable');
         } else {
             this.setState({
@@ -114,7 +111,7 @@ class addTable extends Component {
         const results = this.state.results;
         return (
             <BrowserRouter>
-                {this.state.isAlert ? 
+                {this.state.isAlert ?
                     <Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
                         <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
@@ -152,7 +149,7 @@ class addTable extends Component {
                         <Col>
                             <FormGroup>
                                 <Label for="description">Description</Label>
-                                    <Input type="text" id="description" placeholder="Not required" 
+                                    <Input type="text" id="description" placeholder="Not required"
                                         className={style.cont_input} onChange={this.handleChange}/>
                             </FormGroup>
                         </Col>

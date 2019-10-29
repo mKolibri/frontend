@@ -5,7 +5,7 @@ import style from './registry.module.css';
 import { Warning } from '../warnings/warning';
 import { Alert } from '../warnings/alert';
 import cookie from 'react-cookies';
-import { registry } from '../configs/config';
+import { post } from '../configs/dao';
 
 class Registry extends Component {
     constructor(props) {
@@ -38,12 +38,12 @@ class Registry extends Component {
 
         cookie.remove('userID', { path: '/' });
         cookie.remove('token', { path: '/' });
-        this.props.history.push('/');
+        this.props.history.push('/registry');
     }
 
     handleSubmit = async(e) => {
         e.preventDefault();
-        const curentUser = {
+        const user = {
             'name': this.state.name,
             'surname': this.state.surname,
             'password': this.state.password,
@@ -51,22 +51,27 @@ class Registry extends Component {
             'age': this.state.age
         };
 
-        const content = await registry(curentUser);
+        const content = await post(user, 'registration');
         if (200 === content.status) {
             cookie.save('userID', content.userID, { path: '/' });
             cookie.save('token', content.token, { path: '/' });
             this.props.history.push('/home');
         } else if (content[0]) {
-                this.setState({
-                    showResults: true,
-                    results: content[0].msg
-                });
+            this.setState({
+                showResults: true,
+                results: content[0].msg
+            });
+        } else if (content.message === 'Failed to fetch') {
+            this.setState({
+                isAlert: true,
+                alertMess: 'Error 404, server not found. Please, try again.'
+            });
         } else {
             this.setState({
                 showResults: true,
                 results: content.message
             });
-        } 
+        }
     }
 
     render() {
@@ -84,7 +89,7 @@ class Registry extends Component {
                             <Col>
                                 <h1 className={style.form_header}> REGISTRATION </h1>
                             </Col>
-                            {this.state.showResults ? 
+                            {this.state.showResults ?
                                 <Warning value={this.state.results} className={style.form_warning}></Warning> : null }
                             <Col md="12">
                             <FormGroup>
@@ -99,7 +104,7 @@ class Registry extends Component {
                             <Col md="12">
                                 <FormGroup>
                                     <Label for="surname" className={style.form_label}>Surname</Label><br/>
-                                    <Input type="text" id="surname" placeholder="Not required" 
+                                    <Input type="text" id="surname" placeholder="Not required"
                                         onChange={this.handleChange} className={style.form_input}/>
                                 </FormGroup>
                             </Col>
