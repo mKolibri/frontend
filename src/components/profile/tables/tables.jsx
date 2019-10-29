@@ -4,7 +4,7 @@ import { Button, Container, Table } from 'reactstrap';
 import style from './table.module.css';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
-import { userLogout, getTables } from '../../configs/config';
+import { get } from '../../configs/dao';
 import cookie from 'react-cookies';
 
 class Tab extends Component {
@@ -12,29 +12,27 @@ class Tab extends Component {
         super(props);
         this.state = {
             isAlert: false,
-            alertMess: '',
-            userID: cookie.load('userID'),
-            token: cookie.load('token')
+            alertMess: ''
         };
     }
 
     handleChange(e) {
-            this.setState({ [e.target.id]: e.target.value });
+        this.setState({ [e.target.id]: e.target.value });
     }
-    
+
     logout = async() => {
-        await userLogout();
+        await get('logout');
         cookie.remove('userID', { path: '/' });
         cookie.remove('token', { path: '/' });
-        cookie.remove('tableName', { path: '/' });
+        localStorage.removeItem('tableName');
         this.props.history.push('/');
     }
 
     async componentDidMount() {
-        const content = await getTables();
+        const content = await get('tables');
         if (200 === content.status) {
             this.setState({results : content});
-        } else if (content.message === 'Failed to fetch'){
+        } else if (content.message === 'Failed to fetch') {
             this.setState({
                 isAlert: true,
                 alertMess: 'Server 404 not found. Please, try again.'
@@ -63,7 +61,7 @@ class Tab extends Component {
         const results = this.state.results;
         return (
             <BrowserRouter>
-                {this.state.isAlert ? 
+                {this.state.isAlert ?
                     < Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
                         <Button className={style.block_button} onClick={this.handleExit}> OK </Button>

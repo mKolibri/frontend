@@ -4,7 +4,7 @@ import style from './showTable.module.css';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
 import { Col, Button, Container, Table } from 'reactstrap';
-import { userLogout, getTable } from '../../configs/config';
+import { get } from '../../configs/dao';
 import cookie from 'react-cookies';
 
 class showTable extends Component {
@@ -13,28 +13,24 @@ class showTable extends Component {
         this.state = {
             isAlert: false,
             alertMess: '',
-            userID: cookie.load('userID'),
-            token: cookie.load('token'),
-            name : cookie.load('tableName')
+            name : localStorage.getItem('tableName')
         };
-    }
-
-    logout = async() => {
-        await userLogout();
-        cookie.remove('userID', { path: '/' });
-        cookie.remove('token', { path: '/' });
-        cookie.remove('tableName', { path: '/' });
-        this.props.history.push('/');
     }
 
     async componentDidMount() {
         const tableName = this.state.name;
-        const content = await getTable(tableName);
+        const path = 'showTable?table=' + tableName;
+        const content = await get(path);
         if (200 === content.status) {
             this.setState({
                 table: content.table,
                 description: content.description,
                 columns: content.columns
+            });
+        }  else if (content.message === 'Failed to fetch') {
+            this.setState({
+                isAlert: true,
+                alertMess: 'Error 404, server not found. Please, try again.'
             });
         } else {
             this.setState({
@@ -63,11 +59,24 @@ class showTable extends Component {
         this.props.history.push('/addTable');
     }
 
+    logout = async() => {
+        await get('logout');
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('token', { path: '/' });
+        localStorage.removeItem('tableName');
+        this.props.history.push('/');
+    }
+
+    componentWillUnmount() {
+        localStorage.removeItem('tableName');
+    }
+
+
     render() {
         const results = this.state.columns;
         return (
             <BrowserRouter>
-                {this.state.isAlert ? 
+                {this.state.isAlert ?
                     <Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
                         <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
@@ -88,7 +97,7 @@ class showTable extends Component {
                             <Button className={style.sidenav_button_logout}> Log out </Button>
                         </Link>
                     </SideNav>
-                    <Col className={style.col}>           
+                    <Col className={style.col}>
                         <h1 className={style.col_header}> Table name: {this.state.table} </h1>
                     </Col>
                     <Col className={style.col_desc}>

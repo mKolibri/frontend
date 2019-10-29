@@ -5,22 +5,20 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { BrowserRouter, Link } from 'react-router-dom'
 import style from './home.module.css';
 import { Alert } from '../../warnings/alert';
-import { userLogout, getUser } from '../../configs/config';
+import { get } from '../../configs/dao';
 import cookie from 'react-cookies';
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: cookie.load('userID'),
-            token: cookie.load('token'),
             isAlert: false,
             alertMess: ''
         };
     }
 
     async componentDidMount() {
-        const content = await getUser();
+        const content = await get('user');
         if (200 === content.status) {
             this.setState({
                 name : content.name,
@@ -56,17 +54,17 @@ class Home extends Component {
     }
 
     logout = async() => {
-        await userLogout();
+        await get('logout');
         cookie.remove('userID', { path: '/' });
         cookie.remove('token', { path: '/' });
-        cookie.remove('tableName', { path: '/' });
+        localStorage.removeItem('tableName');
         this.props.history.push('/');
     }
-    
+
     render() {
         return (
             <BrowserRouter>
-                { this.state.isAlert ? 
+                { this.state.isAlert ?
                     <Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
                         <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
