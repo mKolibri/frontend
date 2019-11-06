@@ -4,7 +4,8 @@ import { Button, Container, Table } from 'reactstrap';
 import style from './table.module.css';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
-import { get } from '../../configs/dao';
+import { tables } from './table.dao';
+import { logOut } from '../../components.dao';
 import cookie from 'react-cookies';
 
 class Tab extends Component {
@@ -14,22 +15,22 @@ class Tab extends Component {
             isAlert: false,
             alertMess: ''
         };
+
+        this.handleExit = this.handleExit.bind(this);
+        this.toHome = this.toHome.bind(this);
+        this.toTables = this.toTables.bind(this);
+        this.addTable = this.addTable.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
-    handleChange(e) {
-        this.setState({ [e.target.id]: e.target.value });
-    }
-
-    logout = async() => {
-        await get('logout');
-        cookie.remove('userID', { path: '/' });
-        cookie.remove('token', { path: '/' });
-        localStorage.removeItem('tableName');
+    async logout() {
+        await logOut();
+        cookie.remove('tableName', { path: '/' });
         this.props.history.push('/');
     }
 
     async componentDidMount() {
-        const content = await get('tables');
+        const content = await tables();
         if (200 === content.status) {
             this.setState({results : content});
         } else if (content.message === 'Failed to fetch') {
@@ -45,15 +46,15 @@ class Tab extends Component {
         }
     }
 
-    toHome = () => {
+    toHome() {
         this.props.history.push('/home');
     }
 
-    toTables = () => {
+    toTables() {
         this.props.history.push('/tables');
     }
 
-    addTable = () => {
+    addTable() {
         this.props.history.push('/addTable');
     }
 

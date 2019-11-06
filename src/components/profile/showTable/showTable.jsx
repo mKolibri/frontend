@@ -4,23 +4,32 @@ import style from './showTable.module.css';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
 import { Col, Button, Container, Table } from 'reactstrap';
-import { get } from '../../configs/dao';
+import { showTableFetch } from './showTable.dao';
+import { logOut } from '../../components.dao';
 import cookie from 'react-cookies';
 
-class showTable extends Component {
+class ShowTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isAlert: false,
             alertMess: '',
-            name : localStorage.getItem('tableName')
+            name : cookie.load('tableName')
         };
+
+        this.handleExit = this.handleExit.bind(this);
+        this.toHome = this.toHome.bind(this);
+        this.toTables = this.toTables.bind(this);
+        this.addTable = this.addTable.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     async componentDidMount() {
         const tableName = this.state.name;
-        const path = 'showTable?table=' + tableName;
-        const content = await get(path);
+        const path = 'table/' + tableName;
+        const content = await showTableFetch(path);
+        const results = content.json();
+
         if (200 === content.status) {
             this.setState({
                 table: content.table,
@@ -35,42 +44,39 @@ class showTable extends Component {
         } else {
             this.setState({
                 isAlert: true,
-                alertMess: content.message + '. Please, try again.'
+                alertMess: results.message + '. Please, try again.'
             });
         }
     }
 
-    handleExit = () => {
+    handleExit() {
         this.setState({
             isAlert: false,
             alertMess: ''
         });
     }
 
-    toHome = () => {
+    toHome() {
         this.props.history.push('/home');
     }
 
-    toTables = () => {
+    toTables() {
         this.props.history.push('/tables');
     }
 
-    addTable = () => {
+    addTable() {
         this.props.history.push('/addTable');
     }
 
-    logout = async() => {
-        await get('logout');
-        cookie.remove('userID', { path: '/' });
-        cookie.remove('token', { path: '/' });
-        localStorage.removeItem('tableName');
+    async logout() {
+        await logOut();
+        cookie.remove('tableName', { path: '/' });
         this.props.history.push('/');
     }
 
     componentWillUnmount() {
-        localStorage.removeItem('tableName');
+        cookie.remove('tableName', { path: '/' });
     }
-
 
     render() {
         const results = this.state.columns;
@@ -113,15 +119,6 @@ class showTable extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {Array.isArray(results) && results.length > 0 && results.map(r => (
-                                <tr key={r.id}>
-                                    <td>{r.column}</td>
-                                    <td>{r.type}</td>
-                                    <td><Button className={style.cont_table_name}
-                                        onClick={this.remove} id={r.num}
-                                    >X</Button></td>
-                                </tr>
-                            ))} */}
                         </tbody>
                         </Table>
                     </Container>
@@ -131,4 +128,4 @@ class showTable extends Component {
     }
 }
 
-export { showTable };
+export { ShowTable };

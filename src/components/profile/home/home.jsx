@@ -5,7 +5,8 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { BrowserRouter, Link } from 'react-router-dom'
 import style from './home.module.css';
 import { Alert } from '../../warnings/alert';
-import { get } from '../../configs/dao';
+import { getUserInfo } from './home.dao';
+import { logOut } from '../../components.dao';
 import cookie from 'react-cookies';
 
 class Home extends Component {
@@ -15,10 +16,17 @@ class Home extends Component {
             isAlert: false,
             alertMess: ''
         };
+
+        this.toHome = this.toHome.bind(this);
+        this.toTables = this.toTables.bind(this);
+        this.addTable = this.addTable.bind(this);
+        this.logout = this.logout.bind(this);
+        this.handleExit = this.handleExit.bind(this);
     }
 
     async componentDidMount() {
-        const content = await get('user');
+        const content = await getUserInfo();
+        const results = content.json();
         if (200 === content.status) {
             this.setState({
                 name : content.name,
@@ -29,35 +37,33 @@ class Home extends Component {
         } else {
             this.setState({
                 isAlert: true,
-                alertMess: content.message + '. Please, try again.'
+                alertMess: results.message + '. Please, try again.'
             });
         }
     }
 
-    toHome = () => {
+    toHome() {
         this.props.history.push('/home');
     }
 
-    toTables = () => {
+    toTables() {
         this.props.history.push('/tables');
     }
 
-    addTable = () => {
+    addTable() {
         this.props.history.push('/addTable');
     }
 
-    handleExit = (e) => {
+    handleExit(e) {
         this.setState({
             isAlert: false,
             alertMess: ''
         });
     }
 
-    logout = async() => {
-        await get('logout');
-        cookie.remove('userID', { path: '/' });
-        cookie.remove('token', { path: '/' });
-        localStorage.removeItem('tableName');
+    async logout() {
+        await logOut();
+        cookie.remove('tableName', { path: '/' });
         this.props.history.push('/');
     }
 

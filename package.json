@@ -1,6 +1,6 @@
 {
   "name": "login-registration",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@csstools/normalize.css": "github:csstools/normalize.css",
@@ -9,8 +9,6 @@
     "install-peers": "^1.0.3",
     "material-ui": "^0.20.2",
     "react": "^16.9.0",
-    "react-alert": "^5.5.0",
-    "react-alert-template-basic": "^1.0.0",
     "react-bootstrap": "^1.0.0-beta.12",
     "react-cookies": "^0.1.1",
     "react-dom": "^16.9.0",
@@ -20,7 +18,8 @@
     "start": "^5.1.0"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "dev": "react-scripts start && serve -s build",
+    "prod": "react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"

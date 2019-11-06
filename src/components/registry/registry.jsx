@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import style from './registry.module.css';
 import { Warning } from '../warnings/warning';
 import { Alert } from '../warnings/alert';
-import cookie from 'react-cookies';
-import { post } from '../configs/dao';
+import { registration } from './registry.dao';
 
 class Registry extends Component {
     constructor(props) {
@@ -30,18 +29,16 @@ class Registry extends Component {
         this.setState({ [e.target.id]: e.target.value });
     }
 
-    handleExit = () => {
+    handleExit() {
         this.setState({
             isAlert: false,
             allertMessage: ''
         });
 
-        cookie.remove('userID', { path: '/' });
-        cookie.remove('token', { path: '/' });
         this.props.history.push('/registry');
     }
 
-    handleSubmit = async(e) => {
+    async handleSubmit(e) {
         e.preventDefault();
         const user = {
             'name': this.state.name,
@@ -51,17 +48,16 @@ class Registry extends Component {
             'age': this.state.age
         };
 
-        const content = await post(user, 'registration');
+        const content = await registration(user);
+        const results = content.json();
         if (200 === content.status) {
-            cookie.save('userID', content.userID, { path: '/' });
-            cookie.save('token', content.token, { path: '/' });
             this.props.history.push('/home');
         } else if (content[0]) {
             this.setState({
                 showResults: true,
                 results: content[0].msg
             });
-        } else if (content.message === 'Failed to fetch') {
+        } else if (results.message === 'Failed to fetch') {
             this.setState({
                 isAlert: true,
                 alertMess: 'Error 404, server not found. Please, try again.'

@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from '../warnings/alert';
 import style from './login.module.css';
-import { post } from '../configs/dao';
-import cookie from 'react-cookies';
+import { loginUser } from './login.dao';
 
 class Login extends Component {
     constructor(props) {
@@ -14,27 +13,19 @@ class Login extends Component {
             password: '',
             isAlert: false,
             alertMess: '',
-            userID: cookie.load('userID'),
-            token: cookie.load('token')
         };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleExit = this.handleExit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(e) {
+        e.preventDefault();
         this.setState({ [e.target.id]: e.target.value });
     }
 
-    componentDidMount() {
-        if (this.state.userID && this.state.token) {
-            this.props.history.push('/home');
-        }
-    }
-
     handleExit(e) {
-        cookie.remove('userID', { path: '/' });
-        cookie.remove('token', { path: '/' });
         this.setState({
             isAlert: false,
             alertMess: ''
@@ -42,17 +33,16 @@ class Login extends Component {
         this.props.history.push('/');
     }
 
-    handleSubmit = async(e) => {
+    async handleSubmit(e) {
         e.preventDefault();
         const user = {
             mail: this.state.mail,
             password: this.state.password
         }
 
-        const content = await post(user, 'login');
+        const content = await loginUser(user);
+        const result = content.json();
         if (200 === content.status) {
-            cookie.save('userID', content.userID, { path: '/' });
-            cookie.save('token', content.token, { path: '/' });
             this.props.history.push('/home');
         } else if (content.message === 'Failed to fetch') {
                 this.setState({
@@ -62,7 +52,7 @@ class Login extends Component {
         } else {
             this.setState({
                 isAlert: true,
-                alertMess: content.message + '. Please, try again.'
+                alertMess: result.message + '. Please, try again.'
             });
         }
     }
@@ -101,7 +91,7 @@ class Login extends Component {
                                 </FormGroup>
                             </Col>
                                 <Button className={style.block_cont_button}
-                                    disabled={!(this.state.email && this.state.password)}
+                                    disabled={!this.state.email && !this.state.password}
                                     onSubmit={this.handleSubmit}> Log in </Button>
                         </Row>
                         <Row>

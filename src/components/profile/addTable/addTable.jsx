@@ -5,9 +5,10 @@ import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
 import { Col, Input, Button, Label, FormGroup, Table, Container } from 'reactstrap';
 import cookie from 'react-cookies';
-import { post, get } from '../../configs/dao';
+import { addTableFetch } from './addTable.dao';
+import { logOut } from '../../components.dao';
 
-class addTable extends Component {
+class AddTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,41 +18,49 @@ class addTable extends Component {
             num : 1,
             results: []
         };
+
         this.handleChange = this.handleChange.bind(this);
+        this.handleExit = this.handleExit.bind(this);
+        this.logout = this.logout.bind(this);
+        this.toHome = this.toHome.bind(this);
+        this.toTables = this.toTables.bind(this);
+        this.toAddTable = this.toAddTable.bind(this);
+        this.addColumn = this.addColumn.bind(this);
+        this.remove = this.remove.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(e) {
         this.setState({ [e.target.id]: e.target.id });
     }
 
-    logout = async() => {
-        await get('logout');
-        cookie.remove('userID', { path: '/' });
-        cookie.remove('token', { path: '/' });
-        localStorage.removeItem('tableName');
+    async logout() {
+        await logOut();
+        cookie.remove('tableName', { path: '/' });
         this.props.history.push('/');
     }
 
-    handleExit = () => {
+    handleExit() {
         this.setState({
             isAlert: false,
             alertMess: ''
         });
     }
 
-    toHome = () => {
+    toHome() {
         this.props.history.push('/home');
     }
 
-    toTables = () => {
+    toTables() {
         this.props.history.push('/tables');
     }
 
-    toAddTable = () => {
+    toAddTable() {
         this.props.history.push('/addTable');
     }
 
-    addColumn = () => {
+    addColumn() {
         this.setState((state) => {
             const value = {
                 column: this.state.column,
@@ -68,7 +77,7 @@ class addTable extends Component {
         });
     }
 
-    remove = (e) => {
+    remove(e) {
         const id = e.target.id;
         let array = [...this.state.results];
         for (let i = 0; i < array.length; ++i) {
@@ -80,14 +89,14 @@ class addTable extends Component {
         this.setState({results: array});
     }
 
-    handleSelect = (e) => {
+    handleSelect(e) {
         e.preventDefault();
         this.setState({
             type: e.target.value
         })
     }
 
-    handleSubmit = async(e) => {
+    async handleSubmit(e) {
         e.preventDefault();
         const table = {
             'name': this.state.tableName,
@@ -95,14 +104,15 @@ class addTable extends Component {
             'columns' : this.state.results
         };
 
-        const content = post(table, 'addTable');
+        const content = addTableFetch(table);
+        const results = content.json();
         if (200 === content.status) {
-            localStorage.setItem('tableName', content.name);
-            this.props.history.push('/showTable');
+            cookie.save('tableName', content.name, { path: '/' });
+            this.props.history.push('/showTable/' + content.name);
         } else {
             this.setState({
                 isAlert: true,
-                allertMess: content.message
+                allertMess: results.message
             });
         }
     }
@@ -215,4 +225,4 @@ class addTable extends Component {
     }
 }
 
-export { addTable };
+export { AddTable };
