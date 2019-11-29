@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { Login } from './components/login/login';
-import { Registry } from './components/registry/registry';
-import { Home } from './components/profile/home/home';
-import { Tab } from './components/profile/tables/tables';
-import { AddTable } from './components/profile/addTable/addTable';
-import { ShowTable } from './components/profile/showTable/showTable';
+import { Login } from './components/user/login/login';
+import { Registry } from './components/user/registry/registry';
+import { Home } from './components/user/home/home';
+import { Tab } from './components/table/tables/tables';
+import { AddTable } from './components/table/addTable/addTable';
+import { ShowTable } from './components/table/showTable/showTable';
+import cookie from 'react-cookies';
 
 class App extends Component {
+  componentWillUnmount() {
+    cookie.remove('userID', {path: '/'});
+    cookie.remove('loggedin', {path: '/'});
+  }
+
   render() {
     return (
-      <div>
-          <BrowserRouter>
-            <div>
-              <Route path='/' exact component={Login}/>
-              <Route path='/registry' exact component={Registry}/>
-              <Route path='/home' exact component={Home}/>
-              <Route path='/tables' exact component={Tab}/>
-              <Route path='/addTable' exact component={AddTable}/>
-              <Route path='/showTable' exact component={ShowTable}/>
-            </div>
-          </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <Route path='/' exact component={Login}/>
+        <Route path='/registry' exact component={Registry}/>
+        <Route path='/home' exact component={Home}/>
+        <Route path='/tables' exact component={Tab}/>
+        <Route path='/addTable' exact component={AddTable}/>
+        <Route path='/showTable' exact component={ShowTable}/>
+      </BrowserRouter>
     );
   }
 }

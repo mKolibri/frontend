@@ -50,8 +50,27 @@
 }
 
 .form_warning {
+    display: inline-flex;
+    border-radius: 6px;
+    background-color: white;
+}
+
+.form_warning_res {
     color: red;
+}
+
+.form_warning_exit:hover {
+    color: rgb(216, 211, 211);
+    border: none;
+    background-color: white;
+    border-left: 0.2px solid rgb(216, 211, 211);
+}
+
+.form_warning_exit {
+    color: white;
+    border: none;
     background-color: rgb(216, 211, 211);
+    border-left: 0.2px solid rgb(216, 211, 211);
 }
 
 .form_input {

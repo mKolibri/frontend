@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Link} from 'react-router-dom';
-import { style } from './addTable.module.css';
+import { BrowserRouter, Link } from 'react-router-dom';
+import style from './addTable.module.css';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
 import { Col, Input, Button, Label, FormGroup, Table, Container } from 'reactstrap';
 import cookie from 'react-cookies';
-import { addTableFetch } from './addTable.dao';
-import { logOut } from '../../components.dao';
+import { sendRequest } from '../table.dao';
 
 class AddTable extends Component {
     constructor(props) {
@@ -16,28 +15,28 @@ class AddTable extends Component {
             alertMess: '',
             type: 'Number',
             num : 1,
-            results: []
+            results: [],
+            userID: cookie.load('userID', {path: '/'})
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleExit = this.handleExit.bind(this);
         this.logout = this.logout.bind(this);
-        this.toHome = this.toHome.bind(this);
-        this.toTables = this.toTables.bind(this);
-        this.toAddTable = this.toAddTable.bind(this);
         this.addColumn = this.addColumn.bind(this);
         this.remove = this.remove.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handleChange(e) {
-        this.setState({ [e.target.id]: e.target.id });
+        this.setState({ [e.target.id]: e.target.value });
     }
 
     async logout() {
-        await logOut();
-        cookie.remove('tableName', { path: '/' });
+        await sendRequest('logout', 'GET');
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('loggedin', { path: '/' });
         this.props.history.push('/');
     }
 
@@ -48,25 +47,14 @@ class AddTable extends Component {
         });
     }
 
-    toHome() {
-        this.props.history.push('/home');
-    }
-
-    toTables() {
-        this.props.history.push('/tables');
-    }
-
-    toAddTable() {
-        this.props.history.push('/addTable');
-    }
-
     addColumn() {
         this.setState((state) => {
             const value = {
                 column: this.state.column,
-                type: this.state.type,
-                num: this.state.num
+                num: this.state.num,
+                type: this.state.type
             };
+                value.type = this.state.type;
             const results = state.results.concat(value);
             return { results };
         });
@@ -92,27 +80,48 @@ class AddTable extends Component {
     handleSelect(e) {
         e.preventDefault();
         this.setState({
-            type: e.target.value
+            type: e.target.id
         })
+    }
+
+    handleClick() {
+        window.location.reload();
     }
 
     async handleSubmit(e) {
         e.preventDefault();
+        const columns = this.state.results;
+        if (columns.length > 0) {
+            for (let res in columns) {
+                if (res.type === 'Number') {
+                    res.type = 'INTEGER';
+                }
+            }
+            this.setState(columns);
+        }
         const table = {
             'name': this.state.tableName,
             'description': this.state.description,
             'columns' : this.state.results
         };
 
-        const content = addTableFetch(table);
-        const results = content.json();
-        if (200 === content.status) {
-            cookie.save('tableName', content.name, { path: '/' });
-            this.props.history.push('/showTable/' + content.name);
+        const content = await sendRequest('addTable', 'POST', table);
+        if (content) {
+            content.json().then((result) => {
+                if (200 === content.status) {
+                    cookie.save('tableName', result.name, { path: '/' });
+                    this.props.history.push('/showTable');
+                } else {
+                    this.setState({
+                        isAlert: true,
+                        alertMess: result.message + '. Please, try again.'
+                    });
+                }
+            });
         } else {
             this.setState({
                 isAlert: true,
-                allertMess: results.message
+                alertMess: 'Error 404, server not found. Please, try again.'
             });
         }
     }
@@ -124,32 +133,31 @@ class AddTable extends Component {
                 {this.state.isAlert ?
                     <Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
-                        <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
+                        <Button className={style.block_button} onClick={this.handleExit}>OK</Button>
                     </Container>
                 :
                 <Container>
-                    <SideNav className={style.sidenav}>
-                        <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.block_button}> Home </Button>
+                    <SideNav className={style.sidenav}  onClick={this.handleClick}>
+                        <Link to="/home">
+                            <Button className={style.block_button}>Home</Button>
                         </Link>
-                        <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.block_button}> Tables </Button>
+                        <Link to="/tables">
+                            <Button className={style.block_button}>Tables</Button>
                         </Link>
-                        <Link to="/addTable" onClick={this.toAddTable}>
-                            <Button className={style.block_button}> Add table </Button>
+                        <Link to="/addTable">
+                            <Button className={style.block_button} disabled>Add table</Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.sidenav_button_logout}> Log out </Button>
+                            <Button className={style.sidenav_button_logout}>Log out</Button>
                         </Link>
                     </SideNav>
                     <Col className={style.col_head}>
-                        <h1 className={style.col_head_header}> Create Table </h1>
+                        <h1 className={style.col_head_header}>Create Table</h1>
                     </Col>
                     <Container className={style.cont}>
                         <Col>
                             <FormGroup>
-                                <Label for="name">
-                                    Name
+                                <Label for="name">Name
                                     <span className={style.cont_label_red}>*</span>
                                 </Label>
                                 <Input type="text" id="tableName" placeholder="Table name"
@@ -207,15 +215,15 @@ class AddTable extends Component {
                                     Type
                                     <span className={style.cont_label_red}>*</span>
                                 </Label>
-                                <Input type="select" name="type" id="type" value={this.state.type}
+                                <Input type="select" id="type" value={this.state.type}
                                     onChange={this.handleChange} className={style.footer_select}>
-                                        <option onSelect={this.handleSelect} value="INTEGER">Number</option>
-                                        <option onSelect={this.handleSelect} value="VARCHAR(255)">String</option>
-                                        <option onSelect={this.handleSelect} value="DATE">Date</option>
+                                        <option onSelect={this.handleSelect} id="INTEGER">Number</option>
+                                        <option onSelect={this.handleSelect} id="VARCHAR(255)">String</option>
+                                        <option onSelect={this.handleSelect} id="DATE">Date</option>
                                 </Input>
                                 <Button className={style.footer_button}
                                     disabled={!this.state.column}
-                                    onClick={this.addColumn}> Add Column </Button>
+                                    onClick={this.addColumn}>Add Column</Button>
                             </FormGroup>
                         </Col>
                     </Container>

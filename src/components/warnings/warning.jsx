@@ -7,10 +7,8 @@ class Warning extends Component {
         return (
             <Container>
                 <Row>
-                    <Col>
-                        <p className={style.text}>
-                            {this.props.value}
-                        </p>
+                    <Col className={style.text}>
+                        {this.props.value}
                     </Col>
                 </Row>
             </Container>

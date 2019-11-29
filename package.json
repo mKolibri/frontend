@@ -1,35 +1,33 @@
 {
-  "name": "login-registration",
+  "name": "frontend",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@csstools/normalize.css": "github:csstools/normalize.css",
-    "@trendmicro/react-sidenav": "^0.4.5",
     "classnames": "^2.2.6",
+    "i": "^0.3.6",
     "install-peers": "^1.0.3",
-    "material-ui": "^0.20.2",
+    "normalize.css": "^8.0.1",
+    "@trendmicro/react-sidenav": "^0.4.5",
+    "npm": "^6.13.0",
     "react": "^16.9.0",
-    "react-bootstrap": "^1.0.0-beta.12",
+    "react-bootstrap": "^1.0.0-beta.14",
     "react-cookies": "^0.1.1",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.2.0",
     "reactstrap": "^8.1.1",
+    "serve": "^11.2.0",
     "start": "^5.1.0"
   },
   "scripts": {
-    "dev": "react-scripts start && serve -s build",
-    "prod": "react-scripts build"
+    "dev": "react-scripts start",
+    "prod": "react-scripts build && serve -s build"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [],
     "development": []
   }
 }

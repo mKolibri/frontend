@@ -30,12 +30,18 @@
 }
 
 .sidenav {
+    height: 100%;
     width: 15%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
     background-color:  rgb(30, 43, 56);
+    overflow-x: hidden;
+    padding-top: 20px;
 }
 
 .sidenav:hover {
-    width: 15%;
     background-color:  rgb(25, 36, 47);
 }
 
@@ -98,20 +104,3 @@
     margin: auto;
     text-align: center;
 }
-
-/*
-.cont_table_name {
-    margin-bottom: 5px;
-    border: none;
-    text-align: center;
-    height: 45px;
-    margin-left: 0;
-    width: 100%;
-    background-color: rgb(124, 7, 7);
-    color: white;
-}
-
-.cont_table_name:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(70, 14, 14);
-} */

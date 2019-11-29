@@ -20,6 +20,11 @@
     background-color: rgb(61, 63, 83);
 }
 
+.block_button:disabled {
+    color: rgb(255, 255, 255);
+    background-color: rgb(92, 93, 107);
+}
+
 .block_alert {
     text-align: center;
     margin-top: 12%;
@@ -30,12 +35,18 @@
 }
 
 .sidenav {
+    height: 100%;
     width: 15%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
     background-color:  rgb(30, 43, 56);
+    overflow-x: hidden;
+    padding-top: 20px;
 }
 
 .sidenav:hover {
-    width: 15%;
     background-color:  rgb(25, 36, 47);
 }
 
@@ -89,22 +100,11 @@
     text-align: left;
     font-size: 15px;
     display: inline-block;
-    width: 70%;
+    width: 200px;
     height: 30px;
-    margin-right: 15px;
-}
-
-/*
-.input {
-    border: none;
-    padding: 10px;
-    text-align: left;
-    font-size: 15px;
-    display: inline-block;
-    width: 20%;
     height: auto;
-    margin-right: 15px;
-} */
+    margin: 10px;
+}
 
 .cont_link_button {
     margin-right: 15px;

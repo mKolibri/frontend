@@ -1,9 +1,10 @@
 import { Container, Col, Form, Row, Input, Button, Label, FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Alert } from '../warnings/alert';
+import { Alert } from '../../warnings/alert';
 import style from './login.module.css';
-import { loginUser } from './login.dao';
+import { sendRequest } from '../user.dao';
+import cookie from 'react-cookies';
 
 class Login extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class Login extends Component {
             password: '',
             isAlert: false,
             alertMess: '',
+            userID: cookie.load('userID', {path: '/'})
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -20,12 +22,18 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        if (cookie.load('userID', {path: '/'})) {
+            this.props.history.push('/home');
+        }
+    }
+
     handleChange(e) {
         e.preventDefault();
         this.setState({ [e.target.id]: e.target.value });
     }
 
-    handleExit(e) {
+    handleExit() {
         this.setState({
             isAlert: false,
             alertMess: ''
@@ -40,19 +48,23 @@ class Login extends Component {
             password: this.state.password
         }
 
-        const content = await loginUser(user);
-        const result = content.json();
-        if (200 === content.status) {
-            this.props.history.push('/home');
-        } else if (content.message === 'Failed to fetch') {
-                this.setState({
-                    isAlert: true,
-                    alertMess: 'Error 404, server not found. Please, try again.'
-                });
+        const content = await sendRequest('login', 'POST', user);
+        if (content) {
+            content.json().then((result) => {
+                if (200 === content.status) {
+                    cookie.save('userID', result.userID, { path: '/'});
+                    this.props.history.push('/home');
+                } else {
+                    this.setState({
+                        isAlert: true,
+                        alertMess: result.message + '. Please, try again.'
+                    });
+                }
+            });
         } else {
             this.setState({
                 isAlert: true,
-                alertMess: result.message + '. Please, try again.'
+                alertMess: 'Error 404, server not found. Please, try again.'
             });
         }
     }
@@ -63,14 +75,14 @@ class Login extends Component {
                 { this.state.isAlert ?
                     <Container className={style.block_cont}>
                         <Alert className={style.block_cont_alert} value={this.state.alertMess}/>
-                        <Button className={style.block_cont_button} onClick={this.handleExit}> OK </Button>
+                        <Button className={style.block_cont_button} onClick={this.handleExit}>OK</Button>
                     </Container>
                 :
                     <Form className={style.form} onSubmit={this.handleSubmit}>
                         <Container>
                             <Row>
                             <Col>
-                                <h2 className={style.form_header}> LOG IN </h2>
+                                <h2 className={style.form_header}>LOGIN</h2>
                             </Col>
                             <Col>
                                 <FormGroup>
@@ -92,13 +104,13 @@ class Login extends Component {
                             </Col>
                                 <Button className={style.block_cont_button}
                                     disabled={!this.state.email && !this.state.password}
-                                    onSubmit={this.handleSubmit}> Log in </Button>
+                                    onSubmit={this.handleSubmit}>Log in</Button>
                         </Row>
                         <Row>
                             <Col><p className={style.form_text}>--- OR ---</p></Col>
-                                <Link to="/registry">
-                                    <Button className={style.block_cont_button}> Regisration </Button>
-                                </Link>
+                            <Link to="/registry">
+                                <Button className={style.block_cont_button}>Regisration</Button>
+                            </Link>
                         </Row>
                     </Container>
                 </Form>}

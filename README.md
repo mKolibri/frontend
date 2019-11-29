@@ -1,57 +1,50 @@
-# frontend
-React
+# ONLINE DATABASE FRONTEND
+used ReactJS
 
-# how to install and run APP
-npm ci
+# GETTING STARTED
+    npm ci
+    # RUN FOR PRODUCTION MODE
+    └── npm run prod
+    # RUN FOR DEVELOPMENT MODE
+    └── npm run dev
 
-# development mode
-npm run prod
-
-# production mode
-npm install -g serve
-npm run dev
-
-# project schema
-../frontend
-├── package.json
-├── package-lock.json
-├── public
-│   └── index.html
-├── README.md
-└── src
-    ├── app.jsx
-    ├── components
-    │   ├── components.dao.jsx
-    │   ├── configs
-    │   │   └── config.jsx
-    │   ├── login
-    │   │   ├── login.dao.jsx
-    │   │   ├── login.jsx
-    │   │   └── login.module.css
-    │   ├── profile
-    │   │   ├── addTable
-    │   │   │   ├── addTable.dao.jsx
-    │   │   │   ├── addTable.jsx
-    │   │   │   └── addTable.module.css
-    │   │   ├── home
-    │   │   │   ├── home.dao.jsx
-    │   │   │   ├── home.jsx
-    │   │   │   └── home.module.css
-    │   │   ├── showTable
-    │   │   │   ├── showTable.dao.jsx
-    │   │   │   ├── showTable.jsx
-    │   │   │   └── showTable.module.css
-    │   │   └── tables
-    │   │       ├── table.dao.jsx
-    │   │       ├── table.module.css
-    │   │       └── tables.jsx
-    │   ├── registry
-    │   │   ├── registry.dao.jsx
-    │   │   ├── registry.jsx
-    │   │   └── registry.module.css
-    │   └── warnings
-    │       ├── alert.jsx
-    │       ├── alert.module.css
-    │       ├── warning.jsx
-    │       └── warning.module.css
-    └── index.js
+# PROJECT SCHEMA
+/frontend
+    ├── package.json- The list of node dependencies which are needed.
+    ├── package-lock.json
+    ├── public
+    │   └── index.html- Entry point. The first readable module, and follows from it to other modules to compile them.
+    ├── README.md
+    └── src- Anything that is used when the app is compiled
+        ├── app.jsx- File for main component in React which acts as a container for all other components.
+        ├── components - All components in app, css files
+        │   ├── configs- Configuration files
+        │   │   └── config.jsx
+        │   ├── table- Table-components
+        │   │   ├── addTable- // SddTable-component and css file
+        │   │   │   ├── addTable.jsx
+        │   │   │   └── addTable.module.css
+        │   │   ├── showTable- // ShowTable-component and css file
+        │   │   │   ├── showTable.jsx
+        │   │   │   └── showTable.module.css
+        │   │   ├──tables- // Tables-component and css file
+        │   │   │   ├── table.module.css
+        │   │   │   └── tables.jsx
+        │   │   └── table.dao.jsx- Fetch functions for table-components
+        │   ├── user- User-components
+        │   │   ├── home- // Home-component and css file
+        │   │   │   ├── home.jsx
+        │   │   │   └── home.module.css
+        │   │   ├── login- // Login-component and css file
+        │   │   │   ├── login.jsx
+        │   │   │   └── login.module.css
+        │   │   ├── registry- // Registration-component and css file
+        │   │   │   ├── registry.jsx
+        │   │   │   └── registry.module.css
+        │   │   └── user.dao.jsx- Fetch functions for user-components
+        │   └── warnings- Warnings and error components and css files
+        │       ├── alert.jsx
+        │       ├── alert.module.css
+        │       ├── warning.jsx
+        │       └── warning.module.css
+        └── index.js- The javascript file corresponding to index.html.

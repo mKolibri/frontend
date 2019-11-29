@@ -1,6 +1,16 @@
 .block {
     color: rgb(29, 59, 90);
     font-size: 17px;
+    text-align: center;
+}
+
+.block_alert {
+    text-align: center;
+    margin-top: 12%;
+    background-color: rgb(216, 211, 211);
+    color: rgb(24, 51, 78);
+    width: 100%;
+    height: 100%;
 }
 
 .block_button {
@@ -14,32 +24,34 @@
     width: 90%;
     height: 8%;
 }
-  
+
 .block_button:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(61, 63, 83);
 }
 
-.block_alert {
-    text-align: center;
-    margin-top: 12%;
-    background-color: rgb(216, 211, 211); 
-    color: rgb(24, 51, 78);
-    width: 100%;
-    height: 100%;
+.block_button:disabled {
+    color: rgb(255, 255, 255);
+    background-color: rgb(92, 93, 107);
 }
 
 .sidenav {
+    height: 100%;
     width: 15%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
     background-color:  rgb(30, 43, 56);
+    overflow-x: hidden;
+    padding-top: 20px;
 }
 
 .sidenav:hover {
-    width: 15%;
     background-color:  rgb(25, 36, 47);
 }
 
-.sidenav_button-logout {
+.sidenav_button_logout {
     color: white;
     background-color: rgb(138, 58, 58);
     padding: 7px;
@@ -62,12 +74,28 @@
     display: inline-flex;
     margin-left: 15%;
     width: auto;
-    text-align: center;
-    padding: 5%;
-    font-size: 18px;
 }
 
-.cont_text {
-    font-size: 20px;
-    color: rgb(66, 14, 44);
+.cont_head {
+    background-color: rgb(29, 59, 90);
+    color: white;
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 45px;
+}
+
+.cont_table_name {
+    margin-bottom: 5px;
+    border: none;
+    text-align: center;
+    height: 45px;
+    margin-left: 0;
+    width: 100%;
+    background-color: grey;
+}
+
+.cont_table_name:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(61, 63, 83);
 }

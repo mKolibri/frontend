@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Link} from 'react-router-dom';
+import cookie from 'react-cookies';
+import { BrowserRouter, Link } from 'react-router-dom';
 import style from './showTable.module.css';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
 import { Col, Button, Container, Table } from 'reactstrap';
-import { showTableFetch } from './showTable.dao';
-import { logOut } from '../../components.dao';
-import cookie from 'react-cookies';
+import { sendRequest } from '../../user/user.dao';
+
 
 class ShowTable extends Component {
     constructor(props) {
@@ -14,20 +14,20 @@ class ShowTable extends Component {
         this.state = {
             isAlert: false,
             alertMess: '',
-            name : cookie.load('tableName')
+            name : cookie.load('tableName'),
+            userID: cookie.load('userID')
         };
-
         this.handleExit = this.handleExit.bind(this);
-        this.toHome = this.toHome.bind(this);
-        this.toTables = this.toTables.bind(this);
-        this.addTable = this.addTable.bind(this);
+        this.handleClick = this.handleClick.bind(this);
         this.logout = this.logout.bind(this);
     }
 
     async componentDidMount() {
-        const tableName = this.state.name;
-        const path = 'table/' + tableName;
-        const content = await showTableFetch(path);
+        if (!this.state.userID) {
+            this.props.history.push('/');
+        }
+        const tableID = this.state.name;
+        const content = await sendRequest('table/' + tableID, 'GET');
         const results = content.json();
 
         if (200 === content.status) {
@@ -56,22 +56,16 @@ class ShowTable extends Component {
         });
     }
 
-    toHome() {
-        this.props.history.push('/home');
-    }
-
-    toTables() {
-        this.props.history.push('/tables');
-    }
-
-    addTable() {
-        this.props.history.push('/addTable');
-    }
-
     async logout() {
-        await logOut();
+        await sendRequest('logout', 'GET');
         cookie.remove('tableName', { path: '/' });
+        cookie.remove('userID', { path: '/' });
+        cookie.remove('loggedin', { path: '/' });
         this.props.history.push('/');
+    }
+
+    handleClick() {
+        window.location.reload(true);
     }
 
     componentWillUnmount() {
@@ -85,35 +79,35 @@ class ShowTable extends Component {
                 {this.state.isAlert ?
                     <Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
-                        <Button className={style.block_button} onClick={this.handleExit}> OK </Button>
+                        <Button className={style.block_button} onClick={this.handleExit}>OK</Button>
                     </Container>
                 :
                 <Container>
-                    <SideNav className={style.sidenav}>
-                        <Link to="/home" onClick={this.toHome}>
-                            <Button className={style.block_button}> Home </Button>
+                    <SideNav className={style.sidenav}  onClick={this.handleClick}>
+                        <Link replace={true} to="/home">
+                            <Button className={style.block_button} onClick={this.handleClick}>Home</Button>
                         </Link>
-                        <Link to="/tables" onClick={this.toTables}>
-                            <Button className={style.block_button}> Tables </Button>
+                        <Link replace={true} to="/tables">
+                            <Button className={style.block_button} onClick={this.handleClick}>Tables</Button>
                         </Link>
-                        <Link to="/addTable" onClick={this.addTable}>
-                            <Button className={style.block_button}> Add table </Button>
+                        <Link to="/addTable">
+                            <Button className={style.block_button} onClick={this.handleClick}>Add table</Button>
                         </Link>
                         <Link to="/" onClick={this.logout}>
-                            <Button className={style.sidenav_button_logout}> Log out </Button>
+                            <Button className={style.sidenav_button_logout}>Log out</Button>
                         </Link>
                     </SideNav>
                     <Col className={style.col}>
-                        <h1 className={style.col_header}> Table name: {this.state.table} </h1>
+                        <h1 className={style.col_header}>Table name: {this.state.table}</h1>
                     </Col>
                     <Col className={style.col_desc}>
-                        <h1 className={style.col_desc_text}> Description: {this.state.description} </h1>
+                        <h1 className={style.col_desc_text}>Description: {this.state.description}</h1>
                     </Col>
                     <Container className={style.cont}>
                         <Table className={style.cont_table}>
                         <thead>
                             <tr>
-                                {Array.isArray(results) && results.length > 0 && results.map(r => (
+                                {Array.isArray(results) && results.length > 0 && results.map((r) => (
                                     <th key={r.id}>{r.column} ({r.type})</th>
                                 ))}
                             </tr>
