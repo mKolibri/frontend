@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import 'normalize.css';
+// import 'normalize.css';
+import SideNav from '@trendmicro/react-sidenav';
 import { Container, Button } from 'reactstrap';
 import style from './home.module.css';
 import { Alert } from '../../warnings/alert';
 import { sendRequest } from '../user.dao';
 import cookie from 'react-cookies';
 import { BrowserRouter, Link } from 'react-router-dom';
-import SideNav from '@trendmicro/react-sidenav';
+import PropTypes from 'prop-types';
 
 class Home extends Component {
+    static get propTypes() {
+        return {
+            history: PropTypes.isRequired
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -26,11 +33,13 @@ class Home extends Component {
         }
 
         const content = await sendRequest('user', 'GET');
+        const normalStatus = 200;
+        const badStatus = 400;
         if (content) {
             content.json().then((result) => {
-                if (200 === content.status) {
+                if (normalStatus === content.status) {
                     this.setState(result);
-                } else if (400 === content.status) {
+                } else if (badStatus === content.status) {
                     cookie.remove('userID', { path: '/'});
                 } else {
                     this.setState({

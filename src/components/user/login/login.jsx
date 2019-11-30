@@ -5,8 +5,15 @@ import { Alert } from '../../warnings/alert';
 import style from './login.module.css';
 import { sendRequest } from '../user.dao';
 import cookie from 'react-cookies';
+import PropTypes from 'prop-types';
 
 class Login extends Component {
+    static get propTypes() {
+        return {
+            history: PropTypes.isRequired
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -46,12 +53,13 @@ class Login extends Component {
         const user = {
             mail: this.state.mail,
             password: this.state.password
-        }
+        };
 
         const content = await sendRequest('login', 'POST', user);
+        const status = 200;
         if (content) {
             content.json().then((result) => {
-                if (200 === content.status) {
+                if (status === content.status) {
                     cookie.save('userID', result.userID, { path: '/'});
                     this.props.history.push('/home');
                 } else {

@@ -94,18 +94,6 @@
     color: red;
 }
 
-.cont_input {
-    border: none;
-    padding: 10px;
-    text-align: left;
-    font-size: 15px;
-    display: inline-block;
-    width: 200px;
-    height: 30px;
-    height: auto;
-    margin: 10px;
-}
-
 .cont_link_button {
     margin-right: 15px;
     font-size: 15px;
@@ -127,6 +115,12 @@
 .cont_link_button:disabled {
     background-color: rgb(68, 71, 85);
     color: white;
+}
+
+.cont_link_info {
+    color: red;
+    font-size: 12px;
+    margin: 0;
 }
 
 .cont_table {
@@ -187,5 +181,17 @@
     height: auto;
     text-align: left;
     font-size: 15px;
+    background-color: white;
+}
+
+.cont_input {
+    border: none;
+    padding: 10px;
+    text-align: left;
+    font-size: 15px;
+    display: inline-block;
+    width: 200px;
+    height: auto;
+    margin: 10px;
     background-color: white;
 }

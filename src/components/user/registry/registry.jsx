@@ -6,8 +6,15 @@ import { Warning } from '../../warnings/warning';
 import { Alert } from '../../warnings/alert';
 import { sendRequest } from '../user.dao';
 import cookie from 'react-cookies';
+import PropTypes from 'prop-types';
 
 class Registry extends Component {
+    static get propTypes() {
+        return {
+            history: PropTypes.isRequired
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -63,7 +70,7 @@ class Registry extends Component {
             messages += '\n' + warnings[i].msg;
             this.setState({
                 [warnings[i].param]: ''
-            })
+            });
         }
         return messages;
     }
@@ -79,15 +86,16 @@ class Registry extends Component {
         };
 
         const content = await sendRequest('registration', 'POST', user);
+        const normalStatus = 200;
+        const badStatus = 502;
         if (content) {
             content.json().then((result) => {
-                if (200 === content.status) {
-                    cookie.save('userID', result.userID, {path: '/'})
+                if (normalStatus === content.status) {
+                    cookie.save('userID', result.userID, {path: '/'});
                     this.props.history.push('/home');
-                } else if (502 === content.status) {
+                } else if (badStatus === content.status) {
                     this.setState({results: result});
                     const warnings = this.getWarnings();
-                    alert(warnings);
                     this.setState({
                         showResults: true,
                         results: warnings

@@ -30,6 +30,6 @@ const sendRequest = async function(path, method, body) {
             return result;
         }
     }
-}
+};
 
 export { sendRequest };

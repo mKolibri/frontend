@@ -3,20 +3,32 @@ import { BrowserRouter, Link } from 'react-router-dom';
 import style from './addTable.module.css';
 import { Alert } from '../../warnings/alert';
 import SideNav from '@trendmicro/react-sidenav';
+import PropTypes from 'prop-types';
 import { Col, Input, Button, Label, FormGroup, Table, Container } from 'reactstrap';
 import cookie from 'react-cookies';
 import { sendRequest } from '../table.dao';
+import { Warning } from '../../warnings/warning';
 
 class AddTable extends Component {
+    static get propTypes() {
+        return {
+            history: PropTypes.isRequired
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {
             isAlert: false,
             alertMess: '',
-            type: 'Number',
-            num : 1,
+            showResult: false,
+            result: '',
             results: [],
-            userID: cookie.load('userID', {path: '/'})
+            showType: 'Number',
+            type: 'INTEGER',
+            num : 1,
+            userID: cookie.load('userID', {path: '/'}),
+            isColumnsExist: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -48,31 +60,50 @@ class AddTable extends Component {
     }
 
     addColumn() {
+        const add = 1;
         this.setState((state) => {
             const value = {
                 column: this.state.column,
                 num: this.state.num,
-                type: this.state.type
+                type: this.state.type,
+                showType: this.state.showType
             };
-                value.type = this.state.type;
             const results = state.results.concat(value);
+            const name = this.state.column;
+            const array = this.state.results;
+            for (let i = 0; i < array.length; ++i) {
+                if (array[i].column === name) {
+                    this.setState({
+                        showResult: true,
+                        result: 'Column name must not be duplicated'
+                    });
+                    return {};
+                }
+            }
             return { results };
         });
 
         this.setState({
             column: '',
-            num: this.state.num + 1
+            num: this.state.num + add,
+            isColumnsExist: true
         });
     }
 
     remove(e) {
-        const id = e.target.id;
+        let id = e.target.id;
         let array = [...this.state.results];
+        const count = 1;
         for (let i = 0; i < array.length; ++i) {
             if (Number(array[i].num) === Number(id)) {
-                array.splice(i, 1);
+                array.splice(i, count);
                 --i;
             }
+        }
+        if (array.length) {
+            this.setState({
+                isColumnsExist: false
+            });
         }
         this.setState({results: array});
     }
@@ -80,8 +111,9 @@ class AddTable extends Component {
     handleSelect(e) {
         e.preventDefault();
         this.setState({
-            type: e.target.id
-        })
+            type: e.target.id,
+            showType: e.target.value
+        });
     }
 
     handleClick() {
@@ -90,15 +122,6 @@ class AddTable extends Component {
 
     async handleSubmit(e) {
         e.preventDefault();
-        const columns = this.state.results;
-        if (columns.length > 0) {
-            for (let res in columns) {
-                if (res.type === 'Number') {
-                    res.type = 'INTEGER';
-                }
-            }
-            this.setState(columns);
-        }
         const table = {
             'name': this.state.tableName,
             'description': this.state.description,
@@ -106,9 +129,10 @@ class AddTable extends Component {
         };
 
         const content = await sendRequest('addTable', 'POST', table);
+        const status = 200;
         if (content) {
             content.json().then((result) => {
-                if (200 === content.status) {
+                if (status === content.status) {
                     cookie.save('tableName', result.name, { path: '/' });
                     this.props.history.push('/showTable');
                 } else {
@@ -137,7 +161,7 @@ class AddTable extends Component {
                     </Container>
                 :
                 <Container>
-                    <SideNav className={style.sidenav}  onClick={this.handleClick}>
+                    <SideNav className={style.sidenav} onClick={this.handleClick}>
                         <Link to="/home">
                             <Button className={style.block_button}>Home</Button>
                         </Link>
@@ -175,8 +199,10 @@ class AddTable extends Component {
                             <Label for="createTable">If your table ready, then press...</Label>
                             <Link to="/showTable" onClick={this.handleSubmit}>
                                 <Button className={style.cont_link_button}
-                                    disabled={!this.state.tableName}> Create Table </Button>
+                                    disabled={!this.state.tableName || !this.state.isColumnsExist}>
+                                    Create Table</Button>
                             </Link>
+                            <h6 className={style.cont_link_info}>You must have one column at least!</h6>
                         </Col>
                     </Container>
                     <Container className={style.cont}>
@@ -189,10 +215,10 @@ class AddTable extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {Array.isArray(results) && results.length > 0 && results.map(r => (
+                            {Array.isArray(results) && results.length && results.map(r => (
                                 <tr key={r.id}>
                                     <td>{r.column}</td>
-                                    <td>{r.type}</td>
+                                    <td>{r.showType}</td>
                                     <td><Button className={style.cont_table_name}
                                         onClick={this.remove} id={r.num}
                                     >X</Button></td>
@@ -203,6 +229,10 @@ class AddTable extends Component {
                     </Container>
                     <Container className={style.footer}>
                         <Col>
+                            {this.state.showResult ?
+                                <Col className={style.form_warning}><Warning
+                                    value={this.state.result} className={style.form_warning_res}/>
+                                </Col> : null }
                             <FormGroup>
                                 <Label for="column">
                                     Name
@@ -215,8 +245,8 @@ class AddTable extends Component {
                                     Type
                                     <span className={style.cont_label_red}>*</span>
                                 </Label>
-                                <Input type="select" id="type" value={this.state.type}
-                                    onChange={this.handleChange} className={style.footer_select}>
+                                <Input type="select" id="type" value={this.state.showType}
+                                    onChange={this.handleChange} className={style.footer_select} required>
                                         <option onSelect={this.handleSelect} id="INTEGER">Number</option>
                                         <option onSelect={this.handleSelect} id="VARCHAR(255)">String</option>
                                         <option onSelect={this.handleSelect} id="DATE">Date</option>

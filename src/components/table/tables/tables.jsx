@@ -5,9 +5,16 @@ import { Alert } from '../../warnings/alert';
 import { sendRequest } from '../table.dao';
 import SideNav from '@trendmicro/react-sidenav';
 import cookie from 'react-cookies';
+import PropTypes from 'prop-types';
 import style from './table.module.css';
 
 class Tab extends Component {
+    static get propTypes() {
+        return {
+            history: PropTypes.isRequired
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -39,8 +46,10 @@ class Tab extends Component {
 
     prettyDate() {
         let results = this.state.results;
+        const begin = 0;
+        const end = 10;
         Object.keys(results).map(function(key, index) {
-            results[index].date = results[index].date.slice(0, 10);
+            results[index].date = results[index].date.slice(begin, end);
             return results;
         });
         this.setState({results: results});
@@ -56,9 +65,10 @@ class Tab extends Component {
         }
 
         const content = await sendRequest('tables', 'GET');
+        let status = 200;
         if (content) {
             content.json().then((result) => {
-                if (200 === content.status) {
+                if (status === content.status) {
                     this.setState({results: result});
                     this.prettyDate();
                 } else {
@@ -113,7 +123,7 @@ class Tab extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.isArray(results) && results.length > 0 && results.map(r => (
+                                {Array.isArray(results) && results.length && results.map(r => (
                                     <tr key={r.id} >
                                         <td><Button className={style.cont_table_name}>{r.name}</Button></td>
                                         <td>{r.date}</td>
@@ -121,7 +131,6 @@ class Tab extends Component {
                                         <td><Button className={style.cont_table_name}
                                             onClick={this.remove} id={r.num}>X</Button></td>
                                         <td><Button className={style.cont_table_name}>/</Button></td>
-                                        <td><Button className={style.cont_table_name}>...</Button></td>
                                     </tr>
                                 ))}
                             </tbody>
