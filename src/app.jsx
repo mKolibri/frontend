@@ -12,6 +12,7 @@ class App extends Component {
   componentWillUnmount() {
     cookie.remove('userID', {path: '/'});
     cookie.remove('loggedin', {path: '/'});
+    cookie.remove('tableID', {path: '/'});
   }
 
   render() {

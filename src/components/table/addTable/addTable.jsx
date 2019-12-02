@@ -152,6 +152,7 @@ class AddTable extends Component {
 
     render() {
         const results = this.state.results;
+        const count = 0;
         return (
             <BrowserRouter>
                 {this.state.isAlert ?
@@ -215,7 +216,7 @@ class AddTable extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {Array.isArray(results) && results.length && results.map(r => (
+                            {Array.isArray(results) && results.length > count && results.map(r => (
                                 <tr key={r.id}>
                                     <td>{r.column}</td>
                                     <td>{r.showType}</td>
@@ -232,7 +233,7 @@ class AddTable extends Component {
                             {this.state.showResult ?
                                 <Col className={style.form_warning}><Warning
                                     value={this.state.result} className={style.form_warning_res}/>
-                                </Col> : null }
+                                </Col> : null}
                             <FormGroup>
                                 <Label for="column">
                                     Name

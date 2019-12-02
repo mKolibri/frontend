@@ -44,6 +44,7 @@ class Registry extends Component {
     }
 
     handleChange(e) {
+        e.preventDefault();
         this.setState({ [e.target.id]: e.target.value });
     }
 
