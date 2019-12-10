@@ -1,6 +1,5 @@
 .block {
-    color: rgb(29, 59, 90);
-    font-size: 17px;
+    margin: 5px;
     text-align: center;
 }
 
@@ -30,15 +29,6 @@
     background-color: rgb(61, 63, 83);
 }
 
-.block_button:disabled {
-    color: rgb(255, 255, 255);
-    background-color: rgb(92, 93, 107);
-}
-
-.cont_delete {
-    text-align: center;
-}
-
 .error_button {
     color: white;
     background-color: darkslategray;
@@ -54,23 +44,6 @@
 .error_button:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(39, 65, 65);
-}
-
-.error_button_yes {
-    color: white;
-    background-color: rgb(206, 39, 53);
-    padding: 7px;
-    margin-bottom: 5px;
-    border: none;
-    color: white;
-    text-align: center;
-    width: 20%;
-    height: auto;
-}
-
-.error_button_yes:hover {
-    color: rgb(255, 255, 255);
-    background-color:rgb(114, 24, 32);
 }
 
 .sidenav {
@@ -106,34 +79,98 @@
     background-color: rgb(114, 50, 50);
 }
 
-.cont {
-    background-color: #e7f3ec;
-    box-shadow: 5px 5px 5px rgb(182, 180, 180);
-    display: inline-flex;
-    margin-left: 15%;
-    width: auto;
-}
-
-.cont_head {
+.col {
     background-color: rgb(29, 59, 90);
     color: white;
     padding: 10px;
     padding-left: 30px;
     padding-right: 30px;
-    height: 45px;
 }
 
-.cont_table_name {
-    margin-bottom: 5px;
-    border: none;
+.col_header {
+    color: rgb(36, 53, 53);
+    font-size: 200%;
     text-align: center;
-    height: 45px;
-    margin-left: 0;
-    width: 100%;
-    background-color: grey;
+    color: #fff;
 }
 
-.cont_table_name:hover {
+.col_desc {
+    background-color: rgb(175, 175, 175);
+    color: rgb(65, 63, 63);
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.col_desc_text {
+    color: rgb(36, 53, 53);
+    font-size: 100%;
+    text-align: center;
+    color: #fff;
+}
+
+.cont {
+    background-color: #e7f3ec;
+    box-shadow: 5px 5px 5px rgb(182, 180, 180);
+    display: inline-flex;
+    margin-left: 15%;
+    width: 80%;
+}
+
+.footer {
+    bottom: 0;
+    width: 100%;
+    margin-left: 15%;
+    width: 95%;
+    color: darkslategray;
+    background-color: rgb(216, 211, 211);
+}
+
+.footer_button {
+    color: white;
+    background-color:rgb(43, 64, 85);
+    padding: 10px;
+    border: none;
+    color: white;
+    text-align: center;
+    width: auto;
+    margin: 10px;
+    margin-left: 5%;
+}
+
+.footer_button:hover {
     color: rgb(255, 255, 255);
-    background-color: rgb(61, 63, 83);
+    background-color:rgb(30, 43, 56);
+}
+
+.footer_button_warn {
+    color: white;
+    background-color: rgb(167, 71, 71);
+    padding: 10px;
+    border: none;
+    color: white;
+    text-align: center;
+    width: auto;
+}
+
+.footer_button_warn:hover {
+    color: rgb(255, 255, 255);
+    background-color:rgb(107, 42, 42);
+}
+
+.footer_button:disabled {
+    background-color: rgb(68, 71, 85);
+    color: white;
+}
+
+.cont_input {
+    border: none;
+    padding: 10px;
+    text-align: left;
+    font-size: 15px;
+    display: inline-block;
+    width: 200px;
+    height: auto;
+    margin: 10px;
+    background-color: white;
 }

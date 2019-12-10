@@ -27,9 +27,15 @@ used ReactJS
         │   │   ├── showTable- // ShowTable-component and css file
         │   │   │   ├── showTable.jsx
         │   │   │   └── showTable.module.css
+        │   │   ├── addValues- // addValues-component and css file
+        │   │   │   ├── addValues.jsx
+        │   │   │   └── addValues.module.css
         │   │   ├──tables- // Tables-component and css file
         │   │   │   ├── table.module.css
         │   │   │   └── tables.jsx
+        │   │   ├── updateTableInfo- // ipdateTableInfo-component and css file
+        │   │   │   ├── updateTableInfo.jsx
+        │   │   │   └── updateTableInfo.module.css
         │   │   └── table.dao.jsx- Fetch functions for table-components
         │   ├── user- User-components
         │   │   ├── home- // Home-component and css file

@@ -27,8 +27,8 @@ class AddTable extends Component {
             showType: 'Number',
             type: 'INTEGER',
             num : 1,
-            userID: cookie.load('userID', {path: '/'}),
-            isColumnsExist: false
+            isColumnsExist: false,
+            userID: cookie.load('userID', {path: '/'})
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -36,13 +36,25 @@ class AddTable extends Component {
         this.logout = this.logout.bind(this);
         this.addColumn = this.addColumn.bind(this);
         this.remove = this.remove.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleChange(e) {
-        this.setState({ [e.target.id]: e.target.value });
+        if (/\d/.test(e.target.value)) {
+            this.setState({
+                showResult: true,
+                result: 'Column name must contain only letters'
+            });
+        } else if (e.target.id === 'showType') {
+            const type = (e.target.value === 'Number')? 'Integer': 'Varchar(255)';
+            this.setState({
+                [e.target.id]: e.target.value,
+                type: type
+            });
+        } else {
+            this.setState({ [e.target.id]: e.target.value });
+        }
     }
 
     async logout() {
@@ -108,14 +120,6 @@ class AddTable extends Component {
         this.setState({results: array});
     }
 
-    handleSelect(e) {
-        e.preventDefault();
-        this.setState({
-            type: e.target.id,
-            showType: e.target.value
-        });
-    }
-
     handleClick() {
         window.location.reload();
     }
@@ -130,10 +134,11 @@ class AddTable extends Component {
 
         const content = await sendRequest('addTable', 'POST', table);
         const status = 200;
+        const cutNumber = 1;
         if (content) {
             content.json().then((result) => {
                 if (status === content.status) {
-                    cookie.save('tableName', result.name, { path: '/' });
+                    cookie.save('tableName', result.name.substr(cutNumber   ), { path: '/' });
                     this.props.history.push('/showTable');
                 } else {
                     this.setState({
@@ -158,7 +163,7 @@ class AddTable extends Component {
                 {this.state.isAlert ?
                     <Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
-                        <Button className={style.block_button} onClick={this.handleExit}>OK</Button>
+                        <Button className={style.error_button} onClick={this.handleExit}>OK</Button>
                     </Container>
                 :
                 <Container>
@@ -186,7 +191,9 @@ class AddTable extends Component {
                                     <span className={style.cont_label_red}>*</span>
                                 </Label>
                                 <Input type="text" id="tableName" placeholder="Table name"
-                                    onChange={this.handleChange} className={style.cont_input} required/>
+                                    onChange={this.handleChange} className={style.cont_input}
+                                    value={this.state.tableName} required/>
+                                <h6 className={style.cont_link_info}>Name must contain only letters</h6>
                             </FormGroup>
                         </Col>
                         <Col>
@@ -200,7 +207,7 @@ class AddTable extends Component {
                             <Label for="createTable">If your table ready, then press...</Label>
                             <Link to="/showTable" onClick={this.handleSubmit}>
                                 <Button className={style.cont_link_button}
-                                    disabled={!this.state.tableName || !this.state.isColumnsExist}>
+                                    disabled={ (this.state.tableName)? ((this.state.isColumnsExist)? false: true): true}>
                                     Create Table</Button>
                             </Link>
                             <h6 className={style.cont_link_info}>You must have one column at least!</h6>
@@ -234,7 +241,7 @@ class AddTable extends Component {
                                 <Col className={style.form_warning}><Warning
                                     value={this.state.result} className={style.form_warning_res}/>
                                 </Col> : null}
-                            <FormGroup>
+                            <FormGroup className={style.miban}>
                                 <Label for="column">
                                     Name
                                     <span className={style.cont_label_red}>*</span>
@@ -246,11 +253,10 @@ class AddTable extends Component {
                                     Type
                                     <span className={style.cont_label_red}>*</span>
                                 </Label>
-                                <Input type="select" id="type" value={this.state.showType}
+                                <Input type="select" id="showType" value={this.state.showType}
                                     onChange={this.handleChange} className={style.footer_select} required>
-                                        <option onSelect={this.handleSelect} id="INTEGER">Number</option>
-                                        <option onSelect={this.handleSelect} id="VARCHAR(255)">String</option>
-                                        <option onSelect={this.handleSelect} id="DATE">Date</option>
+                                        <option onChange={this.handleSelect} id="INTEGER">Number</option>
+                                        <option onChange={this.handleSelect} id="VARCHAR(255)">String</option>
                                 </Input>
                                 <Button className={style.footer_button}
                                     disabled={!this.state.column}
