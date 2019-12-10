@@ -1,6 +1,6 @@
 .block {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 0;
 }
 
 .block_cont_alert {
@@ -39,7 +39,7 @@
 }
 
 .form {
-    margin-top: 20px;
+    margin-bottom: 10px;
     background-color: rgb(216, 211, 211);
     color: rgb(24, 51, 78);
 }
@@ -51,7 +51,6 @@
 
 .form_warning {
     display: inline-flex;
-    border-radius: 6px;
     background-color: white;
 }
 

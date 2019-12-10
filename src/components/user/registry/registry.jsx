@@ -23,6 +23,7 @@ class Registry extends Component {
             mail: '',
             age:'',
             password: '',
+            confirmPassword: '',
             showResults: false,
             results: '',
             isAlert: false,
@@ -78,45 +79,51 @@ class Registry extends Component {
 
     async handleSubmit(e) {
         e.preventDefault();
-        const user = {
-            'name': this.state.name,
-            'surname': this.state.surname,
-            'password': this.state.password,
-            'mail': this.state.mail,
-            'age': this.state.age
-        };
-
-        const content = await sendRequest('registration', 'POST', user);
-        const normalStatus = 200;
-        const badStatus = 502;
-        if (content) {
-            content.json().then((result) => {
-                if (normalStatus === content.status) {
-                    cookie.save('userID', result.userID, {path: '/'});
-                    this.props.history.push('/home');
-                } else if (badStatus === content.status) {
-                    this.setState({results: result});
-                    const warnings = this.getWarnings();
-                    this.setState({
-                        showResults: true,
-                        results: warnings
-                    });
-                } else if (result.message === 'Failed to fetch') {
-                    this.setState({
-                        isAlert: true,
-                        alertMess: 'Error 404, server not found. Please, try again.'
-                    });
-                } else {
-                    this.setState({
-                        isAlert: true,
-                        alertMessage: result.message
-                    });
-                }
-            });
+        if (this.state.password === this.state.confirmPassword) {
+            const user = {
+                'name': this.state.name,
+                'surname': this.state.surname,
+                'password': this.state.password,
+                'mail': this.state.mail,
+                'age': this.state.age
+            };
+            const content = await sendRequest('registration', 'POST', user);
+            const normalStatus = 200;
+            const badStatus = 502;
+            if (content) {
+                content.json().then((result) => {
+                    if (normalStatus === content.status) {
+                        cookie.save('userID', result.userID, {path: '/'});
+                        this.props.history.push('/home');
+                    } else if (badStatus === content.status) {
+                        this.setState({results: result});
+                        const warnings = this.getWarnings();
+                        this.setState({
+                            showResults: true,
+                            results: warnings
+                        });
+                    } else if (result.message === 'Failed to fetch') {
+                        this.setState({
+                            isAlert: true,
+                            alertMess: 'Error 404, server not found. Please, try again.'
+                        });
+                    } else {
+                        this.setState({
+                            isAlert: true,
+                            alertMessage: result.message
+                        });
+                    }
+                });
+            } else {
+                this.setState({
+                    isAlert: true,
+                    alertMess: 'Error 404, server not found. Please, try again.'
+                });
+            }
         } else {
             this.setState({
-                isAlert: true,
-                alertMess: 'Error 404, server not found. Please, try again.'
+                showResults: true,
+                results: 'Confirm password is failed.'
             });
         }
     }
@@ -183,6 +190,16 @@ class Registry extends Component {
                                     <Input type="password" id="password"
                                         className={style.form_input} placeholder="Secret-Password"
                                         value={this.state.password} onChange={this.handleChange} required/>
+                                </FormGroup>
+                            </Col>
+                            <Col md="12">
+                                <FormGroup>
+                                    <Label for="confirmPassword" className={style.form_label}>
+                                        Confirm Password<span className={style.form_label_red}>*</span>
+                                    </Label><br/>
+                                    <Input type="password" id="confirmPassword"
+                                        className={style.form_input} placeholder="Confirm-Password"
+                                        value={this.state.confirmPassword} onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
                             <Col >

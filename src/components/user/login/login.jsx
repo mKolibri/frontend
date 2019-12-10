@@ -83,7 +83,7 @@ class Login extends Component {
                 { this.state.isAlert ?
                     <Container className={style.block_cont}>
                         <Alert className={style.block_cont_alert} value={this.state.alertMess}/>
-                        <Button className={style.block_cont_button} onClick={this.handleExit}>OK</Button>
+                        <Button className={style.block_cont_button_error} onClick={this.handleExit}>OK</Button>
                     </Container>
                 :
                     <Form className={style.form} onSubmit={this.handleSubmit}>

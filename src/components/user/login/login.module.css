@@ -27,11 +27,24 @@
 }
 
 .block_cont_button:hover {
-    border: none;
-    padding: 10px;
     background-color: rgb(32, 54, 54);
     color: rgb(225, 226, 228);
     font-size: 15px;
+}
+
+.block_cont_button_error {
+    border: none;
+    padding: 10px;
+    height: 45px;
+    width: 21%;
+    background-color: darkslategray;
+    color: whitesmoke;
+    font-size: 14px;
+}
+
+.block_cont_button_error:hover {
+    background-color: rgb(32, 54, 54);
+    color: rgb(225, 226, 228);
 }
 
 .block_cont_button:disabled {
@@ -44,7 +57,7 @@
 
 .form {
     margin: 5px;
-    margin-top: 12%;
+    margin-top: 10%;
     background-color: rgb(216, 211, 211);
     color: rgb(24, 51, 78);
 }

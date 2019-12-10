@@ -32,6 +32,9 @@ class Tab extends Component {
         this.saveResults = this.saveResults.bind(this);
         this.removeTable = this.removeTable.bind(this);
         this.delAlert = this.delAlert.bind(this);
+        this.detTable = this.getTable.bind(this);
+        this.handleShowTable = this.handleShowTable.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
     }
 
     async logout() {
@@ -48,6 +51,13 @@ class Tab extends Component {
             alertMess: ''
         });
         this.props.history.push('/tables');
+    }
+
+    handleUpdate(e) {
+        e.preventDefault();
+        const table = this.getTable(e.target.id);
+        cookie.save('tableName', table.tableID, {path: '/'});
+        this.props.history.push('/updateTableInfo');
     }
 
     prettyDate() {
@@ -110,6 +120,13 @@ class Tab extends Component {
         return table;
     }
 
+    handleShowTable(e) {
+        e.preventDefault();
+        const table = this.getTable(e.target.id);
+        cookie.save('tableName', table.tableID, {path: '/'});
+        this.props.history.push('/showTable');
+    }
+
     async removeTable() {
         const id = cookie.load('tableID', {path: '/'});
         const body = this.getTable(id);
@@ -155,14 +172,14 @@ class Tab extends Component {
             <BrowserRouter>
                 {this.state.isAlert ?
                     (this.state.isDel) ?
-                    <Container>
+                    <Container className={style.cont_delete}>
                         <Alert className={style.block_alert} value={this.state.delMess}/>
-                        <Button className={style.block_button} onClick={this.removeTable}>Yes</Button>
-                        <Button className={style.block_button} onClick={this.handleExit}>No</Button>
+                        <Button className={style.error_button_yes} onClick={this.removeTable}>Yes</Button>
+                        <Button className={style.error_button} onClick={this.handleExit}>No</Button>
                     </Container> :
                     <Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
-                        <Button className={style.block_button} onClick={this.handleExit}>OK</Button>
+                        <Button className={style.error_button} onClick={this.handleExit}>OK</Button>
                     </Container>
                 :
                 <Container>
@@ -194,12 +211,14 @@ class Tab extends Component {
                             <tbody>
                                 {Array.isArray(results) && results.length > count && results.map(r => (
                                     <tr key={r.id} >
-                                        <td><Button className={style.cont_table_name}>{r.name}</Button></td>
+                                        <td><Button className={style.cont_table_name}
+                                            onClick={this.handleShowTable} id={r.number}>{r.name}</Button></td>
                                         <td>{r.date}</td>
                                         <td>{r.description}</td>
                                         <td><Button className={style.cont_table_name}
                                             onClick={this.delAlert} id={r.number}>X</Button></td>
-                                        <td><Button className={style.cont_table_name} id={r.number}>/</Button></td>
+                                        <td><Button className={style.cont_table_name} id={r.number}
+                                            onClick={this.handleUpdate}>...</Button></td>
                                     </tr>
                                 ))}
                             </tbody>

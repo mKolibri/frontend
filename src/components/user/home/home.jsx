@@ -35,12 +35,14 @@ class Home extends Component {
         const content = await sendRequest('user', 'GET');
         const normalStatus = 200;
         const badStatus = 400;
+        const stat = 401;
         if (content) {
             content.json().then((result) => {
                 if (normalStatus === content.status) {
                     this.setState(result);
-                } else if (badStatus === content.status) {
+                } else if (badStatus === content.status || stat === content.status) {
                     cookie.remove('userID', { path: '/'});
+                    this.props.history.push('/');
                 } else {
                     this.setState({
                         isAlert: true,
@@ -81,7 +83,7 @@ class Home extends Component {
                 { this.state.isAlert ?
                     <Container className={style.block}>
                         <Alert className={style.block_alert} value={this.state.alertMess}/>
-                        <Button className={style.block_button} onClick={this.handleExit}>OK</Button>
+                        <Button className={style.error_button} onClick={this.handleExit}>OK</Button>
                     </Container>
                 :
                 <Container>
