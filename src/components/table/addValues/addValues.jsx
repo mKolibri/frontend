@@ -26,7 +26,8 @@ class AddValues extends Component {
             tableID : cookie.load('tableName'),
             userID: cookie.load('userID'),
             values: [],
-            disabled: true
+            disabled: true,
+            columns: []
         };
         this.handleExit = this.handleExit.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -85,7 +86,7 @@ class AddValues extends Component {
         const badStatus = -1;
         if (values && values.length) {
             for (let i = 0; i < values.length; ++i) {
-                if (values[i][field]) {
+                if (values[i][field] === '' || values[i][field]) {
                     return i;
                 }
             }
@@ -94,10 +95,11 @@ class AddValues extends Component {
     }
 
     handleChange(e) {
-        const count = 0;
+        e.preventDefault();
+        const indexStat = -1;
         const values = this.state.values;
         const index = this.getIndexByKey(values, e.target.id);
-        if (index >= count) {
+        if (index > indexStat) {
             values[index][e.target.id] = e.target.value;
         } else {
             values.push({[e.target.id]: e.target.value});
@@ -135,7 +137,7 @@ class AddValues extends Component {
                 } else if (badStatus === content.status) {
                     this.setState({
                         showResult: true,
-                        result: 'Column name must not be duplicated'
+                        result: 'You can\'t add dublicate values in table'
                     });
                 } else if (results.message === 'Failed to fetch') {
                     this.setState({

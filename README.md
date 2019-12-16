@@ -30,7 +30,7 @@ used ReactJS
         │   │   ├── addValues- // addValues-component and css file
         │   │   │   ├── addValues.jsx
         │   │   │   └── addValues.module.css
-        │   │   ├──tables- // Tables-component and css file
+        │   │   ├── tables- // Tables-component and css file
         │   │   │   ├── table.module.css
         │   │   │   └── tables.jsx
         │   │   ├── updateTableInfo- // ipdateTableInfo-component and css file

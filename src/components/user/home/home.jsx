@@ -104,10 +104,10 @@ class Home extends Component {
 
                     <Container className={style.cont}>
                         <Container className={style.rightConteiner}>
-                            <h3><span className={style.cont_text}>Name :</span>{this.state.name}</h3>
-                            <h3><span className={style.cont_text}>Surname :</span>{this.state.surname}</h3>
-                            <h3><span className={style.cont_text}>Age :</span>{this.state.age}</h3>
-                            <h3><span className={style.cont_text}>Mail :</span>{this.state.mail}</h3>
+                            <h3><span className={style.cont_text}>Name: </span>{this.state.name}</h3>
+                            <h3><span className={style.cont_text}>Surname: </span>{this.state.surname}</h3>
+                            <h3><span className={style.cont_text}>Age: </span>{this.state.age}</h3>
+                            <h3><span className={style.cont_text}>Mail: </span>{this.state.mail}</h3>
                         </Container>
                     </Container>
                 </Container>}

@@ -138,7 +138,7 @@ class AddTable extends Component {
         if (content) {
             content.json().then((result) => {
                 if (status === content.status) {
-                    cookie.save('tableName', result.name.substr(cutNumber   ), { path: '/' });
+                    cookie.save('tableName', result.name.substr(cutNumber ), { path: '/' });
                     this.props.history.push('/showTable');
                 } else {
                     this.setState({
