@@ -28,6 +28,8 @@ class Registry extends Component {
             results: '',
             isAlert: false,
             alertMessage : '',
+            disabled: true,
+            status: 200,
             userID: cookie.load('userID', {path: '/'})
         };
 
@@ -46,10 +48,23 @@ class Registry extends Component {
 
     handleChange(e) {
         e.preventDefault();
-        this.setState({ [e.target.id]: e.target.value });
+        this.setState({
+            showResults: false,
+            results: null
+        });
+        const { value, maxLength } = e.target;
+        const count = 0;
+        const message = value.slice(count, maxLength);
+        this.setState({ [e.target.id]: message });
     }
 
     handleExit() {
+        const status = 500;
+        if (status === this.state.status) {
+            this.setState({
+                mail: ''
+            });
+        }
         this.setState({
             isAlert: false,
             allertMessage: ''
@@ -70,6 +85,11 @@ class Registry extends Component {
         let messages = '';
         for (let i = 0; i < size; ++i) {
             messages += '\n' + warnings[i].msg;
+            if (String(warnings[i].param) === 'password') {
+                this.setState({
+                    confirmPassword: ''
+                });
+            }
             this.setState({
                 [warnings[i].param]: ''
             });
@@ -81,22 +101,30 @@ class Registry extends Component {
         e.preventDefault();
         if (this.state.password === this.state.confirmPassword) {
             const user = {
-                'name': this.state.name,
-                'surname': this.state.surname,
-                'password': this.state.password,
-                'mail': this.state.mail,
-                'age': this.state.age
+                name: this.state.name,
+                surname: this.state.surname,
+                password: this.state.password,
+                mail: this.state.mail,
+                age: this.state.age
             };
+
             const content = await sendRequest('registration', 'POST', user);
             const normalStatus = 200;
             const badStatus = 502;
+            this.setState({
+                status: content.status
+            });
             if (content) {
                 content.json().then((result) => {
                     if (normalStatus === content.status) {
                         cookie.save('userID', result.userID, {path: '/'});
                         this.props.history.push('/home');
                     } else if (badStatus === content.status) {
-                        this.setState({results: result});
+                        let warningArr = [];
+                        for (let i = 0; i < result.length; ++i) {
+                            warningArr.push(result[i]);
+                        }
+                        this.setState({results: warningArr});
                         const warnings = this.getWarnings();
                         this.setState({
                             showResults: true,
@@ -123,7 +151,9 @@ class Registry extends Component {
         } else {
             this.setState({
                 showResults: true,
-                results: 'Confirm password is failed.'
+                results: 'Confirm password is failed.',
+                confirmPassword: '',
+                password: ''
             });
         }
     }
@@ -155,13 +185,13 @@ class Registry extends Component {
                                     </Label><br/>
                                     <Input type="text" id="name" placeholder="Firstst symbol- uppercase"
                                         value={this.state.name} onChange={this.handleChange}
-                                        className={style.form_input} required/>
+                                        className={style.form_input} maxLength="20" required/>
                             </FormGroup>
                              </Col>
                             <Col md="12">
                                 <FormGroup>
                                     <Label for="surname" className={style.form_label}>Surname</Label><br/>
-                                    <Input type="text" id="surname" placeholder="Not required"
+                                    <Input type="text" id="surname" placeholder="Not required" maxLength="30"
                                         value={this.state.surname}
                                         onChange={this.handleChange} className={style.form_input}/>
                                 </FormGroup>
@@ -170,7 +200,7 @@ class Registry extends Component {
                                 <FormGroup>
                                     <Label for="age" className={style.form_label}>Age</Label><br/>
                                     <Input type="number" id="age" placeholder="Only number"
-                                        value={this.state.age}
+                                        value={this.state.age} maxLength="2"
                                         onChange={this.handleChange} className={style.form_input}/>
                                 </FormGroup>
                             </Col>
@@ -179,7 +209,7 @@ class Registry extends Component {
                                     E-mail<span className={style.form_label_red}>*</span>
                                 </Label><br/>
                                 <Input type="mail" id="mail" placeholder="Example@index.com"
-                                    value={this.state.mail}
+                                    value={this.state.mail} maxLength="50"
                                     onChange={this.handleChange} className={style.form_input} required/>
                             </Col>
                             <Col md="12">
@@ -187,7 +217,7 @@ class Registry extends Component {
                                     <Label for="password" className={style.form_label}>
                                         Password<span className={style.form_label_red}>*</span>
                                     </Label><br/>
-                                    <Input type="password" id="password"
+                                    <Input type="password" id="password" maxLength="50"
                                         className={style.form_input} placeholder="Secret-Password"
                                         value={this.state.password} onChange={this.handleChange} required/>
                                 </FormGroup>
@@ -197,14 +227,14 @@ class Registry extends Component {
                                     <Label for="confirmPassword" className={style.form_label}>
                                         Confirm Password<span className={style.form_label_red}>*</span>
                                     </Label><br/>
-                                    <Input type="password" id="confirmPassword"
+                                    <Input type="password" id="confirmPassword" maxLength="50"
                                         className={style.form_input} placeholder="Confirm-Password"
                                         value={this.state.confirmPassword} onChange={this.handleChange} required/>
                                 </FormGroup>
                             </Col>
                             <Col >
                                 <Button to="/" onSubmit={this.handleSubmit} className={style.block_cont_button}
-                                    disabled={!this.state.email && !this.state.password && !this.state.name}>
+                                    disabled={!this.state.mail || !this.state.password}>
                                     Sign up</Button>
                             </Col>
                             <Col><p className={style.form_text}>--- OR ---</p></Col>

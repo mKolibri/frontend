@@ -242,6 +242,30 @@
     background-color: rgb(109, 84, 84);
 }
 
+.col_desc_button_csv {
+    color: white;
+    background-color: rgb(153, 60, 60);
+    padding: 7px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    border: none;
+    color: white;
+    text-align: center;
+    width: auto;
+    height: 90%;
+    text-align: center;
+}
+
+.col_desc_button:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(114, 39, 39);
+}
+
+.col_desc_button:disabled {
+    color: rgb(255, 255, 255);
+    background-color: rgb(109, 84, 84);
+}
+
 .col_desc_button_column {
     color: white;
     background-color: rgba(39, 43, 83, 0.767);

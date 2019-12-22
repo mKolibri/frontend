@@ -4,9 +4,9 @@ used ReactJS
 # GETTING STARTED
     npm ci
     # RUN FOR PRODUCTION MODE
-    └── npm run prod
+        └── npm run prod
     # RUN FOR DEVELOPMENT MODE
-    └── npm run dev
+        └── npm run dev
 
 # PROJECT SCHEMA
 /frontend

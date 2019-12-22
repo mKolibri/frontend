@@ -17,8 +17,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mail: '',
-            password: '',
+            mail: null,
+            password: null,
             isAlert: false,
             alertMess: '',
             userID: cookie.load('userID', {path: '/'})
@@ -37,13 +37,18 @@ class Login extends Component {
 
     handleChange(e) {
         e.preventDefault();
-        this.setState({ [e.target.id]: e.target.value });
+        const { value, maxLength } = e.target;
+        const count = 0;
+        const message = value.slice(count, maxLength);
+        this.setState({ [e.target.id]: message });
     }
 
     handleExit() {
         this.setState({
             isAlert: false,
-            alertMess: ''
+            alertMess: '',
+            mail: null,
+            password: null
         });
         this.props.history.push('/');
     }
@@ -95,7 +100,7 @@ class Login extends Component {
                             <Col>
                                 <FormGroup>
                                     <Label for="mail" className={style.form_label}>E-Mail</Label><br/>
-                                    <Input type="mail" id="mail"
+                                    <Input type="mail" id="mail" maxLength="50"
                                         placeholder="Example@index.com"
                                         className={style.form_input}
                                         onChange={this.handleChange} required/>
@@ -104,7 +109,7 @@ class Login extends Component {
                             <Col>
                                 <FormGroup>
                                     <Label for="password" className={style.form_label}>Password</Label><br/>
-                                    <Input type="password" id="password"
+                                    <Input type="password" id="password" maxLength="50"
                                         className={style.form_input}
                                         placeholder="Secret-Password"
                                         onChange={this.handleChange} required/>

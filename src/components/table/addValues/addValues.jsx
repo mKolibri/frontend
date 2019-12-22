@@ -96,6 +96,10 @@ class AddValues extends Component {
 
     handleChange(e) {
         e.preventDefault();
+        this.setState({
+            showResult: false,
+            result: ''
+        });
         const indexStat = -1;
         const values = this.state.values;
         const index = this.getIndexByKey(values, e.target.id);
@@ -201,7 +205,7 @@ class AddValues extends Component {
                                 <span className={style.cont_label_red}>*</span>
                             </Label>
                             <Input type={r.type === 'string'? 'text':r.type} id={r.column}
-                                placeholder="Column name"
+                                placeholder="Column name" maxLength="20"
                                 onChange={this.handleChange} value={this.state.column}
                                 className={style.cont_input} required/>
                         </FormGroup>

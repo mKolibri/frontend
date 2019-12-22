@@ -1,4 +1,5 @@
 import { address } from '../configs/config';
+// import axios from 'axios';
 
 const sendRequest = async function(path, method, body) {
     let result;

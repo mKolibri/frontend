@@ -76,6 +76,9 @@ class UpdateTableInfo extends Component {
     }
 
     handleChange(e) {
+        const { value, maxLength } = e.target;
+        const count = 0;
+        const message = value.slice(count, maxLength);
         if (e.target.id === 'table' && /\d/.test(e.target.value)) {
             this.setState({
                 showResult: true,
@@ -86,11 +89,11 @@ class UpdateTableInfo extends Component {
                     showResult: true,
                     result: 'Table name must contain at least 1 letter',
                     disable: true,
-                    [e.target.id]: e.target.value
+                    [e.target.id]: message
                 });
         } else {
             this.setState({
-                [e.target.id]: e.target.value,
+                [e.target.id]: message,
                 disable: false
             });
         }
@@ -128,7 +131,7 @@ class UpdateTableInfo extends Component {
             content.json().then((result) => {
                 if (status === content.status) {
                     cookie.save('tableName', this.state.name, { path: '/' });
-                    this.props.history.push('/showTable');
+                    this.props.history.push('/tables');
                 } else {
                     this.setState({
                         isAlert: true,
@@ -178,12 +181,12 @@ class UpdateTableInfo extends Component {
                             <Label className={style.cont_label} for="name">Table name</Label>
                             <Input type="text" id="table" placeholder="Table name"
                                 onChange={this.handleChange} className={style.cont_input}
-                                value={this.state.table}/>
+                                value={this.state.table} maxLength="50"/>
                         </FormGroup>
                         <FormGroup>
                             <Label className={style.cont_label} for="description">Description</Label>
                                 <Input type="text" id="description" placeholder="About Table"
-                                    value={this.state.description}
+                                    value={this.state.description} maxLength="100"
                                     className={style.cont_input} onChange={this.handleChange}/>
                         </FormGroup>
                         <Col className={style.cont_label_button}>

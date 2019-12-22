@@ -8,6 +8,7 @@ import SideNav from '@trendmicro/react-sidenav';
 import { sendRequest } from '../table.dao';
 import PropTypes from 'prop-types';
 import { Warning } from '../../warnings/warning';
+import CsvDownloader from 'react-csv-downloader';
 
 class ShowTable extends Component {
     static get propTypes() {
@@ -68,7 +69,8 @@ class ShowTable extends Component {
                     this.setState({
                         table: results.table,
                         description: results.description,
-                        columns: results.schema
+                        columns: results.schema,
+                        file: results.file
                     });
                     this.saveResults(results.columns);
                 } else if (content.message === 'Failed to fetch') {
@@ -413,6 +415,7 @@ class ShowTable extends Component {
     }
 
     render() {
+        const csvData = this.state.file;
         const results = this.state.columns;
         const values = this.state.values;
         const count = 0;
@@ -453,10 +456,10 @@ class ShowTable extends Component {
                             {this.state.description}</h1> : null}
                     </Col>
                     <Col className={style.col_buttons}>
-                        <Button className={style.col_desc_button} onClick={this.handleAddValues}>
-                            + Add Values</Button>
                         <Button className={style.col_desc_button} onClick={this.handleAddColumn}>
                             + Add Column</Button>
+                        <Button className={style.col_desc_button} onClick={this.handleAddValues}>
+                            + Add Values</Button>
                         <Button className={style.col_desc_button} id="ASC" onClick={this.handleSort}
                             disabled={this.state.sortASC}>
                             Sort z-A</Button>
@@ -466,6 +469,10 @@ class ShowTable extends Component {
                         <Button className={style.col_desc_button} id="NONE" onClick={this.handleSort}
                             disabled={!this.state.sortASC && !this.state.sortDESC}>
                             No-Sort</Button>
+                            <CsvDownloader filename="myfile.csv" separator=";"
+                                wrapColumnChar="'" datas={csvData}>
+                        <Button className={style.col_desc_button_csv} id="csv">Import CSV</Button>
+                        </CsvDownloader>
                     </Col >
                     {this.state.open ?
                         <Col className={style.col_enter}>

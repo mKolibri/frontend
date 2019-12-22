@@ -41,6 +41,13 @@ class AddTable extends Component {
     }
 
     handleChange(e) {
+        this.setState({
+            showResult: false,
+            result: ''
+        });
+        const count = 0;
+        const { value, maxLength } = e.target;
+        const message = value.slice(count, maxLength);
         if (/\d/.test(e.target.value)) {
             this.setState({
                 showResult: true,
@@ -49,11 +56,11 @@ class AddTable extends Component {
         } else if (e.target.id === 'showType') {
             const type = (e.target.value === 'Number')? 'Integer': 'Varchar(255)';
             this.setState({
-                [e.target.id]: e.target.value,
+                [e.target.id]: message,
                 type: type
             });
         } else {
-            this.setState({ [e.target.id]: e.target.value });
+            this.setState({ [e.target.id]: message });
         }
     }
 
@@ -190,7 +197,7 @@ class AddTable extends Component {
                                 <Label for="name">Name
                                     <span className={style.cont_label_red}>*</span>
                                 </Label>
-                                <Input type="text" id="tableName" placeholder="Table name"
+                                <Input type="text" id="tableName" maxLength="50" placeholder="Table name"
                                     onChange={this.handleChange} className={style.cont_input}
                                     value={this.state.tableName} required/>
                                 <h6 className={style.cont_link_info}>Name must contain only letters</h6>
@@ -200,7 +207,7 @@ class AddTable extends Component {
                             <FormGroup>
                                 <Label for="description">Description</Label>
                                     <Input type="text" id="description" placeholder="Not required"
-                                        className={style.cont_input} onChange={this.handleChange}/>
+                                        maxLength="100" className={style.cont_input} onChange={this.handleChange}/>
                             </FormGroup>
                         </Col>
                         <Col>
@@ -248,7 +255,7 @@ class AddTable extends Component {
                                 </Label>
                                 <Input type="text" id="column" placeholder="Column name"
                                     onChange={this.handleChange} value={this.state.column}
-                                    className={style.cont_input} required/>
+                                    className={style.cont_input} maxLength="20" required/>
                                 <Label for="type">
                                     Type
                                     <span className={style.cont_label_red}>*</span>
