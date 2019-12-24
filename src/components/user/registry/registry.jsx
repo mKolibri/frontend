@@ -114,10 +114,10 @@ class Registry extends Component {
             const content = await sendRequest('registration', 'POST', user);
             const normalStatus = 200;
             const badStatus = 502;
-            this.setState({
-                status: content.status
-            });
             if (content) {
+                this.setState({
+                    status: content.status
+                });
                 content.json().then((result) => {
                     if (normalStatus === content.status) {
                         cookie.save('userID', result.userID, {path: '/'});
@@ -138,7 +138,7 @@ class Registry extends Component {
                         this.setState({
                             isAlert: true,
                             disabled: false,
-                            alertMess: 'Error 404, server not found. Please, try again.'
+                            alertMessage: 'Error 404, server not found. Please, try again.'
                         });
                     } else {
                         this.setState({
@@ -152,7 +152,7 @@ class Registry extends Component {
                 this.setState({
                     isAlert: true,
                     disabled: false,
-                    alertMess: 'Error 404, server not found. Please, try again.'
+                    alertMessage: 'Error 404, server not found. Please, try again.'
                 });
             }
         } else {
