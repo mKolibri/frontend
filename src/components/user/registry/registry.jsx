@@ -28,7 +28,7 @@ class Registry extends Component {
             results: '',
             isAlert: false,
             alertMessage : '',
-            disabled: true,
+            disabled: false,
             status: 200,
             userID: cookie.load('userID', {path: '/'})
         };
@@ -99,6 +99,9 @@ class Registry extends Component {
 
     async handleSubmit(e) {
         e.preventDefault();
+        this.setState({
+            disabled: true
+        });
         if (this.state.password === this.state.confirmPassword) {
             const user = {
                 name: this.state.name,
@@ -128,16 +131,19 @@ class Registry extends Component {
                         const warnings = this.getWarnings();
                         this.setState({
                             showResults: true,
+                            disabled: false,
                             results: warnings
                         });
                     } else if (result.message === 'Failed to fetch') {
                         this.setState({
                             isAlert: true,
+                            disabled: false,
                             alertMess: 'Error 404, server not found. Please, try again.'
                         });
                     } else {
                         this.setState({
                             isAlert: true,
+                            disabled: false,
                             alertMessage: result.message
                         });
                     }
@@ -145,12 +151,14 @@ class Registry extends Component {
             } else {
                 this.setState({
                     isAlert: true,
+                    disabled: false,
                     alertMess: 'Error 404, server not found. Please, try again.'
                 });
             }
         } else {
             this.setState({
                 showResults: true,
+                disabled: false,
                 results: 'Confirm password is failed.',
                 confirmPassword: '',
                 password: ''
@@ -234,7 +242,7 @@ class Registry extends Component {
                             </Col>
                             <Col >
                                 <Button to="/" onSubmit={this.handleSubmit} className={style.block_cont_button}
-                                    disabled={!this.state.mail || !this.state.password}>
+                                    disabled={(!this.state.mail || !this.state.password) || this.state.disabled}>
                                     Sign up</Button>
                             </Col>
                             <Col><p className={style.form_text}>--- OR ---</p></Col>
