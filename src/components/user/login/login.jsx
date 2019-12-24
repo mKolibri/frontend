@@ -21,6 +21,7 @@ class Login extends Component {
             password: null,
             isAlert: false,
             alertMess: '',
+            disabled: false,
             userID: cookie.load('userID', {path: '/'})
         };
 
@@ -59,6 +60,9 @@ class Login extends Component {
             mail: this.state.mail,
             password: this.state.password
         };
+        this.setState({
+            disabled: true
+        });
 
         const content = await sendRequest('login', 'POST', user);
         const status = 200;
@@ -70,6 +74,7 @@ class Login extends Component {
                 } else {
                     this.setState({
                         isAlert: true,
+                        disabled: false,
                         alertMess: result.message + '. Please, try again.'
                     });
                 }
@@ -77,6 +82,7 @@ class Login extends Component {
         } else {
             this.setState({
                 isAlert: true,
+                disabled: false,
                 alertMess: 'Error 404, server not found. Please, try again.'
             });
         }
@@ -116,7 +122,7 @@ class Login extends Component {
                                 </FormGroup>
                             </Col>
                                 <Button className={style.block_cont_button}
-                                    disabled={!this.state.email && !this.state.password}
+                                    disabled={(!this.state.email && !this.state.password) || this.state.disabled}
                                     onSubmit={this.handleSubmit}>Log in</Button>
                         </Row>
                         <Row>

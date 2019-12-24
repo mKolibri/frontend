@@ -48,7 +48,7 @@ class AddTable extends Component {
         const count = 0;
         const { value, maxLength } = e.target;
         const message = value.slice(count, maxLength);
-        if (/\d/.test(e.target.value)) {
+        if (e.target.id === 'column' && /\d/.test(e.target.value)) {
             this.setState({
                 showResult: true,
                 result: 'Column name must contain only letters'
@@ -58,6 +58,11 @@ class AddTable extends Component {
             this.setState({
                 [e.target.id]: message,
                 type: type
+            });
+        } else if (e.target.id === 'tableName' && /\d/.test(e.target.value)) {
+            this.setState({
+                showResult: true,
+                result: 'Table name must contain only letters'
             });
         } else {
             this.setState({ [e.target.id]: message });
@@ -119,7 +124,8 @@ class AddTable extends Component {
                 --i;
             }
         }
-        if (array.length) {
+        const number = 1;
+        if (Number(array.length) < number) {
             this.setState({
                 isColumnsExist: false
             });
