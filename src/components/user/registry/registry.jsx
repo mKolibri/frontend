@@ -207,7 +207,7 @@ class Registry extends Component {
                             <Col md="12">
                                 <FormGroup>
                                     <Label for="age" className={style.form_label}>Age</Label><br/>
-                                    <Input type="number" id="age" placeholder="Only number"
+                                    <Input type="number" min={6} id="age" placeholder="Only number"
                                         value={this.state.age} maxLength="2"
                                         onChange={this.handleChange} className={style.form_input}/>
                                 </FormGroup>
