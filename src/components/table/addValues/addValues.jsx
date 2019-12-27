@@ -94,6 +94,24 @@ class AddValues extends Component {
         return badStatus;
     }
 
+    isColumnExist() {
+        const values = this.state.values;
+        const count = 0;
+        if (values && values.length) {
+            let bool = false;
+            for (let i = 0; i < values.length; ++i) {
+                for (let [, value] of Object.entries(values[i])) {
+                    if (value || value === count) {
+                        bool = true;
+                    }
+                }
+            }
+            return bool;
+        } else {
+            return false;
+        }
+    }
+
     handleChange(e) {
         e.preventDefault();
         this.setState({
@@ -108,10 +126,20 @@ class AddValues extends Component {
         } else {
             values.push({[e.target.id]: e.target.value});
         }
+
         this.setState({
-            disabled: false,
             values: values
         });
+
+        if (this.isColumnExist()) {
+            this.setState({
+                disabled: false
+            });
+        } else {
+            this.setState({
+                disabled: true
+            });
+        }
     }
 
     async logout() {
@@ -165,6 +193,8 @@ class AddValues extends Component {
 
     render() {
         const results = this.state.columns;
+        const maxNum = 999999999;
+        const minNum = -999999999;
         const count = 0;
         return (
             <BrowserRouter>
@@ -198,6 +228,10 @@ class AddValues extends Component {
                         <Col className={style.form_warning}><Warning
                             value={this.state.result} className={style.form_warning_res}/>
                         </Col> : null}
+                        <Label for="column">
+                            <span className={style.cont_label_red}>If column type is number, then enter
+                            number less then 999999999, otherwise the data will be stored with some inaccuracy</span>
+                        </Label>
                     {Array.isArray(results) && results.length > count && results.map((r) => (
                         <FormGroup key={r.key}>
                             <Label for="column">
@@ -205,7 +239,8 @@ class AddValues extends Component {
                                 <span className={style.cont_label_red}>*</span>
                             </Label>
                             <Input type={r.type === 'string'? 'text':r.type} id={r.column}
-                                placeholder="Column name" maxLength="20"
+                                placeholder="Column name" maxLength="9"
+                                max={maxNum} min={minNum}
                                 onChange={this.handleChange} value={this.state.column}
                                 className={style.cont_input} required/>
                         </FormGroup>

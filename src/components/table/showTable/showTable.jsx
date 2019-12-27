@@ -36,7 +36,8 @@ class ShowTable extends Component {
             sortBy: '',
             open: false,
             selectedFile: null,
-            updateValues: []
+            updateValues: [],
+            column: ''
         };
         this.handleExit = this.handleExit.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -210,11 +211,21 @@ class ShowTable extends Component {
     }
 
     handleChange(e) {
-        if (e.target.id === 'column' && /\d/.test(e.target.value)) {
-            this.setState({
-                showResult: true,
-                result: 'Column name must contain only letters'
-            });
+        e.preventDefault();
+        if (String(e.target.id) === 'column') {
+            if (e.target.validity.valid) {
+                this.setState({
+                    showResult: false,
+                    result: '',
+                    [e.target.id]: e.target.value
+                });
+            } else {
+                this.setState({
+                    showResult: true,
+                    result: 'Column name must contain only letters',
+                    [e.target.value]: this.state[e.target.id]
+                });
+            }
         } else if (e.target.id === 'showType') {
             const type = (e.target.value === 'Number')? 'Integer': 'Varchar(255)';
             this.setState({
@@ -222,7 +233,7 @@ class ShowTable extends Component {
                 type: type
             });
         } else {
-            this.setState({ [e.target.id]: e.target.value });
+            this.setState({ [e.target.id]: e.target.value});
         }
     }
 
@@ -469,9 +480,9 @@ class ShowTable extends Component {
                         <Button className={style.col_desc_button} id="NONE" onClick={this.handleSort}
                             disabled={!this.state.sortASC && !this.state.sortDESC}>
                             No-Sort</Button>
-                            <CsvDownloader filename="myfile.csv" separator=";"
-                                wrapColumnChar="'" datas={csvData}>
-                        <Button className={style.col_desc_button_csv} id="csv">Import CSV</Button>
+                        <CsvDownloader filename="myfile.csv" separator=";"
+                            wrapColumnChar="'" datas={csvData}>
+                            <Button className={style.col_desc_button_csv} id="csv">Import CSV</Button>
                         </CsvDownloader>
                     </Col >
                     {this.state.open ?
@@ -535,7 +546,8 @@ class ShowTable extends Component {
                                         </Label>
                                         <Input type="text" id="column" placeholder="Column name"
                                             onChange={this.handleChange} value={this.state.column}
-                                            className={style.cont_input} required/>
+                                            className={style.cont_input} maxLength="30"
+                                            pattern="[A-Za-z]*" required/>
                                         <Label for="type">
                                             Type<span className={style.cont_label_red}>*</span>
                                         </Label>
@@ -545,7 +557,7 @@ class ShowTable extends Component {
                                                 <option id="Varchar(255)">String</option>
                                         </Input>
                                         <Button className={style.footer_button}
-                                            disabled={this.state.column === ''}
+                                            disabled={!this.state.column || String(this.state.column) === ''}
                                             onClick={this.addColumn}>Add Column</Button>
                                         <Button className={style.footer_button_close}
                                             onClick={this.handleAddColumn}>Close</Button>
