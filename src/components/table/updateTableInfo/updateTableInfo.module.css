@@ -1,54 +1,53 @@
 .block {
     margin: 5px;
     text-align: center;
+    color: #C28171;
 }
 
 .block_button {
-    color: white;
-    background-color: grey;
+    color: #FDE8D4;
+    background-color: #218A6F;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
     text-align: center;
     width: 90%;
     height: 8%;
 }
 
 .block_button:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(61, 63, 83);
+    color: #FDE8D4;
+    background-color: #1C715B;
 }
 
 .block_button:disabled {
-    color: rgb(255, 255, 255);
-    background-color: rgb(92, 93, 107);
+    color: #FDE8D4;
+    background-color: #678370;
 }
 
 .block_alert {
     text-align: center;
     margin-top: 12%;
-    background-color: rgb(216, 211, 211);
-    color: rgb(24, 51, 78);
+    background-color: #F5BFA4;
+    color: #218A6F;
     width: 100%;
     height: 100%;
 }
 
 .error_button {
-    color: white;
-    background-color: darkslategray;
+    color: #FDE8D4;
+    background-color: #678370;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
     text-align: center;
     width: 20%;
     height: auto;
 }
 
 .error_button:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(39, 65, 65);
+    color: #FDE8D4;
+    background-color: #1C715B;
 }
 
 .sidenav {
@@ -58,51 +57,49 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color:  rgb(30, 43, 56);
+    background-color: #1C715B;
     overflow-x: hidden;
     padding-top: 20px;
 }
 
 .sidenav:hover {
-    background-color:  rgb(25, 36, 47);
+    background-color: rgb(25, 90, 73);
 }
 
 .sidenav_button_logout {
-    color: white;
-    background-color: rgb(138, 58, 58);
+    color: #FDE8D4;
+    background-color: #EC9D89;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
     text-align: center;
     width: 90%;
     height: 8%;
 }
 
 .sidenav_button_logout:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(114, 50, 50);
+    color: #FDE8D4;
+    background-color: #C99D87;
 }
 
 .col_head {
-    background-color: rgb(29, 59, 90);
-    color: white;
+    background-color:#1C715B;
+    color: #FDE8D4;
     padding: 10px;
     padding-left: 30px;
     padding-right: 30px;
 }
 
 .col_head_header {
-    color: rgb(36, 53, 53);
     font-size: 200%;
     text-align: center;
-    color: #fff;
+    color: #FDE8D4;
 }
 
 .cont {
-    background-color: #e7f3ec;
-    box-shadow: 5px 5px 5px rgb(182, 180, 180);
-    margin-left: 15%;
+    background-color: #F5BFA4;
+    box-shadow: 5px 5px 5px #678370;
+    margin-left: 14%;
     padding-left: 5%;
 }
 
@@ -113,11 +110,10 @@
 .cont_link_button_update {
     margin-right: 15px;
     font-size: 15px;
-    color: white;
-    background-color: rgb(138, 58, 58);
+    color: #FDE8D4;
+    background-color:#218A6F;
     padding: 10px;
     border: none;
-    color: white;
     text-align: center;
     width: 180%;
     margin-top: 11px;
@@ -127,19 +123,20 @@
 }
 
 .cont_link_button_update:hover {
-    background-color:rgb(126, 32, 32);
+    background-color:#1C715B;
+    color: #FDE8D4;
 }
 
 .cont_link_button_update:disabled {
-    background-color: rgb(158, 138, 138);
-    color: rgb(192, 59, 59);
+    background-color: #678370;
+    color: #FDE8D4;
 }
 
 .cont_link_button_cancle {
     margin-right: 15px;
     font-size: 15px;
-    color: white;
-    background-color: rgb(40, 58, 77);
+    color: #FDE8D4;
+    background-color: #EC9D89;
     padding: 10px;
     border: none;
     text-align: center;
@@ -147,10 +144,11 @@
     margin-top: 11px;
     height: 40px;
     margin-left: 83%;
+    margin-bottom: 10px;
 }
 
 .cont_link_button_cancle:hover {
-    background-color: rgb(30, 43, 56);
+    background-color: #C28171;
 }
 
 .cont_label_button {
@@ -165,10 +163,11 @@
     width: 200px;
     height: auto;
     margin: 10px;
-    background-color: white;
+    color: #C99D87;
+    background-color: #FDE8D4;
 }
 
 .cont_label {
-    color: brown;
+    color: #C28171;
     font-size: 20px;
 }

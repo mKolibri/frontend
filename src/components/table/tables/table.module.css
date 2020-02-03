@@ -1,5 +1,5 @@
 .block {
-    color: rgb(29, 59, 90);
+    color: #218A6F;
     font-size: 17px;
     text-align: center;
 }
@@ -7,70 +7,68 @@
 .block_alert {
     text-align: center;
     margin-top: 12%;
-    background-color: rgb(216, 211, 211);
-    color: rgb(24, 51, 78);
+    background-color: #FDE8D4;
+    color: #218A6F;
     width: 100%;
     height: 100%;
 }
 
 .block_button {
-    color: white;
-    background-color: grey;
+    color: #FDE8D4;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
     text-align: center;
     width: 90%;
     height: 8%;
+    background-color: #218A6F;
 }
 
 .block_button:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(61, 63, 83);
+    color: #FDE8D4;
+    background-color: #1C715B;
 }
 
 .block_button:disabled {
-    color: rgb(255, 255, 255);
-    background-color: rgb(92, 93, 107);
+    color: #FDE8D4;
+    background-color: #678370;
 }
 
 .cont_delete {
     text-align: center;
+    font-size: 44px;
 }
 
 .error_button {
-    color: white;
-    background-color: darkslategray;
+    color: #FDE8D4;
+    background-color: #218A6F;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
     text-align: center;
     width: 20%;
     height: auto;
 }
 
 .error_button:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(39, 65, 65);
+    color: #FDE8D4;
+    background-color: #1C715B;
 }
 
 .error_button_yes {
-    color: white;
-    background-color: rgb(206, 39, 53);
+    color: #FDE8D4;
+    background-color: #EC9D89;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
     text-align: center;
     width: 20%;
     height: auto;
 }
 
 .error_button_yes:hover {
-    color: rgb(255, 255, 255);
-    background-color:rgb(114, 24, 32);
+    color: #FDE8D4;
+    background-color:#C28171;
 }
 
 .sidenav {
@@ -80,43 +78,43 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color:  rgb(30, 43, 56);
+    background-color: #1C715B;
     overflow-x: hidden;
     padding-top: 20px;
 }
 
 .sidenav:hover {
-    background-color:  rgb(25, 36, 47);
+    background-color: rgb(25, 90, 73);
 }
 
 .sidenav_button_logout {
-    color: white;
-    background-color: rgb(138, 58, 58);
+    color: #FDE8D4;
+    background-color: #EC9D89;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
     text-align: center;
     width: 90%;
     height: 8%;
 }
 
 .sidenav_button_logout:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(114, 50, 50);
+    color: #FDE8D4;
+    background-color: #C99D87;
 }
 
 .cont {
-    background-color: #e7f3ec;
-    box-shadow: 5px 5px 5px rgb(182, 180, 180);
+    background-color: #FDE8D4;
+    box-shadow: 5px 5px 5px #D0BEAE;
     display: inline-flex;
     margin-left: 15%;
     width: auto;
+    color: #1C715B;
 }
 
 .cont_head {
-    background-color: rgb(29, 59, 90);
-    color: white;
+    background-color: #1C715B;
+    color: #FDE8D4;
     padding: 10px;
     padding-left: 30px;
     padding-right: 30px;
@@ -130,10 +128,11 @@
     height: 45px;
     margin-left: 0;
     width: 100%;
-    background-color: grey;
+    color: #FDE8D4;
+    background-color: #C28171;
 }
 
 .cont_table_name:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(61, 63, 83);
+    color: #FDE8D4;
+    background-color: #1C715B;
 }

@@ -200,7 +200,7 @@ class AddTable extends Component {
                     <Container className={style.cont}>
                         <Col>
                             <FormGroup>
-                                <Label for="name">Name
+                                <Label for="name" className={style.form_label}>Name
                                     <span className={style.cont_label_red}>*</span>
                                 </Label>
                                 <Input type="text" id="tableName" maxLength="50" placeholder="Table name"
@@ -211,13 +211,13 @@ class AddTable extends Component {
                         </Col>
                         <Col>
                             <FormGroup>
-                                <Label for="description">Description</Label>
+                                <Label for="description" className={style.form_label}>Description</Label>
                                     <Input type="text" id="description" placeholder="Not required"
                                         maxLength="100" className={style.cont_input} onChange={this.handleChange}/>
                             </FormGroup>
                         </Col>
                         <Col>
-                            <Label for="createTable">If your table ready, then press...</Label>
+                            <Label for="createTable" className={style.form_label}>If your table ready, then press...</Label>
                             <Link to="/showTable" onClick={this.handleSubmit}>
                                 <Button className={style.cont_link_button}
                                     disabled={ (this.state.tableName)? ((this.state.isColumnsExist)? false: true): true}>
@@ -237,10 +237,10 @@ class AddTable extends Component {
                         </thead>
                         <tbody>
                             {Array.isArray(results) && results.length > count && results.map(r => (
-                                <tr key={r.id}>
-                                    <td>{r.column}</td>
-                                    <td>{r.showType}</td>
-                                    <td><Button className={style.cont_table_name}
+                                <tr key={r.id} >
+                                    <td className={style.col_row}>{r.column}</td>
+                                    <td className={style.col_row}>{r.showType}</td>
+                                    <td className={style.col_row_del}><Button className={style.cont_table_name}
                                         onClick={this.remove} id={r.num}
                                     >X</Button></td>
                                 </tr>
@@ -254,7 +254,7 @@ class AddTable extends Component {
                                 <Col className={style.form_warning}><Warning
                                     value={this.state.result} className={style.form_warning_res}/>
                                 </Col> : null}
-                            <FormGroup className={style.miban}>
+                            <FormGroup>
                                 <Label for="column">
                                     Name
                                     <span className={style.cont_label_red}>*</span>

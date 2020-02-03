@@ -228,10 +228,6 @@ class AddValues extends Component {
                         <Col className={style.form_warning}><Warning
                             value={this.state.result} className={style.form_warning_res}/>
                         </Col> : null}
-                        <Label for="column">
-                            <span className={style.cont_label_red}>If column type is number, then enter
-                            number less then 999999999, otherwise the data will be stored with some inaccuracy</span>
-                        </Label>
                     {Array.isArray(results) && results.length > count && results.map((r) => (
                         <FormGroup key={r.key}>
                             <Label for="column">

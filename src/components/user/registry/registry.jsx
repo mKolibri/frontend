@@ -179,11 +179,11 @@ class Registry extends Component {
                     <Container>
                         <Row>
                             <Col>
-                                <h1 className={style.form_header}>REGISTRATION</h1>
+                                <h4 className={style.form_header}>REGISTRATION</h4>
                             </Col>
                             {this.state.showResults ?
                                 <Col className={style.form_warning}><Warning
-                                    value={this.state.results} className={style.form_warning_res}/>
+                                    value={this.state.results}/>
                                 <Button className={style.form_warning_exit} onClick={this.closeWarnings}>
                                     X</Button></Col> : null }
                             <Col md="12">

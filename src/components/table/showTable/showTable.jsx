@@ -482,7 +482,7 @@ class ShowTable extends Component {
                             No-Sort</Button>
                         <CsvDownloader filename="myfile.csv" separator=";"
                             wrapColumnChar="'" datas={csvData}>
-                            <Button className={style.col_desc_button_csv} id="csv">Import CSV</Button>
+                            <Button className={style.col_desc_button_csv} id="csv">export CSV</Button>
                         </CsvDownloader>
                     </Col >
                     {this.state.open ?

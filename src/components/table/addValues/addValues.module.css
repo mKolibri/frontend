@@ -1,6 +1,7 @@
 .block {
     margin: 5px;
     text-align: center;
+    color: #C28171;
 }
 
 .block_alert {
@@ -13,37 +14,37 @@
 }
 
 .block_button {
-    color: white;
-    background-color: grey;
+    color: #FDE8D4;
+    background-color: #218A6F;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
+    color: #FDE8D4;
     text-align: center;
     width: 90%;
     height: 8%;
 }
 
 .block_button:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(61, 63, 83);
+    color: #FDE8D4;
+    background-color: #1C715B;
 }
 
 .error_button {
-    color: white;
-    background-color: darkslategray;
+    color: #FDE8D4;
+    background-color: #678370;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
+    color: #FDE8D4;
     text-align: center;
     width: 20%;
     height: auto;
 }
 
 .error_button:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(39, 65, 65);
+    color: #FDE8D4;
+    background-color: #1C715B;
 }
 
 .sidenav {
@@ -53,52 +54,51 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color:  rgb(30, 43, 56);
+    background-color: #1C715B;
     overflow-x: hidden;
     padding-top: 20px;
 }
 
 .sidenav:hover {
-    background-color:  rgb(25, 36, 47);
+    background-color: rgb(25, 90, 73);
 }
 
 .sidenav_button_logout {
-    color: white;
-    background-color: rgb(138, 58, 58);
+    color: #FDE8D4;
+    background-color: #EC9D89;
     padding: 7px;
     margin-bottom: 5px;
     border: none;
-    color: white;
     text-align: center;
     width: 90%;
     height: 8%;
 }
 
 .sidenav_button_logout:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(114, 50, 50);
+    color: #FDE8D4;
+    background-color: #C99D87;
 }
 
 .col {
-    background-color: rgb(29, 59, 90);
-    color: white;
+    background-color: #218A6F;
+    color: #FDE8D4;
     padding: 10px;
     padding-left: 30px;
     padding-right: 30px;
 }
 
 .col_header {
-    color: rgb(36, 53, 53);
+    color:#1C715B;
     font-size: 200%;
     text-align: center;
-    color: #fff;
+    color: #FDE8D4;
 }
 
 .col_desc {
-    background-color: rgb(175, 175, 175);
+    background-color: #FDE8D4;
     color: rgb(65, 63, 63);
     padding: 10px;
-    padding-left: 30px;
+    padding-left: 15%;
     padding-right: 30px;
 }
 
@@ -106,12 +106,12 @@
     color: rgb(36, 53, 53);
     font-size: 100%;
     text-align: center;
-    color: #fff;
+    color: #FDE8D4;
 }
 
 .cont {
-    background-color: #e7f3ec;
-    box-shadow: 5px 5px 5px rgb(182, 180, 180);
+    background-color: #FDE8D4;
+    box-shadow: 5px 5px 5px #D0BEAE;
     display: inline-flex;
     margin-left: 15%;
     width: 80%;
@@ -120,51 +120,49 @@
 .footer {
     bottom: 0;
     width: 100%;
-    margin-left: 15%;
+    margin-left: 14%;
     width: 95%;
-    color: darkslategray;
-    background-color: rgb(216, 211, 211);
+    padding-left: 20px;
+    color: #678370;
+    background-color:#EC9D89;
 }
 
 .footer_button {
-    color: white;
-    background-color:rgb(43, 64, 85);
+    color: #FDE8D4;
+    background-color:#218A6F;
     padding: 10px;
     border: none;
-    color: white;
     text-align: center;
     width: auto;
     margin: 10px;
     margin-left: 5%;
 }
 
-.cont_label_red {
-    color: red;
-}
 .footer_button:hover {
-    color: rgb(255, 255, 255);
-    background-color:rgb(30, 43, 56);
+    color: #FDE8D4;
+    background-color:#1C715B;
+}
+
+.footer_button:disabled {
+    background-color: #678370;
+    color: #FDE8D4;
 }
 
 .footer_button_warn {
-    color: white;
-    background-color: rgb(167, 71, 71);
+    color: #FDE8D4;
+    background-color: #C28171;
     padding: 10px;
     border: none;
-    color: white;
     text-align: center;
     width: auto;
 }
 
 .footer_button_warn:hover {
-    color: rgb(255, 255, 255);
-    background-color:rgb(107, 42, 42);
+    color: #C28171;
+    background-color: #FDE8D4;
+    border: solid 1px #C28171;
 }
 
-.footer_button:disabled {
-    background-color: rgb(68, 71, 85);
-    color: white;
-}
 
 .cont_input {
     border: none;
@@ -175,5 +173,5 @@
     width: 200px;
     height: auto;
     margin: 10px;
-    background-color: white;
+    background-color: #FDE8D4;
 }
