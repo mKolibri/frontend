@@ -125,7 +125,7 @@ class UpdateTableInfo extends Component {
             tableID: this.state.name
         };
 
-        const content = await sendRequest('updateTableInfo', 'POST', table);
+        const content = await sendRequest('updateTableInfo', 'PUT', table);
         const status = 200;
         if (content) {
             content.json().then((result) => {

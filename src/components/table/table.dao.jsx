@@ -1,23 +1,8 @@
 import { address } from '../configs/config';
-// import axios from 'axios';
 
 const sendRequest = async function(path, method, body) {
     let result;
-    if (method === 'POST') {
-        try {
-            return await fetch(address + path, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify(body)
-            });
-        } catch(error) {
-            return result;
-        }
-    } else {
+    if (method === 'GET') {
         try {
             return await fetch(address + path, {
                 method: 'GET',
@@ -26,6 +11,20 @@ const sendRequest = async function(path, method, body) {
                     'Content-Type': 'application/json'
                 },
                 credentials: 'include'
+            });
+        } catch(error) {
+            return result;
+        }
+    } else {
+        try {
+            return await fetch(address + path, {
+                method: method,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(body)
             });
         } catch(error) {
             return result;

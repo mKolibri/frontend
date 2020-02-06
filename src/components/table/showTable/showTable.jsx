@@ -101,7 +101,7 @@ class ShowTable extends Component {
             name: this.state.name
         };
 
-        const content = await sendRequest('deleteColumn', 'POST', body);
+        const content = await sendRequest('deleteColumn', 'DELETE', body);
         const badStatus = 402;
         const status = 200;
         if (content) {
@@ -177,7 +177,7 @@ class ShowTable extends Component {
         e.preventDefault();
         const body = this.getValue(e.target.id);
         body.table = cookie.load('tableName');
-        const content = await sendRequest('deleteValue', 'POST', body);
+        const content = await sendRequest('deleteValue', 'DELETE', body);
         const status = 200;
         if (content) {
             content.json().then((results) => {
@@ -324,7 +324,7 @@ class ShowTable extends Component {
             tableID: this.state.name
         };
 
-        const content = await sendRequest('updateData', 'POST', body);
+        const content = await sendRequest('updateData', 'PUT', body);
         const status = 200;
         if (content) {
             content.json().then((results) => {

@@ -6,7 +6,7 @@ import { sendRequest } from '../table.dao';
 import SideNav from '@trendmicro/react-sidenav';
 import cookie from 'react-cookies';
 import PropTypes from 'prop-types';
-import style from './table.module.css';
+import style from './tables.module.css';
 
 class Tab extends Component {
     static get propTypes() {
@@ -130,7 +130,7 @@ class Tab extends Component {
     async removeTable() {
         const id = cookie.load('tableID', {path: '/'});
         const body = this.getTable(id);
-        const content = await sendRequest('deleteTable', 'POST', body);
+        const content = await sendRequest('deleteTable', 'DELETE', body);
         let status = 200;
         this.setState({
             isAlert: false,
