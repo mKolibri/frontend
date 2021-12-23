@@ -1,0 +1,22 @@
+.block {
+    text-align: center;
+    margin-top: 12%;
+    background-color: #FDE8D4;
+    color: #D0BEAE;
+    font-size: 10px;
+}
+
+.block_cont_header {
+    color: #1C715B;
+    font-size: 30px;
+    margin: 10px;
+}
+
+.block_cont_text {
+    font-size: 30px;
+}
+
+p {
+    font-size: 20px;
+    color: #678370;
+}

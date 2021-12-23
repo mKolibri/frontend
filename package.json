@@ -1,0 +1,40 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@trendmicro/react-sidenav": "^0.4.5",
+    "classnames": "^2.2.6",
+    "install-peers": "^1.0.3",
+    "normalize.css": "^8.0.1",
+    "npm": "^6.13.4",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-bootstrap": "^1.0.0-beta.14",
+    "react-cookies": "^0.1.1",
+    "react-csv-downloader": "^1.5.0",
+    "react-dom": "^16.9.0",
+    "react-numeric-input": "^2.2.3",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "^3.3.0",
+    "reactstrap": "^8.1.1",
+    "serve": "^11.2.0",
+    "start": "^5.1.0"
+  },
+  "scripts": {
+    "dev": "react-scripts start",
+    "prod": "react-scripts build && serve -s build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [],
+    "development": []
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.7.1",
+    "eslint-plugin-react": "^7.17.0"
+  }
+}
